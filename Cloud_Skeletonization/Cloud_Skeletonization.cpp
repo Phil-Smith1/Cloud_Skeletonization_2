@@ -19,11 +19,11 @@
 
 // Global variables.
 
-bool images = true;
+bool images = false;
 
 bool test = false;
 
-bool validation = false;
+bool validation = true;
 
 bool write_input = true;
 
@@ -35,15 +35,15 @@ vector<int> concentric_squares_range = { 2 };
 bool graph_dependent_cloud_size = true;
 int cloud_size_parameter = 100;
 
-string noise_type = "Gaussian";
-double noise_parameter = 0.02;
+string noise_type = "Noise_Uniform";
+double noise_parameter = 0.15;
 
 bool alphaReeb = false;
 vector<double> alpha_values = { 0.2, 0.3, 0.4, 0.5 };
 double epsilon = 0.1;
 // double min_comp_size_fraction;
 
-bool mapper = false;
+bool mapper = true;
 bool graph_dependent_num_intervals = true;
 vector<double> num_intervals_parameter = { 1, 1.2, 1.4, 1.6, 1.8, 2 };
 double overlap_ratio = 0.5;

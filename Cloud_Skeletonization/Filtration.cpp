@@ -15,13 +15,26 @@ int Filtration::FindRoot ( int node, vector<FH>const& faces )
 bool Filtration::is_acute ( K::Triangle_2 const& Triangle, double& radius )
 {
     double epsilon = 1.e-8;
-    Point2d p0 = Point2d(Triangle.vertex(0).x(), Triangle.vertex(0).y());
-    Point2d p1 = Point2d(Triangle.vertex(1).x(), Triangle.vertex(1).y());
-    Point2d p2 = Point2d(Triangle.vertex(2).x(), Triangle.vertex(2).y());
-    double n1 = norm(p0 - p1);
-    double n2 = norm(p0 - p2);
+    
+    Point2d p0 = Point2d( Triangle.vertex(0).x(), Triangle.vertex(0).y() );
+    Point2d p1 = Point2d( Triangle.vertex(1).x(), Triangle.vertex(1).y() );
+    Point2d p2 = Point2d( Triangle.vertex(2).x(), Triangle.vertex(2).y() );
+    
+    double n1 = norm( p0 - p1 );
+    double n2 = norm( p0 - p2 );
+    
     Point2d p3 = (p0 - p1) / (double)n1;
     Point2d p4 = (p0 - p2) / (double)n2;
+    
+    if (p3.x < p4.x + epsilon && p3.x > p4.x - epsilon)
+    {
+        if (p3.y < p4.y + epsilon && p3.y > p4.y - epsilon)
+        {
+            return false;
+        }
+    }
+    
+    p4 = -1 * p4;
     
     if (p3.x < p4.x + epsilon && p3.x > p4.x - epsilon)
     {

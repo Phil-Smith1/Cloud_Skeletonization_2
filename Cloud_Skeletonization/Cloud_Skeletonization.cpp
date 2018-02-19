@@ -15,11 +15,12 @@
 #include "Check.h"
 #include "Analysis.h"
 #include "Read_Cloud_From_Image.h"
+#include "Draw_Clouds.h"
 #include "Print_Info.h"
 
 // Global variables.
 
-bool images = false;
+bool cloud_input = true;
 
 bool test = false;
 
@@ -36,9 +37,9 @@ bool graph_dependent_cloud_size = true;
 int cloud_size_parameter = 100;
 
 string noise_type = "Noise_Uniform";
-double noise_parameter = 0.15;
+double noise_parameter = 0.35;
 
-bool alphaReeb = false;
+bool alphaReeb = true;
 vector<double> alpha_values = { 0.2, 0.3, 0.4, 0.5 };
 double epsilon = 0.1;
 // double min_comp_size_fraction;
@@ -51,9 +52,17 @@ string filter_function = "Distance";
 double sigma = 0.1;
 double min_comp_size_fraction = 0.01;
 
-bool hopes = false;
+bool hopes = true;
 
 int repetitions = 100;
+
+bool image_input = false;
+
+bool alphaReeb_on_image = true;
+
+bool mapper_on_image = false;
+
+bool hopes_on_image = true;
 
 Custom custom( test, wheel_range, lattice_range, row_range, concentric_squares_range, graph_dependent_cloud_size, cloud_size_parameter, noise_type, noise_parameter, alphaReeb, mapper, hopes, repetitions, alpha_values, epsilon, graph_dependent_num_intervals, num_intervals_parameter, overlap_ratio, filter_function, sigma, min_comp_size_fraction );
 
@@ -80,236 +89,249 @@ int main ( int, char*[] )
 {
     clock_t start_time = clock(); // Starts the stopwatch that measures the duration of the code.
     
-    // Write input.
-    
-    if (write_input) Write_Input( input_file, alphaReeb_p_file, alpha_values_file, mapper_p_file, num_intervals_parameter_file, custom );
-    
-    // Looping over lines in the input file.
-    
-    ifstream ifs( input_file );
-    string line_data;
-    getline( ifs, line_data );
-    
-    int experiment_iter = 0; // Counter for the number of experiments performed.
-    
-    while (getline( ifs, line_data ))
+    if (cloud_input)
     {
-        clock_t start_experiment = clock(); // Starts the stopwatch that measures the duration of the experiment.
+        // Write input.
         
-        ++experiment_iter;
+        if (write_input) Write_Input( input_file, alphaReeb_p_file, alpha_values_file, mapper_p_file, num_intervals_parameter_file, custom );
         
-        // Reading the input.
+        // Looping over lines in the input file.
         
-        Input input;
-        Read_Input( line_data, alphaReeb_p_file, alpha_values_file, mapper_p_file, num_intervals_parameter_file, experiment_iter, input );
+        ifstream ifs( input_file );
+        string line_data;
+        getline( ifs, line_data );
         
-        size_t cloud_size = 0;
+        int experiment_iter = 0; // Counter for the number of experiments performed.
         
-        vector<pair<double, vector<bool>>> alphaReeb_results;
-        vector<pair<double, vector<bool>>> mapper_results;
-        vector<bool> hopes_results;
-        vector<double> alphaReeb_time;
-        vector<double> mapper_time;
-        double hopes_time = 0;
-        alphaReeb_results.clear();
-        mapper_results.clear();
-        hopes_results.clear();
-        alphaReeb_time.clear();
-        mapper_time.clear();
-        alphaReeb_results.resize( input.alpha_values.size() );
-        alphaReeb_time.resize( input.alpha_values.size() );
-        mapper_results.resize( input.num_intervals_parameter.size() );
-        mapper_time.resize( input.num_intervals_parameter.size() );
-        
-        for (int counter = 0; counter < input.alpha_values.size(); ++counter)
+        while (getline( ifs, line_data ))
         {
-            alphaReeb_results[counter].first = input.alpha_values[counter];
-            alphaReeb_time[counter] = 0;
-        }
-        
-        for (int counter = 0; counter < input.num_intervals_parameter.size(); ++counter)
-        {
-            mapper_results[counter].first = input.num_intervals_parameter[counter];
-            mapper_time[counter] = 0;
-        }
-        
-        for (int iteration = 0; iteration < input.repetitions; ++iteration) // Looping algorithm over clouds.
-        {
-            // Reading the cloud.
+            clock_t start_experiment = clock(); // Starts the stopwatch that measures the duration of the experiment.
             
-            int expected_Betti_num;
-            double graph_length;
+            ++experiment_iter;
             
-            vector<Data_Pt> cloud;
-            cloud.clear();
+            // Reading the input.
             
-            Read_Cloud( test, cloud_directory, input, iteration, expected_Betti_num, graph_length, cloud );
+            Input input;
+            Read_Input( line_data, alphaReeb_p_file, alpha_values_file, mapper_p_file, num_intervals_parameter_file, experiment_iter, input );
             
-            cloud_size += cloud.size();
+            size_t cloud_size = 0;
             
-            if (input.alphaReeb)
+            vector<pair<double, vector<bool>>> alphaReeb_results;
+            vector<pair<double, vector<bool>>> mapper_results;
+            vector<bool> hopes_results;
+            vector<double> alphaReeb_time;
+            vector<double> mapper_time;
+            double hopes_time = 0;
+            alphaReeb_results.clear();
+            mapper_results.clear();
+            hopes_results.clear();
+            alphaReeb_time.clear();
+            mapper_time.clear();
+            alphaReeb_results.resize( input.alpha_values.size() );
+            alphaReeb_time.resize( input.alpha_values.size() );
+            mapper_results.resize( input.num_intervals_parameter.size() );
+            mapper_time.resize( input.num_intervals_parameter.size() );
+            
+            for (int counter = 0; counter < input.alpha_values.size(); ++counter)
             {
-                // Looping over alpha values.
-                
-                for (int counter = 0; counter < input.alpha_values.size(); ++counter)
-                {
-                    clock_t start_iter = clock(); // Starts the stopwatch that measures the duration of the iteration.
-                    
-                    // Obtaining the parameters.
-                    
-                    input.alpha = input.alpha_values[counter];
-                    
-                    AlphaReeb_Parameters parameters( input.alpha, input.epsilon, input.min_comp_size_fraction );
-                    
-                    // Generating the alpha-Reeb graph.
-                    
-                    Graph alphaReeb_graph;
-                    alphaReeb_graph.clear();
-                    
-                    AlphaReeb( cloud, parameters, alphaReeb_graph );
-                    
-                    // Drawing the output graph.
-                    
-                    const Point image_sizes( 800, 800 );
-                    Mat image( image_sizes, CV_8UC3, white );
-                    
-                    Draw_Graph( alphaReeb_graph, 4, -1, 2, black, image );
-                    
-                    // Writing the image to a png file.
-                    
-                    if (test || iteration % 20 == 0) Write_Image( test, image_directory, input, "AlphaReeb", iteration, image );
-                    
-                    // Writing the graph to a txt file.
-                    
-                    Write_Graph( test, graph_directory, input, "AlphaReeb", iteration, alphaReeb_graph );
-                    
-                    // Seeing if expected and actual Betti numbers agree.
-                    
-                    if (validation) alphaReeb_results[counter].second.push_back( Check( expected_Betti_num, alphaReeb_graph ) );
-                    
-                    clock_t end_iter = clock(); // Stops the stopwatch that measures the duration of the iteration.
-                    
-                    alphaReeb_time[counter] += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
-                }
+                alphaReeb_results[counter].first = input.alpha_values[counter];
+                alphaReeb_time[counter] = 0;
             }
             
-            if (input.mapper)
+            for (int counter = 0; counter < input.num_intervals_parameter.size(); ++counter)
             {
-                // Looping over number of intervals;
+                mapper_results[counter].first = input.num_intervals_parameter[counter];
+                mapper_time[counter] = 0;
+            }
+            
+            for (int iteration = 0; iteration < input.repetitions; ++iteration) // Looping algorithm over clouds.
+            {
+                // Reading the cloud.
                 
-                for (int counter = 0; counter < input.num_intervals_parameter.size(); ++counter)
+                int expected_Betti_num;
+                double graph_length;
+                
+                vector<Data_Pt> cloud;
+                cloud.clear();
+                
+                Read_Cloud( test, cloud_directory, input, iteration, expected_Betti_num, graph_length, cloud );
+                
+                cloud_size += cloud.size();
+                
+                if (input.alphaReeb)
                 {
-                    clock_t start_iter = clock(); // Starts the stopwatch that measures the duration of the iteration.
+                    // Looping over alpha values.
                     
-                    // Obtaining the parameters.
-                    
-                    if (input.graph_dependent_num_intervals)
+                    for (int counter = 0; counter < input.alpha_values.size(); ++counter)
                     {
-                        input.num_intervals = input.num_intervals_parameter[counter] * graph_length;
-                        input.num_intervals_param = input.num_intervals_parameter[counter];
+                        clock_t start_iter = clock(); // Starts the stopwatch that measures the duration of the iteration.
+                        
+                        // Obtaining the parameters.
+                        
+                        input.alpha = input.alpha_values[counter];
+                        
+                        AlphaReeb_Parameters parameters( input.alpha, input.epsilon, input.min_comp_size_fraction );
+                        
+                        // Generating the alpha-Reeb graph.
+                        
+                        Graph alphaReeb_graph;
+                        alphaReeb_graph.clear();
+                        
+                        AlphaReeb( cloud, parameters, alphaReeb_graph );
+                        
+                        // Drawing the output graph.
+                        
+                        const Point image_sizes( 800, 800 );
+                        Mat image( image_sizes, CV_8UC3, white );
+                        
+                        Draw_Graph( alphaReeb_graph, 4, -1, 2, black, image );
+                        
+                        // Writing the image to a png file.
+                        
+                        if (test || iteration % 20 == 0) Write_Image( test, image_directory, input, "AlphaReeb", iteration, image );
+                        
+                        // Writing the graph to a txt file.
+                        
+                        Write_Graph( test, graph_directory, input, "AlphaReeb", iteration, alphaReeb_graph );
+                        
+                        // Seeing if expected and actual Betti numbers agree.
+                        
+                        if (validation) alphaReeb_results[counter].second.push_back( Check( expected_Betti_num, alphaReeb_graph ) );
+                        
+                        clock_t end_iter = clock(); // Stops the stopwatch that measures the duration of the iteration.
+                        
+                        alphaReeb_time[counter] += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
                     }
+                }
+                
+                if (input.mapper)
+                {
+                    // Looping over number of intervals;
                     
-                    else input.num_intervals = input.num_intervals_parameter[counter];
+                    for (int counter = 0; counter < input.num_intervals_parameter.size(); ++counter)
+                    {
+                        clock_t start_iter = clock(); // Starts the stopwatch that measures the duration of the iteration.
+                        
+                        // Obtaining the parameters.
+                        
+                        if (input.graph_dependent_num_intervals)
+                        {
+                            input.num_intervals = input.num_intervals_parameter[counter] * graph_length;
+                            input.num_intervals_param = input.num_intervals_parameter[counter];
+                        }
+                        
+                        else input.num_intervals = input.num_intervals_parameter[counter];
+                        
+                        Mapper_Parameters parameters( input.num_intervals, input.overlap_ratio, input.filter_function, input.sigma, input.min_comp_size_fraction );
+                        
+                        // Generating the mapper graph.
+                        
+                        Graph mapper_graph;
+                        mapper_graph.clear();
+                        
+                        Mapper( cloud, parameters, mapper_graph );
+                        
+                        // Drawing the output graph.
+                        
+                        const Point image_sizes( 800, 800 );
+                        Mat image( image_sizes, CV_8UC3, white );
+                        
+                        Draw_Graph( mapper_graph, 4, -1, 2, black, image );
+                        
+                        // Writing the image to a png file.
+                        
+                        if (test || iteration % 20 == 0) Write_Image( test, image_directory, input, "Mapper", iteration, image );
+                        
+                        // Writing the graph to a txt file.
+                        
+                        Write_Graph( test, graph_directory, input, "Mapper", iteration, mapper_graph );
+                        
+                        // Seeing if expected and actual Betti numbers agree.
+                        
+                        if (validation) mapper_results[counter].second.push_back( Check( expected_Betti_num, mapper_graph ) );
+                        
+                        clock_t end_iter = clock(); // Stops the stopwatch that measures the duration of the iteration.
+                        
+                        mapper_time[counter] += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
+                    }
+                }
+                
+                if (input.hopes)
+                {
+                    clock_t start_iter = clock(); // Starts the stopwatch that measures the duration of the iteration.
                     
-                    Mapper_Parameters parameters( input.num_intervals, input.overlap_ratio, input.filter_function, input.sigma, input.min_comp_size_fraction );
+                    // Generating the Hopes graph.
                     
-                    // Generating the mapper graph.
+                    Graph_H hopes_graph;
                     
-                    Graph mapper_graph;
-                    mapper_graph.clear();
-                    
-                    Mapper( cloud, parameters, mapper_graph );
+                    Hopes( cloud, hopes_graph );
                     
                     // Drawing the output graph.
                     
                     const Point image_sizes( 800, 800 );
                     Mat image( image_sizes, CV_8UC3, white );
                     
-                    Draw_Graph( mapper_graph, 4, -1, 2, black, image );
+                    Draw_Graph( hopes_graph, black, red, image );
                     
                     // Writing the image to a png file.
                     
-                    if (test || iteration % 20 == 0) Write_Image( test, image_directory, input, "Mapper", iteration, image );
+                    if (test || iteration % 20 == 0) Write_Image( test, image_directory, input, "Hopes", iteration, image );
                     
                     // Writing the graph to a txt file.
                     
-                    Write_Graph( test, graph_directory, input, "Mapper", iteration, mapper_graph );
+                    Graph hopes;
+                    
+                    Convert_Graph( hopes_graph, hopes );
+                    
+                    Write_Graph( test, graph_directory, input, "Hopes", iteration, hopes );
                     
                     // Seeing if expected and actual Betti numbers agree.
                     
-                    if (validation) mapper_results[counter].second.push_back( Check( expected_Betti_num, mapper_graph ) );
+                    if (validation) hopes_results.push_back( Check( expected_Betti_num, hopes ) );
                     
                     clock_t end_iter = clock(); // Stops the stopwatch that measures the duration of the iteration.
                     
-                    mapper_time[counter] += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
+                    hopes_time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
                 }
+                
+                if (iteration % 10 == 0) cout << iteration << endl;
             }
             
-            if (input.hopes)
-            {
-                clock_t start_iter = clock(); // Starts the stopwatch that measures the duration of the iteration.
-                
-                // Generating the Hopes graph.
-                
-                Graph_H hopes_graph;
-                
-                Hopes( cloud, hopes_graph );
-                
-                // Drawing the output graph.
-                
-                const Point image_sizes( 800, 800 );
-                Mat image( image_sizes, CV_8UC3, white );
-                
-                Draw_Graph( hopes_graph, black, red, image );
-                
-                // Writing the image to a png file.
-                
-                if (test || iteration % 20 == 0) Write_Image( test, image_directory, input, "Hopes", iteration, image );
-                
-                // Writing the graph to a txt file.
-                
-                Graph hopes;
-                
-                Convert_Graph( hopes_graph, hopes );
-                
-                Write_Graph( test, graph_directory, input, "Hopes", iteration, hopes );
-                
-                // Seeing if expected and actual Betti numbers agree.
-                
-                if (validation) hopes_results.push_back( Check( expected_Betti_num, hopes ) );
-                
-                clock_t end_iter = clock(); // Stops the stopwatch that measures the duration of the iteration.
-                
-                hopes_time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
-            }
+            size_t mean_cloud_size = cloud_size / input.repetitions;
             
-            if (iteration % 10 == 0) cout << iteration << endl;
+            if (validation) Analysis( result_directory, input, mean_cloud_size, alphaReeb_results, mapper_results, hopes_results, alphaReeb_time, mapper_time, hopes_time );
+            
+            // Printing to cout information about the experiment. Ie. duration.
+            
+            Print_Experiment_Summary( start_experiment, experiment_iter, input );
+            
+            if (test) break;
         }
         
-        size_t mean_cloud_size = cloud_size / input.repetitions;
+        // Printing to cout information about the run. Ie. duration.
         
-        if (validation) Analysis( result_directory, input, mean_cloud_size, alphaReeb_results, mapper_results, hopes_results, alphaReeb_time, mapper_time, hopes_time );
-        
-        // Printing to cout information about the experiment. Ie. duration.
-        
-        Print_Experiment_Summary( start_experiment, experiment_iter, input );
-        
-        if (test) break;
+        Print_Summary( start_time, experiment_iter );
     }
     
-    if (images)
+    if (image_input)
     {
-        string image_name = "Image";
+        string image_name = "Woman";
         
         vector<vector<Data_Pt>> clouds;
         clouds.clear();
         
         Read_Cloud_From_Image( imported_image_directory, image_name, clouds );
         
-        if (false)
+        const Point image_sizes( 800, 800 );
+        Mat cloud_image( image_sizes, CV_8UC3, white );
+        
+        Draw_Clouds( clouds, cloud_image );
+        
+        imwrite( imported_image_directory + image_name + "_Cloud.png", cloud_image );
+        
+        if (hopes_on_image)
         {
-            const Point image_sizes( 800, 800 );
-            Mat image( image_sizes, CV_8UC3, white );
+            Mat hopes_image( image_sizes, CV_8UC3, white );
             
             vector<Graph_H> hopes_graph( clouds.size() );
             
@@ -323,8 +345,8 @@ int main ( int, char*[] )
             
             for (int counter = 0; counter < hopes_graph.size(); ++counter)
             {
-                double scale_1;
-                Point2d shift_1;
+                double scale_1 = 100;
+                Point2d shift_1 = Point2d( 0, 0 );
                 
                 if (hopes_graph[counter].vertices.size() > 1)
                 {
@@ -340,16 +362,15 @@ int main ( int, char*[] )
             
             for (int counter = 0; counter < hopes_graph.size(); ++counter)
             {
-                hopes_graph[counter].Draw( scale, shift, black, red, 1, image );
+                hopes_graph[counter].Draw( scale, shift, black, red, 1, hopes_image );
             }
             
-            imwrite( imported_image_directory + image_name + "_Hopes.png", image );
+            imwrite( imported_image_directory + image_name + "_Hopes.png", hopes_image );
         }
         
-        if (true)
+        if (alphaReeb_on_image)
         {
-            const Point image_sizes( 800, 800 );
-            Mat image( image_sizes, CV_8UC3, white );
+            Mat alphaReeb_image( image_sizes, CV_8UC3, white );
             
             vector<Graph> alphaReeb_graph( clouds.size() );
             
@@ -394,18 +415,14 @@ int main ( int, char*[] )
             
             for (int counter = 0; counter < alphaReeb_graph.size(); ++counter)
             {
-                Draw_Vertices( alphaReeb_graph[counter], scale, shift, 4, -1, black, image );
+                Draw_Vertices( alphaReeb_graph[counter], scale, shift, 1, -1, black, alphaReeb_image );
                 
-                Draw_Edges( alphaReeb_graph[counter], scale, shift, 2, black, image );
+                Draw_Edges( alphaReeb_graph[counter], scale, shift, 1, black, alphaReeb_image );
             }
             
-            imwrite( imported_image_directory + image_name + "_alphaReeb.png", image );
+            imwrite( imported_image_directory + image_name + "_AlphaReeb.png", alphaReeb_image );
         }
     }
-    
-    // Printing to cout informaion about the run. Ie. duration.
-    
-    Print_Summary( start_time, experiment_iter );
     
     return 0;
 }

@@ -103,6 +103,7 @@
 		EEEE62C91FCDD464008A1AC3 /* Split_MST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Split_MST.h; sourceTree = "<group>"; };
 		EEEE62CA1FCDD465008A1AC3 /* Geometric_Centre_Of_Cloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geometric_Centre_Of_Cloud.h; sourceTree = "<group>"; };
 		EEEE62CC1FCDDD97008A1AC3 /* Hopes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Hopes.h; sourceTree = "<group>"; };
+		EEEF5033200E62DB00BE859F /* Draw_Clouds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Draw_Clouds.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +144,7 @@
 				EE2D96E31FD6CC18009F440A /* Check.h */,
 				EEEE62AA1FCC557E008A1AC3 /* Cloud_File_Name.h */,
 				EEEE629A1FCC4837008A1AC3 /* Cloud_Skeletonization.cpp */,
+				EEEF5033200E62DB00BE859F /* Draw_Clouds.h */,
 				EE3159051FE9788500E21A29 /* Read_Cloud_From_Image.h */,
 				EEEE62B21FCD7960008A1AC3 /* Cloud_To_Nbhd_Graph.h */,
 				EEEE62C81FCDD464008A1AC3 /* Clustering.h */,

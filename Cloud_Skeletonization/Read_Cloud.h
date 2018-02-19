@@ -30,7 +30,7 @@ void Read_Cloud ( bool test, string const& cloud_directory, Input const& input, 
         
         if (stream >> x >> y)
         {
-            cloud.push_back( Data_Pt(Point2d(x, y)) );
+            cloud.push_back( Data_Pt( Point2d( x, y ) ) );
         }
     }
     

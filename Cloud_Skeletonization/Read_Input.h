@@ -1,12 +1,11 @@
 #pragma once
 
-#include <fstream>
 #include <sstream>
 
 #include "Input.h"
 #include "Go_To_Line.h"
 
-void Read_Input ( string const& line_data, string const& alphaReeb_p_file, string const& alpha_values_file, string const& mapper_p_file, string const& num_intervals_parameter_file, int experiment_iter, Input& input )
+void Read_Input ( string const& line_data, string const& alphaReeb_parameter_file, string const& alpha_values_file, string const& mapper_parameter_file, string const& num_intervals_parameter_file, int experiment_iter, Input& input )
 {
     stringstream stream;
     string n_t, p_t, f_f;
@@ -21,7 +20,7 @@ void Read_Input ( string const& line_data, string const& alphaReeb_p_file, strin
     
     if (aR)
     {
-        ifstream ifs_1( alphaReeb_p_file );
+        ifstream ifs_1( alphaReeb_parameter_file );
         
         Go_To_Line( ifs_1, experiment_iter + 1 );
         
@@ -46,6 +45,8 @@ void Read_Input ( string const& line_data, string const& alphaReeb_p_file, strin
             stream >> alpha;
             a_v.push_back( alpha );
         }
+        
+        ifs_2.close();
     }
     
     else
@@ -56,31 +57,33 @@ void Read_Input ( string const& line_data, string const& alphaReeb_p_file, strin
     
     if (m)
     {
-        ifstream ifs_1( mapper_p_file );
+        ifstream ifs_3( mapper_parameter_file );
         
-        Go_To_Line( ifs_1, experiment_iter + 1 );
+        Go_To_Line( ifs_3, experiment_iter + 1 );
         
         string line_data_2;
-        getline( ifs_1, line_data_2 );
+        getline( ifs_3, line_data_2 );
         
         stream.clear();
         stream << line_data_2;
         
         stream >> g_d_n_i >> o_r >> f_f >> s >> m_c_s_f;
         
-        ifs_1.close();
+        ifs_3.close();
         
-        ifstream ifs_2( num_intervals_parameter_file );
+        ifstream ifs_4( num_intervals_parameter_file );
         
         double n_i;
         
-        while (getline( ifs_2, line_data_2 ))
+        while (getline( ifs_4, line_data_2 ))
         {
             stream.clear();
             stream << line_data_2;
             stream >> n_i;
             n_i_p.push_back( n_i );
         }
+        
+        ifs_4.close();
     }
     
     else

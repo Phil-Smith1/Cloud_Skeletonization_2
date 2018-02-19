@@ -4,7 +4,7 @@
 
 class Data_Pt
 {
-	public:
+public:
 
 	int index;
 	Point2d pt;

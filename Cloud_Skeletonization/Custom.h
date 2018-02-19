@@ -7,7 +7,7 @@ using namespace std;
 
 class Custom
 {
-    public:
+public:
     
     string filter_function, noise_type;
     bool test, alphaReeb, mapper, hopes, graph_dependent_cloud_size, graph_dependent_num_intervals;

@@ -22,9 +22,9 @@
 
 bool cloud_input = true;
 
-bool test = false;
+bool test = true;
 
-bool validation = true;
+bool validation = false;
 
 bool write_input = true;
 
@@ -75,9 +75,9 @@ const Scalar red = CV_RGB ( 255, 0, 0 );
 // Directories.
 
 const string input_file = "/Users/philsmith/Documents/Xcode Projects/Input/Input.txt";
-const string alphaReeb_p_file = "/Users/philsmith/Documents/Xcode Projects/Input/AlphaReeb_p.txt";
+const string alphaReeb_parameter_file = "/Users/philsmith/Documents/Xcode Projects/Input/AlphaReeb_p.txt";
 const string alpha_values_file = "/Users/philsmith/Documents/Xcode Projects/Input/Alpha_values.txt";
-const string mapper_p_file = "/Users/philsmith/Documents/Xcode Projects/Input/Mapper_p.txt";
+const string mapper_parameter_file = "/Users/philsmith/Documents/Xcode Projects/Input/Mapper_p.txt";
 const string num_intervals_parameter_file = "/Users/philsmith/Documents/Xcode Projects/Input/Num_intervals_parameter.txt";
 const string cloud_directory = "/Users/philsmith/Documents/Xcode Projects/Clouds/";
 const string image_directory = "/Users/philsmith/Documents/Xcode Projects/Images/";
@@ -87,13 +87,15 @@ const string imported_image_directory = "/Users/philsmith/Documents/Xcode Projec
 
 int main ( int, char*[] )
 {
-    clock_t start_time = clock(); // Starts the stopwatch that measures the duration of the code.
+    // Start stopwatch.
     
-    if (cloud_input)
+    clock_t start_time = clock();
+    
+    if (cloud_input) // Caries out algorithms on user-generated clouds.
     {
         // Write input.
         
-        if (write_input) Write_Input( input_file, alphaReeb_p_file, alpha_values_file, mapper_p_file, num_intervals_parameter_file, custom );
+        if (write_input) Write_Input( input_file, alphaReeb_parameter_file, alpha_values_file, mapper_parameter_file, num_intervals_parameter_file, custom );
         
         // Looping over lines in the input file.
         
@@ -112,7 +114,8 @@ int main ( int, char*[] )
             // Reading the input.
             
             Input input;
-            Read_Input( line_data, alphaReeb_p_file, alpha_values_file, mapper_p_file, num_intervals_parameter_file, experiment_iter, input );
+            
+            Read_Input( line_data, alphaReeb_parameter_file, alpha_values_file, mapper_parameter_file, num_intervals_parameter_file, experiment_iter, input );
             
             size_t cloud_size = 0;
             
@@ -144,7 +147,9 @@ int main ( int, char*[] )
                 mapper_time[counter] = 0;
             }
             
-            for (int iteration = 0; iteration < input.repetitions; ++iteration) // Looping algorithm over clouds.
+            // Looping algorithm over clouds.
+            
+            for (int iteration = 0; iteration < input.repetitions; ++iteration)
             {
                 // Reading the cloud.
                 
@@ -158,7 +163,7 @@ int main ( int, char*[] )
                 
                 cloud_size += cloud.size();
                 
-                if (input.alphaReeb)
+                if (input.alphaReeb) // Carries out alpha-Reeb algorithm.
                 {
                     // Looping over alpha values.
                     
@@ -204,7 +209,7 @@ int main ( int, char*[] )
                     }
                 }
                 
-                if (input.mapper)
+                if (input.mapper) // Carries out mapper algorithm.
                 {
                     // Looping over number of intervals;
                     
@@ -216,8 +221,8 @@ int main ( int, char*[] )
                         
                         if (input.graph_dependent_num_intervals)
                         {
-                            input.num_intervals = input.num_intervals_parameter[counter] * graph_length;
                             input.num_intervals_param = input.num_intervals_parameter[counter];
+                            input.num_intervals = input.num_intervals_param * graph_length;
                         }
                         
                         else input.num_intervals = input.num_intervals_parameter[counter];
@@ -256,7 +261,7 @@ int main ( int, char*[] )
                     }
                 }
                 
-                if (input.hopes)
+                if (input.hopes) // Carries out hopes algorithm.
                 {
                     clock_t start_iter = clock(); // Starts the stopwatch that measures the duration of the iteration.
                     
@@ -301,14 +306,14 @@ int main ( int, char*[] )
             
             if (validation) Analysis( result_directory, input, mean_cloud_size, alphaReeb_results, mapper_results, hopes_results, alphaReeb_time, mapper_time, hopes_time );
             
-            // Printing to cout information about the experiment. Ie. duration.
+            // Printing experiment summary.
             
             Print_Experiment_Summary( start_experiment, experiment_iter, input );
             
             if (test) break;
         }
         
-        // Printing to cout information about the run. Ie. duration.
+        // Printing summary.
         
         Print_Summary( start_time, experiment_iter );
     }

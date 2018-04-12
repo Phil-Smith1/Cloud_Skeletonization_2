@@ -9,7 +9,7 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
 {
     if (input.alphaReeb)
     {
-        int best_success_rate = 0;
+        double best_success_rate = 0;
         double optimal_alpha = 0;
         double aR_time = 0;
         
@@ -57,7 +57,7 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
     
     if (input.mapper)
     {
-        int best_success_rate = 0;
+        double best_success_rate = 0;
         double optimal_num_intervals = 0;
         double m_time = 0;
         

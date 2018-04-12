@@ -22,24 +22,24 @@
 
 bool cloud_input = true;
 
-bool test = true;
+bool test = false;
 
-bool validation = false;
+bool validation = true;
 
 bool write_input = true;
 
-vector<int> wheel_range = { 3, 4, 5, 6, 7, 8, 9, 10 };
-vector<int> lattice_range = { 1, 2, 3 };
-vector<int> row_range = { 1, 2, 3, 4, 5 };
-vector<int> concentric_squares_range = { 2 };
+vector<int> wheel_range = { /*3, 4, 5, 6,*/ 7, 8, 9, 10 };
+vector<int> lattice_range = { /*1, 2, 3, 4*/ };
+vector<int> row_range = { /*1, 2, 3, 4, 5*/ };
+vector<int> concentric_squares_range = { /*2, 3*/ };
 
 bool graph_dependent_cloud_size = true;
 int cloud_size_parameter = 100;
 
-string noise_type = "Noise_Uniform";
-double noise_parameter = 0.35;
+string noise_type = "Gaussian";
+double noise_parameter = 0.06;
 
-bool alphaReeb = true;
+bool alphaReeb = false;
 vector<double> alpha_values = { 0.2, 0.3, 0.4, 0.5 };
 double epsilon = 0.1;
 // double min_comp_size_fraction;
@@ -52,15 +52,15 @@ string filter_function = "Distance";
 double sigma = 0.1;
 double min_comp_size_fraction = 0.01;
 
-bool hopes = true;
+bool hopes = false;
 
-int repetitions = 100;
+int repetitions = 1000;
 
 bool image_input = false;
 
 bool alphaReeb_on_image = true;
 
-bool mapper_on_image = false;
+bool mapper_on_image = true;
 
 bool hopes_on_image = true;
 
@@ -74,16 +74,17 @@ const Scalar red = CV_RGB ( 255, 0, 0 );
 
 // Directories.
 
-const string input_file = "/Users/philsmith/Documents/Xcode Projects/Input/Input.txt";
-const string alphaReeb_parameter_file = "/Users/philsmith/Documents/Xcode Projects/Input/AlphaReeb_p.txt";
-const string alpha_values_file = "/Users/philsmith/Documents/Xcode Projects/Input/Alpha_values.txt";
-const string mapper_parameter_file = "/Users/philsmith/Documents/Xcode Projects/Input/Mapper_p.txt";
-const string num_intervals_parameter_file = "/Users/philsmith/Documents/Xcode Projects/Input/Num_intervals_parameter.txt";
-const string cloud_directory = "/Users/philsmith/Documents/Xcode Projects/Clouds/";
-const string image_directory = "/Users/philsmith/Documents/Xcode Projects/Images/";
-const string graph_directory = "/Users/philsmith/Documents/Xcode Projects/Graphs/";
-const string result_directory = "/Users/philsmith/Documents/Xcode Projects/Results/";
-const string imported_image_directory = "/Users/philsmith/Documents/Xcode Projects/BSDS500/";
+const string root_directory = "/Users/philsmith/Documents/Xcode Projects/Cloud_Skeletonization/";
+const string input_file = root_directory + "Input/Input.txt";
+const string alphaReeb_parameter_file = root_directory + "Input/AlphaReeb_parameters.txt";
+const string alpha_values_file = root_directory + "Input/Alpha_values.txt";
+const string mapper_parameter_file = root_directory + "Input/Mapper_parameters.txt";
+const string num_intervals_parameter_file = root_directory + "Input/Num_intervals_parameter.txt";
+const string cloud_directory = root_directory + "Clouds/";
+const string image_directory = root_directory + "Images/";
+const string graph_directory = root_directory + "Graphs/";
+const string result_directory = root_directory + "Results/";
+const string imported_image_directory = root_directory + "BSDS500/";
 
 int main ( int, char*[] )
 {
@@ -320,7 +321,7 @@ int main ( int, char*[] )
     
     if (image_input)
     {
-        string image_name = "Woman";
+        string image_name = "Bird_and_nest"; // Woman, Bird_and_nest.
         
         vector<vector<Data_Pt>> clouds;
         clouds.clear();
@@ -371,6 +372,8 @@ int main ( int, char*[] )
             }
             
             imwrite( imported_image_directory + image_name + "_Hopes.png", hopes_image );
+            
+            cout << "Completed hopes algorithm on image." << endl << endl;
         }
         
         if (alphaReeb_on_image)
@@ -426,6 +429,53 @@ int main ( int, char*[] )
             }
             
             imwrite( imported_image_directory + image_name + "_AlphaReeb.png", alphaReeb_image );
+            
+            cout << "Completed alpha-Reeb algorithm on image." << endl << endl;
+        }
+        
+        if (mapper_on_image)
+        {
+            Mat mapper_image( image_sizes, CV_8UC3, white );
+            
+            vector<Graph> mapper_graph( clouds.size() );
+            
+            for (int counter = 0; counter < clouds.size(); ++counter)
+            {
+                Mapper_Parameters parameters( 15, 0.5, "Distance", 0.1, 0.01 );
+                
+                Mapper( clouds[counter], parameters, mapper_graph[counter] );
+            }
+            
+            double scale = 100;
+            Point2d shift = Point2d( 0, 0 );
+            
+            for (int counter = 0; counter < mapper_graph.size(); ++counter)
+            {
+                double scale_1 = 100;
+                Point2d shift_1 = Point2d( 0, 0 );
+                
+                if (boost::num_vertices( mapper_graph[counter] ) > 1)
+                {
+                    Scaling_Parameters( mapper_graph[counter], image_sizes, scale_1, shift_1 );
+                }
+                
+                if (scale_1 < scale)
+                {
+                    scale = scale_1;
+                    shift = shift_1;
+                }
+            }
+            
+            for (int counter = 0; counter < mapper_graph.size(); ++counter)
+            {
+                Draw_Vertices( mapper_graph[counter], scale, shift, 1, -1, black, mapper_image );
+                
+                Draw_Edges( mapper_graph[counter], scale, shift, 1, black, mapper_image );
+            }
+            
+            imwrite( imported_image_directory + image_name + "_Mapper.png", mapper_image );
+            
+            cout << "Completed mapper algorithm on image." << endl << endl;
         }
     }
     

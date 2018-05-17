@@ -22,19 +22,47 @@ void LoadCloud ( Mat const& ImageCloud, vector<P2>& cloud )
     }
 }
 
-void Read_Cloud_From_Image ( string const& image_directory, string const& image_name, vector<vector<Data_Pt>>& clouds )
+void Read_Cloud_From_Image ( string const& image_directory, string const& image_name, Mat const& InputImage, vector<vector<Data_Pt>>& clouds )
 {
-    Mat InputImage;
-    
-    InputImage = imread( image_directory + image_name + ".jpg" );
-    
     int CannyLowThreshold = 75;
     double CannyRatio = 3;
     Mat CannyEdges;
     
     CannyDetector( InputImage, CannyLowThreshold, CannyRatio, CannyEdges);
     
-    imwrite( image_directory + "Canny_" + image_name + ".png", CannyEdges );
+    Mat dst;
+    
+    CannyEdges.copyTo( dst );
+    
+    cvtColor( dst, dst, COLOR_GRAY2BGR );
+    
+    for (int y = 0; y < dst.rows; ++y)
+    {
+        for (int x = 0; x < dst.cols; ++x)
+        {
+            if (dst.at<Vec3b>( Point( x,y ) )[0] > 10)
+            {
+                dst.at<Vec3b>( Point( x,y ) )[0] = dst.at<Vec3b>( Point( x,y ) )[1] = 0;
+            }
+            
+            else dst.at<Vec3b>( Point( x,y ) )[0] = dst.at<Vec3b>( Point( x,y ) )[1] = dst.at<Vec3b>( Point( x,y ) )[2] = 255;
+        }
+    }
+    
+    for (int y = 0; y < dst.rows; ++y)
+    {
+        for (int x = 0; x < dst.cols; ++x)
+        {
+            if (dst.at<Vec3b>( Point( x,y ) )[0] > 10)
+            {
+                dst.at<Vec3b>( Point( x,y ) ) = InputImage.at<Vec3b>( Point( x, y ) );
+            }
+        }
+    }
+    
+    //addWeighted( InputImage, 0.5, dst, 0.5, 0, dst );
+    
+    imwrite( image_directory + "Canny_" + image_name + ".png", dst );
     
     vector<P2> cloud;
     

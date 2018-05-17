@@ -4,49 +4,33 @@
 
 void Combine_Comps ( vector<Graph>const& conn_comp, Graph& g )
 {
-	for (auto graph : conn_comp)
+	for (auto c_c : conn_comp)
 	{
 		vector<Graph::vertex_descriptor> v;
 		vector<pair<Graph::edge_descriptor, bool>> e;
-		v.clear();
-		e.clear();
+        
+        size_t num_vertices = boost::num_vertices( c_c );
 
-		pair<vertex_iter, vertex_iter> VertexPair_1, VertexPair_2;
-		int counter = 0;
-
-		for (VertexPair_1 = boost::vertices( graph ); VertexPair_1.first != VertexPair_1.second; ++VertexPair_1.first)
+		for (auto vi = boost::vertices( c_c ).first; vi != boost::vertices( c_c ).second; ++vi)
 		{
 			v.push_back( boost::add_vertex( g ) );
-			g[v[counter]].pt = graph[*VertexPair_1.first].pt;
-			++counter;
+			g[v.back()].pt = c_c[*vi].pt;
 		}
-
-		int num_edges = 0;
-		int counter_1 = 0, counter_2;
-
-		for (VertexPair_1 = boost::vertices( graph ); VertexPair_1.first != VertexPair_1.second; ++VertexPair_1.first)
-		{
-			VertexPair_2 = VertexPair_1;
-			++VertexPair_2.first;
-			counter_2 = counter_1;
-			++counter_2;
-
-			for (; VertexPair_2.first != VertexPair_2.second; ++VertexPair_2.first)
-			{
-				if (boost::edge( *VertexPair_1.first, *VertexPair_2.first, graph ).second)
-				{
-					e.push_back( boost::add_edge( v[counter_1], v[counter_2], g ) );
-					Point2d source = g[boost::source( e[num_edges].first, g )].pt;
-					Point2d target = g[boost::target( e[num_edges].first, g )].pt;
+        
+        for (int counter_1 = 0; counter_1 < num_vertices; ++counter_1)
+        {
+            for (int counter_2 = counter_1 + 1; counter_2 < num_vertices; ++ counter_2)
+            {
+                if (boost::edge( counter_1, counter_2, c_c ).second)
+                {
+                    e.push_back( boost::add_edge( v[counter_1], v[counter_2], g ) );
+                    Point2d source = g[boost::source( e.back().first, g )].pt;
+                    Point2d target = g[boost::target( e.back().first, g )].pt;
                     double length = norm( target - source );
-                    boost::put( boost::edge_weight_t(), g, e[num_edges].first, length );
-					++num_edges;
-				}
+                    boost::put( boost::edge_weight_t(), g, e.back().first, length );
+                }
 
-				++counter_2;
-			}
-
-			++counter_1;
-		}
+            }
+        }
 	}
 }

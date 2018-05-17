@@ -22,8 +22,8 @@ void Bounding_Box ( Graph const& g, pair<Point2d, Point2d>& cloud_box )
 
 void Bounding_Box ( Graph_H const& g, pair<Point2d, Point2d>& cloud_box )
 {
-    cloud_box.first = Point2d(big_constant, big_constant);
-    cloud_box.second = Point2d(-big_constant, -big_constant);
+    cloud_box.first = Point2d( big_constant, big_constant );
+    cloud_box.second = Point2d( -big_constant, -big_constant );
     
     for (auto it = g.vertices.begin(); it != g.vertices.end(); ++it)
     {

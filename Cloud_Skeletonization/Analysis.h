@@ -5,7 +5,7 @@
 
 #include "Input.h"
 
-void Analysis ( string const& result_directory, Input const& input, size_t mean_cloud_size, vector<pair<double, vector<bool>>>const& alphaReeb_results, vector<pair<double, vector<bool>>>const& mapper_results, vector<bool>const& hopes_results, vector<double>const& alphaReeb_time, vector<double>const& mapper_time, double hopes_time )
+void Analysis ( string const& result_directory, Input const& input, size_t mean_cloud_size, vector<pair<pair<double, double>, vector<bool>>>const& alphaReeb_results, vector<pair<pair<double, double>, vector<bool>>>const& mapper_results, vector<bool>const& hopes_results, double hopes_time )
 {
     if (input.alphaReeb)
     {
@@ -28,17 +28,18 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
             if (success_rate >= best_success_rate)
             {
                 best_success_rate = success_rate;
-                optimal_alpha = alphaReeb_results[counter].first;
-                aR_time = alphaReeb_time[counter];
+                optimal_alpha = alphaReeb_results[counter].first.first;
+                aR_time = alphaReeb_results[counter].first.second;
             }
         }
         
-        string result_file = result_directory + "AlphaReeb/AlphaReeb.txt";
+        string result_file = result_directory + "AlphaReeb/AlphaReeb_t.txt";
         
         ofstream ofs( result_file, ios::app );
         
         ofs << left << setw( 19 ) << input.pattern_type << " ";
-        ofs << left << setw( 13 ) << input.pattern_size << " ";
+        ofs << left << setw( 15 ) << input.pattern_size_1 << " ";
+        ofs << left << setw( 15 ) << input.pattern_size_2 << " ";
         ofs << left << setw( 21 ) << input.graph_dependent_cloud_size << " ";
         ofs << left << setw( 17 ) << input.cloud_size_parameter << " ";
         ofs << left << setw( 11 ) << mean_cloud_size << " ";
@@ -76,17 +77,18 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
             if (success_rate >= best_success_rate)
             {
                 best_success_rate = success_rate;
-                optimal_num_intervals = mapper_results[counter].first;
-                m_time = mapper_time[counter];
+                optimal_num_intervals = mapper_results[counter].first.first;
+                m_time = mapper_results[counter].first.second;
             }
         }
         
-        string result_file = result_directory + "Mapper/Mapper.txt";
+        string result_file = result_directory + "Mapper/Mapper_t.txt";
         
         ofstream ofs( result_file, ios::app );
         
         ofs << left << setw( 19 ) << input.pattern_type << " ";
-        ofs << left << setw( 13 ) << input.pattern_size << " ";
+        ofs << left << setw( 15 ) << input.pattern_size_1 << " ";
+        ofs << left << setw( 15 ) << input.pattern_size_2 << " ";
         ofs << left << setw( 21 ) << input.graph_dependent_cloud_size << " ";
         ofs << left << setw( 17 ) << input.cloud_size_parameter << " ";
         ofs << left << setw( 11 ) << mean_cloud_size << " ";
@@ -116,12 +118,13 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
         
         double success_rate = 100 * successes / (double)attempts;
         
-        string result_file = result_directory + "Hopes/Hopes.txt";
-        
+        string result_file = result_directory + "Hopes/Hopes_t.txt";
+
         ofstream ofs( result_file, ios::app );
         
         ofs << left << setw( 19 ) << input.pattern_type << " ";
-        ofs << left << setw( 13 ) << input.pattern_size << " ";
+        ofs << left << setw( 15 ) << input.pattern_size_1 << " ";
+        ofs << left << setw( 15 ) << input.pattern_size_2 << " ";
         ofs << left << setw( 21 ) << input.graph_dependent_cloud_size << " ";
         ofs << left << setw( 17 ) << input.cloud_size_parameter << " ";
         ofs << left << setw( 11 ) << mean_cloud_size << " ";

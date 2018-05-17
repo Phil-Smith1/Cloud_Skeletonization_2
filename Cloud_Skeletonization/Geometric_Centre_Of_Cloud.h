@@ -5,7 +5,7 @@
 Point2d Geometric_Centre_Of_Cloud ( vector<Data_Pt>const& cloud )
 {
     size_t cloud_size = cloud.size();
-    Point2d geometric_centre = Point2d(0, 0);
+    Point2d geometric_centre = Point2d( 0, 0 );
     
     for (auto p : cloud)
     {

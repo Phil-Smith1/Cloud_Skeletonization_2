@@ -4,11 +4,10 @@ class AlphaReeb_Parameters
 {
     public:
     
-    double min_comp_size_fraction, epsilon, alpha;
+    double alpha, mcsf;
     
-    AlphaReeb_Parameters ( double e, double a, double m_c_s_f );
+    AlphaReeb_Parameters ( double a, double m );
     
-    AlphaReeb_Parameters ();
-    
-    ~AlphaReeb_Parameters ();
+    AlphaReeb_Parameters();
+    ~AlphaReeb_Parameters();
 };

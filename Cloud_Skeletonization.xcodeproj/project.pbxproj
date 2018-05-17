@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		EE2E0D091FD06AC100DF5608 /* Filtration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE2E0D071FD06AC100DF5608 /* Filtration.cpp */; };
-		EE3184421FD59DE300CFF6E1 /* Custom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3184411FD59DE300CFF6E1 /* Custom.cpp */; };
+		EE3184421FD59DE300CFF6E1 /* Run_Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3184411FD59DE300CFF6E1 /* Run_Input.cpp */; };
+		EEE4FA8020ADD15A006554E6 /* Cluster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEE4FA7F20ADD15A006554E6 /* Cluster.cpp */; };
 		EEEA2A9D1FD198630074FC3E /* Node_Data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEEA2A9C1FD198630074FC3E /* Node_Data.cpp */; };
 		EEEA2AA21FD19CF20074FC3E /* Edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEEA2AA11FD19CF20074FC3E /* Edge.cpp */; };
 		EEEA2AA61FD1C1B30074FC3E /* Life.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEEA2AA51FD1C1B30074FC3E /* Life.cpp */; };
@@ -45,9 +46,13 @@
 		EE2E0D0C1FD0714800DF5608 /* Convert_Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Convert_Graph.h; sourceTree = "<group>"; };
 		EE3159051FE9788500E21A29 /* Read_Cloud_From_Image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Read_Cloud_From_Image.h; sourceTree = "<group>"; };
 		EE31843F1FD57C9F00CFF6E1 /* Find_Diagonal_Gaps.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Find_Diagonal_Gaps.h; sourceTree = "<group>"; };
-		EE3184401FD59DD300CFF6E1 /* Custom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Custom.h; sourceTree = "<group>"; };
-		EE3184411FD59DE300CFF6E1 /* Custom.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Custom.cpp; sourceTree = "<group>"; };
+		EE3184401FD59DD300CFF6E1 /* Run_Input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Run_Input.h; sourceTree = "<group>"; };
+		EE3184411FD59DE300CFF6E1 /* Run_Input.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Run_Input.cpp; sourceTree = "<group>"; };
 		EE3184431FD5AF7A00CFF6E1 /* Go_To_Line.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Go_To_Line.h; sourceTree = "<group>"; };
+		EE67632220A99EEC00CAE2AB /* Generate_AlphaReeb_Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Generate_AlphaReeb_Graph.h; sourceTree = "<group>"; };
+		EEE4FA7D20ADA9A7006554E6 /* Recover_Components.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Recover_Components.h; sourceTree = "<group>"; };
+		EEE4FA7E20ADD139006554E6 /* Cluster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cluster.h; sourceTree = "<group>"; };
+		EEE4FA7F20ADD15A006554E6 /* Cluster.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Cluster.cpp; sourceTree = "<group>"; };
 		EEEA2A9B1FD197D10074FC3E /* Node_Data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Node_Data.h; sourceTree = "<group>"; };
 		EEEA2A9C1FD198630074FC3E /* Node_Data.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Node_Data.cpp; sourceTree = "<group>"; };
 		EEEA2A9E1FD19AB90074FC3E /* Edge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Edge.h; sourceTree = "<group>"; };
@@ -75,15 +80,14 @@
 		EEEE62AA1FCC557E008A1AC3 /* Cloud_File_Name.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cloud_File_Name.h; sourceTree = "<group>"; };
 		EEEE62AC1FCD795F008A1AC3 /* Group_Subgraphs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group_Subgraphs.h; sourceTree = "<group>"; };
 		EEEE62AD1FCD795F008A1AC3 /* Combine_Comps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Combine_Comps.h; sourceTree = "<group>"; };
-		EEEE62AE1FCD795F008A1AC3 /* AlphaReeb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlphaReeb.h; sourceTree = "<group>"; };
+		EEEE62AE1FCD795F008A1AC3 /* AlphaReeb_Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlphaReeb_Algorithm.h; sourceTree = "<group>"; };
 		EEEE62AF1FCD7960008A1AC3 /* Generate_Subgraphs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Generate_Subgraphs.h; sourceTree = "<group>"; };
 		EEEE62B01FCD7960008A1AC3 /* AlphaReeb_Parameters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AlphaReeb_Parameters.cpp; sourceTree = "<group>"; };
-		EEEE62B11FCD7960008A1AC3 /* Conn_Comps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Conn_Comps.h; sourceTree = "<group>"; };
+		EEEE62B11FCD7960008A1AC3 /* Split_Into_Conn_Comps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Split_Into_Conn_Comps.h; sourceTree = "<group>"; };
 		EEEE62B21FCD7960008A1AC3 /* Cloud_To_Nbhd_Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cloud_To_Nbhd_Graph.h; sourceTree = "<group>"; };
 		EEEE62B31FCD7960008A1AC3 /* Generate_Subclouds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Generate_Subclouds.h; sourceTree = "<group>"; };
-		EEEE62B41FCD7960008A1AC3 /* Dijkstra_Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dijkstra_Filter.h; sourceTree = "<group>"; };
-		EEEE62B51FCD7960008A1AC3 /* Generate_AlphaReeb_Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Generate_AlphaReeb_Graph.h; sourceTree = "<group>"; };
-		EEEE62B61FCD7960008A1AC3 /* Single_Vertex_Case.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Single_Vertex_Case.h; sourceTree = "<group>"; };
+		EEEE62B41FCD7960008A1AC3 /* Dijkstra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dijkstra.h; sourceTree = "<group>"; };
+		EEEE62B51FCD7960008A1AC3 /* Connect_Clusters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connect_Clusters.h; sourceTree = "<group>"; };
 		EEEE62B71FCD7961008A1AC3 /* AlphaReeb_Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlphaReeb_Parameters.h; sourceTree = "<group>"; };
 		EEEE62B91FCD7D66008A1AC3 /* Draw_Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Draw_Graph.h; sourceTree = "<group>"; };
 		EEEE62BA1FCD7D67008A1AC3 /* Scaling_Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scaling_Parameters.h; sourceTree = "<group>"; };
@@ -136,26 +140,26 @@
 		EEEE62991FCC4837008A1AC3 /* Cloud_Skeletonization */ = {
 			isa = PBXGroup;
 			children = (
+				EEEE62AE1FCD795F008A1AC3 /* AlphaReeb_Algorithm.h */,
 				EEEE62B01FCD7960008A1AC3 /* AlphaReeb_Parameters.cpp */,
 				EEEE62B71FCD7961008A1AC3 /* AlphaReeb_Parameters.h */,
-				EEEE62AE1FCD795F008A1AC3 /* AlphaReeb.h */,
 				EE2D96E51FD6FD38009F440A /* Analysis.h */,
 				EE2D96E41FD6F9D9009F440A /* Betti_Num.h */,
 				EE2D96E31FD6CC18009F440A /* Check.h */,
 				EEEE62AA1FCC557E008A1AC3 /* Cloud_File_Name.h */,
 				EEEE629A1FCC4837008A1AC3 /* Cloud_Skeletonization.cpp */,
 				EEEE62B21FCD7960008A1AC3 /* Cloud_To_Nbhd_Graph.h */,
+				EEE4FA7F20ADD15A006554E6 /* Cluster.cpp */,
+				EEE4FA7E20ADD139006554E6 /* Cluster.h */,
 				EEEE62C81FCDD464008A1AC3 /* Clustering.h */,
 				EEEE62AD1FCD795F008A1AC3 /* Combine_Comps.h */,
 				EEEE62C61FCDD464008A1AC3 /* Complete_Graph.h */,
-				EEEE62B11FCD7960008A1AC3 /* Conn_Comps.h */,
+				EEEE62B51FCD7960008A1AC3 /* Connect_Clusters.h */,
 				EE2E0D041FD0656400DF5608 /* Convert_Cloud.h */,
 				EE2E0D0C1FD0714800DF5608 /* Convert_Graph.h */,
-				EE3184411FD59DE300CFF6E1 /* Custom.cpp */,
-				EE3184401FD59DD300CFF6E1 /* Custom.h */,
 				EEEE62A51FCC557E008A1AC3 /* Data_Pt.cpp */,
 				EEEE62A91FCC557E008A1AC3 /* Data_Pt.h */,
-				EEEE62B41FCD7960008A1AC3 /* Dijkstra_Filter.h */,
+				EEEE62B41FCD7960008A1AC3 /* Dijkstra.h */,
 				EEEE62BC1FCD82DA008A1AC3 /* Directory.h */,
 				EEEE62C31FCDD463008A1AC3 /* Distance_Filter.h */,
 				EEEF5033200E62DB00BE859F /* Draw_Clouds.h */,
@@ -167,7 +171,7 @@
 				EE2E0D0B1FD06B1500DF5608 /* Filtration.h */,
 				EE31843F1FD57C9F00CFF6E1 /* Find_Diagonal_Gaps.h */,
 				EEEE62C51FCDD464008A1AC3 /* Gauss_Density_Filter.h */,
-				EEEE62B51FCD7960008A1AC3 /* Generate_AlphaReeb_Graph.h */,
+				EE67632220A99EEC00CAE2AB /* Generate_AlphaReeb_Graph.h */,
 				EEEE62B31FCD7960008A1AC3 /* Generate_Subclouds.h */,
 				EEEE62AF1FCD7960008A1AC3 /* Generate_Subgraphs.h */,
 				EEEE62CA1FCDD465008A1AC3 /* Geometric_Centre_Of_Cloud.h */,
@@ -195,11 +199,14 @@
 				EE3159051FE9788500E21A29 /* Read_Cloud_From_Image.h */,
 				EEEE62A71FCC557E008A1AC3 /* Read_Cloud.h */,
 				EEEE62A21FCC530A008A1AC3 /* Read_Input.h */,
+				EEE4FA7D20ADA9A7006554E6 /* Recover_Components.h */,
 				EEEA2AA81FD1C2990074FC3E /* Region.cpp */,
 				EEEA2AA71FD1C2240074FC3E /* Region.h */,
+				EE3184411FD59DE300CFF6E1 /* Run_Input.cpp */,
+				EE3184401FD59DD300CFF6E1 /* Run_Input.h */,
 				EEEE62BA1FCD7D67008A1AC3 /* Scaling_Parameters.h */,
 				EE2E0D061FD06A1B00DF5608 /* Single_Edge_Clustering.h */,
-				EEEE62B61FCD7960008A1AC3 /* Single_Vertex_Case.h */,
+				EEEE62B11FCD7960008A1AC3 /* Split_Into_Conn_Comps.h */,
 				EEEE62C91FCDD464008A1AC3 /* Split_MST.h */,
 				EEEE62BE1FCD8CA7008A1AC3 /* Write_Graph.h */,
 				EEEE62BB1FCD82DA008A1AC3 /* Write_Image.h */,
@@ -266,7 +273,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EEEA2AA61FD1C1B30074FC3E /* Life.cpp in Sources */,
-				EE3184421FD59DE300CFF6E1 /* Custom.cpp in Sources */,
+				EE3184421FD59DE300CFF6E1 /* Run_Input.cpp in Sources */,
+				EEE4FA8020ADD15A006554E6 /* Cluster.cpp in Sources */,
 				EEEE62A41FCC530A008A1AC3 /* Input.cpp in Sources */,
 				EEEE629B1FCC4837008A1AC3 /* Cloud_Skeletonization.cpp in Sources */,
 				EEEA2AA91FD1C2990074FC3E /* Region.cpp in Sources */,

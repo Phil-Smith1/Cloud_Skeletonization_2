@@ -8,10 +8,10 @@
 #include "Directory.h"
 #include "File_Name.h"
 
-void Write_Graph ( bool test, string const& graph_directory, Input const& input, string const& algorithm, int iteration, Graph const& g )
+void Write_Graph ( string const& graph_directory, Input const& input, string const& algorithm, int iteration, Graph const& g )
 {
     string directory;
-    Directory( test, graph_directory, input, algorithm, directory );
+    Directory( graph_directory, input, algorithm, directory );
     
     if (!boost::filesystem::is_directory( directory ))
     {
@@ -19,13 +19,13 @@ void Write_Graph ( bool test, string const& graph_directory, Input const& input,
     }
     
 	string graph_file;
-	File_Name( directory, "Graph", iteration, ".txt", graph_file );
+	File_Name( directory, input, algorithm, iteration, ".txt", graph_file );
 
 	ofstream ofs( graph_file );
 
     ofs << "Pattern_Type Pattern_Size Graph_Dependent_Cloud_Size Cloud_Size_Parameter Noise_Type Noise_Parameter" << endl;
     
-    ofs << input.pattern_type << " " << input.pattern_size << " " << input.graph_dependent_cloud_size << " " << input.cloud_size_parameter << " " << input.noise_type << " " << input.noise_parameter << endl;
+    ofs << input.pattern_type << " " << input.pattern_size_1 << " " << input.graph_dependent_cloud_size << " " << input.cloud_size_parameter << " " << input.noise_type << " " << input.noise_parameter << endl;
     
 	size_t num_vertices = boost::num_vertices( g );
 

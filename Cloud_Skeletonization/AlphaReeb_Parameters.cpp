@@ -1,12 +1,10 @@
 #include "AlphaReeb_Parameters.h"
 
-AlphaReeb_Parameters::AlphaReeb_Parameters ( double a, double e, double m_c_s_f )
+AlphaReeb_Parameters::AlphaReeb_Parameters ( double a, double m )
 {
     alpha = a;
-    epsilon = e;
-    min_comp_size_fraction = m_c_s_f;
+    mcsf = m;
 }
 
 AlphaReeb_Parameters::AlphaReeb_Parameters(){}
-
 AlphaReeb_Parameters::~AlphaReeb_Parameters(){}

@@ -21,11 +21,27 @@ void Draw_Vertices ( Graph const& g, double scale, Point2d& shift, int radius_ve
 
 void Draw_Edges ( Graph const& g, double scale, Point2d& shift, int thickness_edge, Scalar const& colour, Mat& image )
 {
-	pair<Graph::edge_iterator, Graph::edge_iterator> edgeIteratorRange = boost::edges( g );
-
-	for (Graph::edge_iterator edge_iter = edgeIteratorRange.first; edge_iter != edgeIteratorRange.second; ++edge_iter)
+    for (auto ei = boost::edges( g ).first; ei != boost::edges( g ).second; ++ei)
 	{
-		line( image, Point(scale * g[boost::source(*edge_iter, g)].pt + shift), Point(scale * g[boost::target(*edge_iter, g)].pt + shift), colour, thickness_edge );
+        int parallel_counter = 0;
+        
+        for (auto oei = boost::out_edges( boost::source( *ei, g ), g ).first; oei != boost::out_edges( boost::source( *ei, g), g ).second; ++oei)
+        {
+            if (boost::target( *oei, g ) == boost::target( *ei, g )) ++parallel_counter;
+        }
+        
+        if (parallel_counter != 2)
+        {
+            line( image, Point( scale * g[boost::source( *ei, g )].pt + shift ), Point( scale * g[boost::target( *ei, g )].pt + shift ), colour, thickness_edge );
+        }
+        
+        if (parallel_counter != 1)
+        {
+            Point v = Point( scale * g[boost::target( *ei, g )].pt + shift ) - Point( scale * g[boost::source( *ei, g )].pt + shift );
+            double n = norm ( v );
+            
+            circle( image, Point( scale * g[boost::source( *ei, g )].pt + shift ) + v / 2, n / 2, colour, thickness_edge );
+        }
 	}
 }
 

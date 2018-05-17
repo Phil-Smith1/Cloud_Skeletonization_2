@@ -46,7 +46,7 @@ void Mapper ( vector<Data_Pt>const& cloud, Mapper_Parameters const& parameters, 
     
     // Producing the output graph.
     
-    double min_comp_size = cloud.size() * parameters.min_comp_size_fraction;
+    double min_comp_size = cloud.size() * parameters.mcsf;
     
     Output_Graph( cluster, cluster_vertex, min_comp_size, mapper_graph );
 }

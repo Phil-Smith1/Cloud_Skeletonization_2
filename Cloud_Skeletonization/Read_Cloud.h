@@ -6,22 +6,27 @@
 #include "Data_Pt.h"
 #include "Cloud_File_Name.h"
 
-void Read_Cloud ( bool test, string const& cloud_directory, Input const& input, int iteration, int& expected_Betti_num, double& graph_length, vector<Data_Pt>& cloud )
+void Read_Cloud ( string const& cloud_directory, Input const& input, int iteration, int& expected_Betti_num, double& graph_length, vector<Data_Pt>& cloud )
 {
-    string cloud_file;
-    Cloud_File_Name( test, cloud_directory, input, iteration, cloud_file );
+    string cloud_file_name;
     
-    ifstream ifs( cloud_file );
+    Cloud_File_Name( cloud_directory, input, iteration, cloud_file_name );
     
-    stringstream stream;
-    string line_data, a, b, c, d, e, f;
+    ifstream ifs( cloud_file_name );
+    
     double x, y;
+    string line_data, a, b, c, d, e, f, g;
+    stringstream stream;
     
     getline( ifs, line_data );
     getline( ifs, line_data );
     
     stream << line_data;
-    stream >> a >> b >> c >> d >> e >> f >> expected_Betti_num >> graph_length;
+    stream >> a >> b >> c >> d >> e >> f >> g >> expected_Betti_num >> graph_length;
+    
+    getline( ifs, line_data );
+    getline( ifs, line_data );
+    getline( ifs, line_data );
     
     while (getline( ifs, line_data ))
     {

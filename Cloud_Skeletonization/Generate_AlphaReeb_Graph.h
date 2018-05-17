@@ -1,56 +1,127 @@
 #pragma once
 
-#include "Data_Pt.h"
+#include "Graph.h"
 
-void Generate_AlphaReeb_Graph ( vector<pair<vector<Data_Pt>, int>>const& cluster, vector<Point2d>const& cluster_vertex, Graph& alpha_Reeb )
+void Root ( vector<pair<bool, int>>const& tree, int& ptr )
 {
-	size_t num_clusters = cluster.size();
+    while (!tree[ptr].first)
+    {
+        ptr = tree[ptr].second;
+    }
+}
 
-	vector<Graph::vertex_descriptor> v;
-	vector<pair<Graph::edge_descriptor, bool>> e;
-	v.clear();
-	e.clear();
-
-	for (int counter = 0; counter < num_clusters; ++counter)
-	{
-		v.push_back( boost::add_vertex( alpha_Reeb ) );
-		alpha_Reeb[v[counter]].pt = cluster_vertex[counter];
-	}
-
-	int num_edges = 0;
-
-	for (int counter = 0; counter < num_clusters; ++counter)
-	{
-		for (int counter1 = counter + 1; counter1 < num_clusters; ++counter1)
-		{
-			if (cluster[counter1].second != cluster[counter].second + 1 && cluster[counter1].second != cluster[counter].second - 1) continue;
-
-			else
-			{
-				size_t cluster_size1 = cluster[counter].first.size();
-				size_t cluster_size2 = cluster[counter1].first.size();
-				int copy_num_edges = num_edges;
-
-				for (int counter2 = 0; counter2 < cluster_size1; ++counter2)
-				{
-					for (int counter3 = 0; counter3 < cluster_size2; ++counter3)
-					{
-						if (cluster[counter].first[counter2].index == cluster[counter1].first[counter3].index)
-						{
-							e.push_back( boost::add_edge( v[counter], v[counter1], alpha_Reeb ) );
-							Point2d source = alpha_Reeb[boost::source( e[num_edges].first, alpha_Reeb )].pt;
-							Point2d target = alpha_Reeb[boost::target( e[num_edges].first, alpha_Reeb )].pt;
-                            double length = norm( target - source );
-                            boost::put( boost::edge_weight_t(), alpha_Reeb, e[num_edges].first, length );
-							++num_edges;
-
-							break;
-						}
-					}
-
-					if (copy_num_edges != num_edges) break;
-				}
-			}
-		}		
-	}
+void Generate_AlphaReeb_Graph ( Graph const& input_graph, double alpha, Graph& alphaReeb_graph )
+{
+    size_t num_vertices = boost::num_vertices( input_graph );
+    
+    vector<pair<bool, int>> vertex_tree( 3 * num_vertices, pair<bool, int>( true, -1 ) );
+    vector<pair<bool, int>> edge_tree( 2 * num_vertices, pair<bool, int>( true, -1 ) );
+    
+    for (auto ei = boost::edges( input_graph ).first; ei != boost::edges( input_graph ).second; ++ei)
+    {
+        int source, target;
+        
+        if (input_graph[boost::source( *ei, input_graph )].interval < input_graph[boost::source( *ei, input_graph )].interval)
+        {
+            source = input_graph[boost::source( *ei, input_graph )].index;
+            target = input_graph[boost::target( *ei, input_graph )].index;
+        }
+        
+        else
+        {
+            source = input_graph[boost::target( *ei, input_graph )].index;
+            target = input_graph[boost::source( *ei, input_graph )].index;
+        }
+        
+        int s = 2 * source + 1;
+        int t = 2 * target;
+        
+        Root( edge_tree, s );
+        Root( edge_tree, t );
+        
+        if (s != t)
+        {
+            edge_tree[t].first = false;
+            edge_tree[t].second = s;
+        }
+        
+        s = 3 * source + 1;
+        t = 3 * target;
+        
+        Root( vertex_tree, s );
+        Root( vertex_tree, t );
+        
+        if (s != t)
+        {
+            vertex_tree[t].first = false;
+            vertex_tree[t].second = s;
+        }
+        
+        s = 3 * source + 2;
+        t = 3 * target + 1;
+        
+        Root( vertex_tree, s );
+        Root( vertex_tree, t );
+        
+        if (s != t)
+        {
+            vertex_tree[t].first = false;
+            vertex_tree[t].second = s;
+        }
+    }
+    
+    vector<Graph::vertex_descriptor> vd;
+    
+    for (int counter = 0; counter < 3 * num_vertices; ++counter)
+    {
+        if (vertex_tree[counter].first)
+        {
+            vertex_tree[counter].second = (int)vd.size();
+            
+            vd.push_back( boost::add_vertex( alphaReeb_graph ) );
+            
+            if (counter % 3 == 1)
+            {
+                alphaReeb_graph[vd.back()].pt = input_graph[(counter - 1) / 3].pt;
+            }
+            
+            else if (counter % 3 == 0)
+            {
+                alphaReeb_graph[vd.back()].pt = input_graph[counter / 3].pt - Point2d( 0, alpha / (double)2 );
+            }
+            
+            else
+            {
+                alphaReeb_graph[vd.back()].pt = input_graph[(counter - 2) / 3].pt + Point2d( 0, alpha / (double)2 );
+            }
+        }
+    }
+    
+    for (int counter = 0; counter < 2 * num_vertices; ++counter)
+    {
+        if (edge_tree[counter].first)
+        {
+            int source, target;
+            
+            if (counter % 2 == 0)
+            {
+                source = counter * 1.5;
+                target = counter * 1.5 + 1;
+            }
+            
+            else
+            {
+                source = (counter - 1) * 1.5 + 1;
+                target = (counter - 1) * 1.5 + 2;
+            }
+            
+            Root( vertex_tree, source );
+            Root( vertex_tree, target );
+            
+            source = vertex_tree[source].second;
+            target = vertex_tree[target].second;
+            
+            boost::add_edge( source, target, alphaReeb_graph );
+        }
+    }
 }

@@ -4,10 +4,8 @@
 
 #include "Graph.h"
 
-void Dijkstra_Filter ( Graph const& g, multimap<double, int>& filter_multimap )
+void Dijkstra ( Graph const& g, multimap<double, int>& filter_multimap )
 {
-	filter_multimap.clear();
-
 	vector<Graph::vertex_descriptor> parents(boost::num_vertices( g ));
 	vector<double> distances(boost::num_vertices( g ));
 	pair<vertex_iter, vertex_iter> VertexPair = boost::vertices( g );

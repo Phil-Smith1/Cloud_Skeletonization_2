@@ -9,7 +9,9 @@ using namespace cv;
 
 struct VertexProperty
 {
+    int index;
     Point2d pt;
+    int interval;
 };
 
 typedef boost::property<boost::edge_weight_t, double> EdgeProperty;

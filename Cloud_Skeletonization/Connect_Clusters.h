@@ -4,10 +4,9 @@
 
 void Connect_Clusters ( vector<Cluster>const& cluster, Graph& g )
 {
-	size_t num_clusters = cluster.size();
-
 	vector<Graph::vertex_descriptor> v;
 	vector<pair<Graph::edge_descriptor, bool>> e;
+    size_t num_clusters = cluster.size();
 
 	for (int counter = 0; counter < num_clusters; ++counter)
 	{

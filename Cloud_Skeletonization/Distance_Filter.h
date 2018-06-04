@@ -2,7 +2,7 @@
 
 #include "Data_Pt.h"
 
-void Distance_Filter ( vector<Data_Pt> const& cloud, multimap<double, int>& filter_multimap )
+void Distance_Filter ( vector<Data_Pt>const& cloud, multimap<double, int>& filter_multimap )
 {
     size_t cloud_size = cloud.size(), index_1 = 0, index_2 = 0;
     double max_dist = 0;
@@ -35,6 +35,6 @@ void Distance_Filter ( vector<Data_Pt> const& cloud, multimap<double, int>& filt
     {
         double dist = norm( cloud[counter].pt - cloud[index_2].pt );
         
-        filter_multimap.insert( pair<double, int>(dist, counter) );
+        filter_multimap.insert( pair<double, int>( dist, counter ) );
     }
 }

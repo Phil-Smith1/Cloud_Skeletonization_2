@@ -25,7 +25,7 @@ bool cloud_input = true;
 
 bool write_input = true;
 
-vector<int> wheel_range = { 4/*3, 4, 5, 6, 7, 8, 9, 10*/ };
+vector<int> wheel_range = { 3/*3, 4, 5, 6, 7, 8, 9, 10*/ };
 vector<int> grid_cols_range = { /*1, 2, 3*/ };
 vector<int> grid_rows_range = { /*1, 2, 3*/ };
 vector<int> squares_range = { /*2, 3*/ };
@@ -34,13 +34,13 @@ bool graph_dependent_cloud_size = true;
 int cloud_size_parameter = 100;
 
 string noise_type = "uniform";
-vector<double> noise_parameter_range = { 0.1 };
+vector<double> noise_parameter_range = { 0.05/*, 0.1, 0.15, 0.2, 0.25, 0.3*/ };
 
-bool alphaReeb = true;
-vector<double> alpha_values = { 0.1/*0.1, 0.2, 0.3, 0.4, 0.5, 0.6*/ };
+bool alphaReeb = false;
+vector<double> alpha_values = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 };
 double epsilon = 0.1;
 
-bool mapper = false;
+bool mapper = true;
 bool graph_dependent_num_intervals = true;
 vector<double> num_intervals_parameter = { 1.4/*1.2, 1.4, 1.6, 1.8, 2*/ };
 double overlap_ratio = 0.5;
@@ -53,7 +53,7 @@ bool hopes = false;
 
 int repetitions = 1;
 
-bool validation = true;
+bool validation = false;
 
 bool image_input = false;
 
@@ -76,8 +76,8 @@ const Scalar red = CV_RGB ( 255, 0, 0 );
 const string root_directory = "/Users/philsmith/Documents/Xcode Projects/Cloud_Skeletonization/";
 const string input_file = root_directory + "Input/Input.txt";
 const string cloud_directory = root_directory + "Clouds/Txt_Files/";
-const string image_directory = root_directory + "Code_Output_t/Images_t/";
-const string graph_directory = root_directory + "Code_Output_t/Graphs_t/";
+const string image_directory = root_directory + "Code_Output/Images/";
+const string graph_directory = root_directory + "Code_Output/Graphs/";
 const string result_directory = root_directory + "Results_t/";
 const string imported_image_directory = root_directory + "BSDS500/";
 
@@ -162,7 +162,7 @@ int main ( int, char*[] )
                             Write_Image( image_directory, input, "Reeb", iteration, image ); // Writing the image to a png file.
                         }
                         
-                        Write_Graph( graph_directory, input, "Reeb", iteration, alphaReeb_graph ); // Writing the graph to a txt file.
+                        Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "Reeb", iteration, alphaReeb_graph ); // Writing the graph to a txt file.
                         
                         if (validation) alphaReeb_results[counter].second.push_back( Check( expected_Betti_num, alphaReeb_graph ) ); // Seeing if expected and actual Betti numbers agree.
                     }
@@ -204,7 +204,7 @@ int main ( int, char*[] )
                             Write_Image( image_directory, input, "Mapper", iteration, image ); // Writing the image to a png file.
                         }
                         
-                        Write_Graph( graph_directory, input, "Mapper", iteration, mapper_graph ); // Writing the graph to a txt file.
+                        Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "Mapper", iteration, mapper_graph ); // Writing the graph to a txt file.
                         
                         if (validation) mapper_results[counter].second.push_back( Check( expected_Betti_num, mapper_graph ) ); // Seeing if expected and actual Betti numbers agree.
                     }
@@ -253,7 +253,7 @@ int main ( int, char*[] )
                     
                     imwrite( "/Users/philsmith/Documents/Xcode Projects/Cloud_Skeletonization/haR.png", image_2 );*/
                     
-                    Write_Graph( graph_directory, input, "Hopes", iteration, hopes ); // Writing the graph to a txt file.
+                    Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "Hopes", iteration, hopes ); // Writing the graph to a txt file.
                     
                     if (validation) hopes_results.push_back( Check( expected_Betti_num, hopes ) ); // Seeing if expected and actual Betti numbers agree.
                 }

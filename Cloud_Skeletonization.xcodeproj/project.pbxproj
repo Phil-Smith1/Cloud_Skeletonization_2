@@ -49,6 +49,8 @@
 		EE3184401FD59DD300CFF6E1 /* Run_Input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Run_Input.h; sourceTree = "<group>"; };
 		EE3184411FD59DE300CFF6E1 /* Run_Input.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Run_Input.cpp; sourceTree = "<group>"; };
 		EE3184431FD5AF7A00CFF6E1 /* Go_To_Line.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Go_To_Line.h; sourceTree = "<group>"; };
+		EE4DD40C20C55A920000C3C4 /* Filter_Function.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Filter_Function.h; sourceTree = "<group>"; };
+		EE4DD40D20C563700000C3C4 /* MST.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MST.h; sourceTree = "<group>"; };
 		EE67632220A99EEC00CAE2AB /* Generate_AlphaReeb_Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Generate_AlphaReeb_Graph.h; sourceTree = "<group>"; };
 		EEE4FA7D20ADA9A7006554E6 /* Recover_Components.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Recover_Components.h; sourceTree = "<group>"; };
 		EEE4FA7E20ADD139006554E6 /* Cluster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cluster.h; sourceTree = "<group>"; };
@@ -102,9 +104,9 @@
 		EEEE62C41FCDD464008A1AC3 /* Output_Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Output_Graph.h; sourceTree = "<group>"; };
 		EEEE62C51FCDD464008A1AC3 /* Gauss_Density_Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gauss_Density_Filter.h; sourceTree = "<group>"; };
 		EEEE62C61FCDD464008A1AC3 /* Complete_Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Complete_Graph.h; sourceTree = "<group>"; };
-		EEEE62C71FCDD464008A1AC3 /* MST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MST.h; sourceTree = "<group>"; };
+		EEEE62C71FCDD464008A1AC3 /* Finding_MSTs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Finding_MSTs.h; sourceTree = "<group>"; };
 		EEEE62C81FCDD464008A1AC3 /* Clustering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Clustering.h; sourceTree = "<group>"; };
-		EEEE62C91FCDD464008A1AC3 /* Split_MST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Split_MST.h; sourceTree = "<group>"; };
+		EEEE62C91FCDD464008A1AC3 /* Reduce_MSTs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reduce_MSTs.h; sourceTree = "<group>"; };
 		EEEE62CA1FCDD465008A1AC3 /* Geometric_Centre_Of_Cloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geometric_Centre_Of_Cloud.h; sourceTree = "<group>"; };
 		EEEE62CC1FCDDD97008A1AC3 /* Hopes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Hopes.h; sourceTree = "<group>"; };
 		EEEF5033200E62DB00BE859F /* Draw_Clouds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Draw_Clouds.h; sourceTree = "<group>"; };
@@ -167,9 +169,11 @@
 				EEEA2AA11FD19CF20074FC3E /* Edge.cpp */,
 				EEEA2A9E1FD19AB90074FC3E /* Edge.h */,
 				EEEE62BD1FCD82DA008A1AC3 /* File_Name.h */,
+				EE4DD40C20C55A920000C3C4 /* Filter_Function.h */,
 				EE2E0D071FD06AC100DF5608 /* Filtration.cpp */,
 				EE2E0D0B1FD06B1500DF5608 /* Filtration.h */,
 				EE31843F1FD57C9F00CFF6E1 /* Find_Diagonal_Gaps.h */,
+				EEEE62C71FCDD464008A1AC3 /* Finding_MSTs.h */,
 				EEEE62C51FCDD464008A1AC3 /* Gauss_Density_Filter.h */,
 				EE67632220A99EEC00CAE2AB /* Generate_AlphaReeb_Graph.h */,
 				EEEE62B31FCD7960008A1AC3 /* Generate_Subclouds.h */,
@@ -190,7 +194,7 @@
 				EEEE62C11FCDCD13008A1AC3 /* Mapper_Parameters.cpp */,
 				EEEE62C01FCDCCFE008A1AC3 /* Mapper_Parameters.h */,
 				EEEE62BF1FCDCC5D008A1AC3 /* Mapper.h */,
-				EEEE62C71FCDD464008A1AC3 /* MST.h */,
+				EE4DD40D20C563700000C3C4 /* MST.h */,
 				EEEA2A9C1FD198630074FC3E /* Node_Data.cpp */,
 				EEEA2A9B1FD197D10074FC3E /* Node_Data.h */,
 				EEEE62A81FCC557E008A1AC3 /* Num_To_String.h */,
@@ -200,6 +204,7 @@
 				EEEE62A71FCC557E008A1AC3 /* Read_Cloud.h */,
 				EEEE62A21FCC530A008A1AC3 /* Read_Input.h */,
 				EEE4FA7D20ADA9A7006554E6 /* Recover_Components.h */,
+				EEEE62C91FCDD464008A1AC3 /* Reduce_MSTs.h */,
 				EEEA2AA81FD1C2990074FC3E /* Region.cpp */,
 				EEEA2AA71FD1C2240074FC3E /* Region.h */,
 				EE3184411FD59DE300CFF6E1 /* Run_Input.cpp */,
@@ -207,7 +212,6 @@
 				EEEE62BA1FCD7D67008A1AC3 /* Scaling_Parameters.h */,
 				EE2E0D061FD06A1B00DF5608 /* Single_Edge_Clustering.h */,
 				EEEE62B11FCD7960008A1AC3 /* Split_Into_Conn_Comps.h */,
-				EEEE62C91FCDD464008A1AC3 /* Split_MST.h */,
 				EEEE62BE1FCD8CA7008A1AC3 /* Write_Graph.h */,
 				EEEE62BB1FCD82DA008A1AC3 /* Write_Image.h */,
 				EEED83401FDAB97200D7F033 /* Write_Input.h */,

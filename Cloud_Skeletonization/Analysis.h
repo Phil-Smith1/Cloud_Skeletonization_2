@@ -33,24 +33,23 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
             }
         }
         
-        string result_file = result_directory + "AlphaReeb/AlphaReeb_t.txt";
+        double time = aR_time / (double)input.repetitions;
+        
+        string result_file = result_directory + "AlphaReeb/AlphaReeb.txt";
         
         ofstream ofs( result_file, ios::app );
         
-        ofs << left << setw( 19 ) << input.pattern_type << " ";
-        ofs << left << setw( 15 ) << input.pattern_size_1 << " ";
-        ofs << left << setw( 15 ) << input.pattern_size_2 << " ";
-        ofs << left << setw( 21 ) << input.graph_dependent_cloud_size << " ";
-        ofs << left << setw( 17 ) << input.cloud_size_parameter << " ";
-        ofs << left << setw( 11 ) << mean_cloud_size << " ";
-        ofs << left << setw( 15 ) << input.noise_type << " ";
-        ofs << left << setw( 12 ) << input.noise_parameter << " ";
-        ofs << left << setw( 6 ) << optimal_alpha << " ";
-        ofs << left << setw( 14 ) << input.repetitions << " ";
-        ofs << left << setw( 16 ) << best_success_rate << " ";
-        
-        double time = aR_time / (double)input.repetitions;
-        
+        ofs << left << setw( 14 ) << input.pattern_type;
+        ofs << left << setw( 16 ) << input.pattern_size_1;
+        ofs << left << setw( 16 ) << input.pattern_size_2;
+        ofs << left << setw( 22 ) << input.graph_dependent_cloud_size;
+        ofs << left << setw( 18 ) << input.cloud_size_parameter;
+        ofs << left << setw( 17 ) << mean_cloud_size;
+        ofs << left << setw( 12 ) << input.noise_type;
+        ofs << left << setw( 13 ) << input.noise_parameter;
+        ofs << left << setw( 15 ) << optimal_alpha;
+        ofs << left << setw( 15 ) << input.repetitions;
+        ofs << left << setw( 17 ) << best_success_rate;
         ofs << left << setw( 8 ) << time << endl;
         
         ofs.close();
@@ -82,25 +81,23 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
             }
         }
         
-        string result_file = result_directory + "Mapper/Mapper_t.txt";
+        double time = m_time / (double)input.repetitions;
+        
+        string result_file = result_directory + "Mapper/Mapper.txt";
         
         ofstream ofs( result_file, ios::app );
         
-        ofs << left << setw( 19 ) << input.pattern_type << " ";
-        ofs << left << setw( 15 ) << input.pattern_size_1 << " ";
-        ofs << left << setw( 15 ) << input.pattern_size_2 << " ";
-        ofs << left << setw( 21 ) << input.graph_dependent_cloud_size << " ";
-        ofs << left << setw( 17 ) << input.cloud_size_parameter << " ";
-        ofs << left << setw( 11 ) << mean_cloud_size << " ";
-        ofs << left << setw( 15 ) << input.noise_type << " ";
-        ofs << left << setw( 12 ) << input.noise_parameter << " ";
-        ofs << left << setw( 24 ) << input.graph_dependent_num_intervals << " ";
-        ofs << left << setw( 20 ) << optimal_num_intervals << " ";
-        ofs << left << setw( 14 ) << input.repetitions << " ";
-        ofs << left << setw( 16 ) << best_success_rate << " ";
-        
-        double time = m_time / (double)input.repetitions;
-        
+        ofs << left << setw( 14 ) << input.pattern_type;
+        ofs << left << setw( 16 ) << input.pattern_size_1;
+        ofs << left << setw( 16 ) << input.pattern_size_2;
+        ofs << left << setw( 22 ) << input.graph_dependent_cloud_size;
+        ofs << left << setw( 18 ) << input.cloud_size_parameter;
+        ofs << left << setw( 17 ) << mean_cloud_size;
+        ofs << left << setw( 12 ) << input.noise_type;
+        ofs << left << setw( 13 ) << input.noise_parameter;
+        ofs << left << setw( 21 ) << optimal_num_intervals;
+        ofs << left << setw( 15 ) << input.repetitions;
+        ofs << left << setw( 17 ) << best_success_rate;
         ofs << left << setw( 8 ) << time << endl;
         
         ofs.close();
@@ -118,23 +115,22 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
         
         double success_rate = 100 * successes / (double)attempts;
         
-        string result_file = result_directory + "Hopes/Hopes_t.txt";
+        double time = hopes_time / (double)input.repetitions;
+        
+        string result_file = result_directory + "Hopes/Hopes.txt";
 
         ofstream ofs( result_file, ios::app );
         
-        ofs << left << setw( 19 ) << input.pattern_type << " ";
-        ofs << left << setw( 15 ) << input.pattern_size_1 << " ";
-        ofs << left << setw( 15 ) << input.pattern_size_2 << " ";
-        ofs << left << setw( 21 ) << input.graph_dependent_cloud_size << " ";
-        ofs << left << setw( 17 ) << input.cloud_size_parameter << " ";
-        ofs << left << setw( 11 ) << mean_cloud_size << " ";
-        ofs << left << setw( 15 ) << input.noise_type << " ";
-        ofs << left << setw( 12 ) << input.noise_parameter << " ";
-        ofs << left << setw( 14 ) << attempts << " ";
-        ofs << left << setw( 16 ) << success_rate << " ";
-        
-        double time = hopes_time / (double)input.repetitions;
-        
+        ofs << left << setw( 14 ) << input.pattern_type;
+        ofs << left << setw( 16 ) << input.pattern_size_1;
+        ofs << left << setw( 16 ) << input.pattern_size_2;
+        ofs << left << setw( 22 ) << input.graph_dependent_cloud_size;
+        ofs << left << setw( 18 ) << input.cloud_size_parameter;
+        ofs << left << setw( 17 ) << mean_cloud_size;
+        ofs << left << setw( 12 ) << input.noise_type;
+        ofs << left << setw( 13 ) << input.noise_parameter;
+        ofs << left << setw( 15 ) << attempts;
+        ofs << left << setw( 17 ) << success_rate;
         ofs << left << setw( 8 ) << time << endl;
         
         ofs.close();

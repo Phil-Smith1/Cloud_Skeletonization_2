@@ -2,7 +2,7 @@
 
 #include "Data_Pt.h"
 
-void Split_MST ( vector<vector<Data_Pt>>const& cloud, vector<Graph>& mst, vector<Graph>& g )
+void Reduce_MST ( vector<vector<Data_Pt>>const& cloud, vector<Graph>& mst, vector<Graph>& g )
 {
     size_t num_intervals = mst.size();
     multimap<double, pair<int, boost::graph_traits<Graph>::edge_descriptor>> edge_lengths;
@@ -14,7 +14,7 @@ void Split_MST ( vector<vector<Data_Pt>>const& cloud, vector<Graph>& mst, vector
         
         for (edgepair = edges( mst[counter] ); edgepair.first != edgepair.second; ++edgepair.first)
         {
-            edge_lengths.insert( pair<double, pair<int, boost::graph_traits<Graph>::edge_descriptor>>(weight[*edgepair.first], make_pair( counter, *edgepair.first )) );
+            edge_lengths.insert( make_pair( weight[*edgepair.first], make_pair( counter, *edgepair.first ) ) );
         }
     }
     

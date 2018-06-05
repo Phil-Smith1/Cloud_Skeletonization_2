@@ -49,6 +49,7 @@
 		EE3184401FD59DD300CFF6E1 /* Run_Input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Run_Input.h; sourceTree = "<group>"; };
 		EE3184411FD59DE300CFF6E1 /* Run_Input.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Run_Input.cpp; sourceTree = "<group>"; };
 		EE3184431FD5AF7A00CFF6E1 /* Go_To_Line.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Go_To_Line.h; sourceTree = "<group>"; };
+		EE41500020C6A8D000B60C51 /* Remove_Small_Mapper_Components.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Remove_Small_Mapper_Components.h; sourceTree = "<group>"; };
 		EE4DD40C20C55A920000C3C4 /* Filter_Function.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Filter_Function.h; sourceTree = "<group>"; };
 		EE4DD40D20C563700000C3C4 /* MST.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MST.h; sourceTree = "<group>"; };
 		EE67632220A99EEC00CAE2AB /* Generate_AlphaReeb_Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Generate_AlphaReeb_Graph.h; sourceTree = "<group>"; };
@@ -207,6 +208,7 @@
 				EEEE62C91FCDD464008A1AC3 /* Reduce_MSTs.h */,
 				EEEA2AA81FD1C2990074FC3E /* Region.cpp */,
 				EEEA2AA71FD1C2240074FC3E /* Region.h */,
+				EE41500020C6A8D000B60C51 /* Remove_Small_Mapper_Components.h */,
 				EE3184411FD59DE300CFF6E1 /* Run_Input.cpp */,
 				EE3184401FD59DD300CFF6E1 /* Run_Input.h */,
 				EEEE62BA1FCD7D67008A1AC3 /* Scaling_Parameters.h */,

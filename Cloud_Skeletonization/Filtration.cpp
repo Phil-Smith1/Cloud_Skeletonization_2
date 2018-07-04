@@ -117,7 +117,7 @@ void Filtration::Persistence1d ()
     double alpha = 0;
     int ind_edge = 0, Links = 0, nCases1 = 0, nCases2 = 0, nCases3 = 0, nCases4 = 0;
     
-    for (; ind_edge < edges.size(); ++ind_edge )
+    for (; ind_edge < edges.size(); ++ind_edge)
     {
         Edge* CurEdge = &edges[ind_edge];
         alpha = 0.5 * CurEdge->length;
@@ -129,7 +129,7 @@ void Filtration::Persistence1d ()
         if (root_u == root_v) // Case 1.
         {
             ++nCases1;
-            negative_edges.push_back(ind_edge);
+            negative_edges.push_back( ind_edge );
             continue;
         }
         
@@ -171,11 +171,11 @@ void Filtration::Persistence1d ()
             Node_v->uplink = root_u;
             Node_v->birth = alpha_u;
             
-            if ( Root_u->height == 1 ) Root_u->height = 2; // Node_v added to the tree at Root_u.
+            if (Root_u->height == 1) Root_u->height = 2; // Node_v added to the tree at Root_u.
             
             int r = Node_u->bar; // Index the region containing the triangle T_u.
             
-            if ( r >= 0) // The region is already dead.
+            if (r >= 0) // The region is already dead.
             {
                 Node_v->bar = r; // Node_v joins the dead region of Node_u.
                 map[r].core.push_back( node_v );
@@ -269,7 +269,7 @@ void Filtration::Persistence1d ()
     
     for (int i = ind_edge + 1; i < edges.size(); ++i) negative_edges.push_back( i );
     
-    if ( negative_edges.size()+1 != delaunay.number_of_vertices() ) cout << "\nError with NegativeEdges.\n";
+    if (negative_edges.size() + 1 != delaunay.number_of_vertices()) cout << "\nError with Negative Edges.\n";
     
     // Add the final unbounded region to Map.
     

@@ -1,18 +1,11 @@
 #pragma once
 
 #include "Graph_H.h"
-#include "Convert_Cloud.h"
 #include "Single_Edge_Clustering.h"
 #include "Find_Diagonal_Gaps.h"
 
-void Hopes ( vector<Data_Pt>const& initial_cloud, Graph_H& hopes_graph )
+void Hopes ( vector<P2>& cloud, Graph_H& hopes_graph )
 {
-    // Converting the cloud from Data_Pt to P2.
-    
-    vector<P2> cloud;
-    
-    Convert_Cloud_1( initial_cloud, cloud );
-    
     vector<vector<P2>> clouds;
     clouds.assign( 1, cloud );
     
@@ -22,11 +15,11 @@ void Hopes ( vector<Data_Pt>const& initial_cloud, Graph_H& hopes_graph )
     
     for (int counter = 0; counter < cloud_size; ++counter)
     {
-        cloud = clouds[ counter ];
+        cloud = clouds[counter];
         
-        if ( clouds[ counter ].size() < 9 ) continue;
+        if (clouds[counter].size() < 9) continue;
         
-        Filtration filtration( clouds[ counter ] );
+        Filtration filtration( clouds[counter] );
         
         filtration.Persistence1d( );
         

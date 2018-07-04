@@ -47,7 +47,7 @@ void Remove_Small_Mapper_Components ( Graph& g, vector<Cluster>const& cluster, d
                     
                     for (int counter_2 = 0; counter_2 < num_vertices; ++counter_2)
                     {
-                        v.push_back( boost::add_vertex( output_graph_2 ) );
+                        v.push_back( boost::add_vertex( g_2 ) );
                         g_2[v[counter_2]].pt = g[conn_comp_vertices[counter_1][counter_2]].pt;
                     }
                     
@@ -58,8 +58,8 @@ void Remove_Small_Mapper_Components ( Graph& g, vector<Cluster>const& cluster, d
                             if (boost::edge( conn_comp_vertices[counter_1][counter_2], conn_comp_vertices[counter_1][counter_3], g ).second)
                             {
                                 e.push_back( boost::add_edge( v[counter_2], v[counter_3], g_2 ) );
-                                Point2d source = output_graph_2[boost::source( e.back().first, g_2 )].pt;
-                                Point2d target = output_graph_2[boost::target( e.back().first, g_2 )].pt;
+                                Point2d source = g_2[boost::source( e.back().first, g_2 )].pt;
+                                Point2d target = g_2[boost::target( e.back().first, g_2 )].pt;
                                 double length = norm( target - source );
                                 boost::put( boost::edge_weight_t(), g_2, e.back().first, length );
                             }

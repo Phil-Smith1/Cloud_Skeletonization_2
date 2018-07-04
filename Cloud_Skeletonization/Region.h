@@ -11,7 +11,7 @@ class Region
     int index; // Index of this region in Map.
     int edge; // Index of the critical edge in DelEdges that created this region.
     double birth, death, span;
-    std::vector<int> core; // Indices of triangles that were last alive before this region died.
+    vector<int> core; // Indices of triangles that were last alive before this region died.
     int heir; // Index of the root triangle in the older region that absorbed this region.
     int supr; // Index of the region (in Map) defined by the triangle heir, computed at the end.
     

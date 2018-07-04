@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Cluster.h"
+#include "Binary_Search_Tree.h"
 
 void Connect_Clusters ( vector<Cluster>const& cluster, Graph& g )
 {
@@ -24,30 +25,28 @@ void Connect_Clusters ( vector<Cluster>const& cluster, Graph& g )
 
 			else
 			{
-                bool edge_added = false;
+                size_t cluster_size_1 = cluster[counter_1].cloud.size();
+                size_t cluster_size_2 = cluster[counter_2].cloud.size();
+                Binary_Search_Tree bst;
                 
-				size_t cluster_size_1 = cluster[counter_1].cloud.size();
-				size_t cluster_size_2 = cluster[counter_2].cloud.size();
-
-				for (int counter_3 = 0; counter_3 < cluster_size_1; ++counter_3)
-				{
-					for (int counter_4 = 0; counter_4 < cluster_size_2; ++counter_4)
-					{
-						if (cluster[counter_1].cloud[counter_3].index == cluster[counter_2].cloud[counter_4].index)
-						{
-							e.push_back( boost::add_edge( v[counter_1], v[counter_2], g ) );
-							Point2d source = g[boost::source( e.back().first, g )].pt;
-							Point2d target = g[boost::target( e.back().first, g )].pt;
-                            double length = norm( target - source );
-                            boost::put( boost::edge_weight_t(), g, e.back().first, length );
-                            edge_added = true;
-
-							break;
-						}
-					}
-
-					if (edge_added) break;
-				}
+                for (int counter_3 = 0; counter_3 < cluster_size_2; ++counter_3)
+                {
+                    bst.insert( cluster[counter_2].cloud[counter_3].index );
+                }
+                
+                for (int counter_3 = 0; counter_3 < cluster_size_1; ++counter_3)
+                {
+                    if (bst.search( cluster[counter_1].cloud[counter_3].index ) != NULL)
+                    {
+                        e.push_back( boost::add_edge( v[counter_1], v[counter_2], g ) );
+                        Point2d source = g[boost::source( e.back().first, g )].pt;
+                        Point2d target = g[boost::target( e.back().first, g )].pt;
+                        double length = norm( target - source );
+                        boost::put( boost::edge_weight_t(), g, e.back().first, length );
+                        
+                        break;
+                    }
+                }
 			}
 		}		
 	}

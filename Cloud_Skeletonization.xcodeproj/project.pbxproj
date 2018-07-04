@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE063A9B20ED06680028FC04 /* Binary_Search_Tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE063A9A20ED06680028FC04 /* Binary_Search_Tree.cpp */; };
 		EE2E0D091FD06AC100DF5608 /* Filtration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE2E0D071FD06AC100DF5608 /* Filtration.cpp */; };
 		EE3184421FD59DE300CFF6E1 /* Run_Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3184411FD59DE300CFF6E1 /* Run_Input.cpp */; };
 		EEE4FA8020ADD15A006554E6 /* Cluster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEE4FA7F20ADD15A006554E6 /* Cluster.cpp */; };
@@ -36,6 +37,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		EE063A9920ED04F00028FC04 /* Binary_Search_Tree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Binary_Search_Tree.h; sourceTree = "<group>"; };
+		EE063A9A20ED06680028FC04 /* Binary_Search_Tree.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Binary_Search_Tree.cpp; sourceTree = "<group>"; };
+		EE063A9C20ED0DF40028FC04 /* Connect_Clusters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connect_Clusters.h; sourceTree = "<group>"; };
 		EE2D96E31FD6CC18009F440A /* Check.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Check.h; sourceTree = "<group>"; };
 		EE2D96E41FD6F9D9009F440A /* Betti_Num.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Betti_Num.h; sourceTree = "<group>"; };
 		EE2D96E51FD6FD38009F440A /* Analysis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Analysis.h; sourceTree = "<group>"; };
@@ -90,7 +94,6 @@
 		EEEE62B21FCD7960008A1AC3 /* Cloud_To_Nbhd_Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cloud_To_Nbhd_Graph.h; sourceTree = "<group>"; };
 		EEEE62B31FCD7960008A1AC3 /* Generate_Subclouds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Generate_Subclouds.h; sourceTree = "<group>"; };
 		EEEE62B41FCD7960008A1AC3 /* Dijkstra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dijkstra.h; sourceTree = "<group>"; };
-		EEEE62B51FCD7960008A1AC3 /* Connect_Clusters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connect_Clusters.h; sourceTree = "<group>"; };
 		EEEE62B71FCD7961008A1AC3 /* AlphaReeb_Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlphaReeb_Parameters.h; sourceTree = "<group>"; };
 		EEEE62B91FCD7D66008A1AC3 /* Draw_Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Draw_Graph.h; sourceTree = "<group>"; };
 		EEEE62BA1FCD7D67008A1AC3 /* Scaling_Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scaling_Parameters.h; sourceTree = "<group>"; };
@@ -148,6 +151,8 @@
 				EEEE62B71FCD7961008A1AC3 /* AlphaReeb_Parameters.h */,
 				EE2D96E51FD6FD38009F440A /* Analysis.h */,
 				EE2D96E41FD6F9D9009F440A /* Betti_Num.h */,
+				EE063A9A20ED06680028FC04 /* Binary_Search_Tree.cpp */,
+				EE063A9920ED04F00028FC04 /* Binary_Search_Tree.h */,
 				EE2D96E31FD6CC18009F440A /* Check.h */,
 				EEEE62AA1FCC557E008A1AC3 /* Cloud_File_Name.h */,
 				EEEE629A1FCC4837008A1AC3 /* Cloud_Skeletonization.cpp */,
@@ -157,7 +162,7 @@
 				EEEE62C81FCDD464008A1AC3 /* Clustering.h */,
 				EEEE62AD1FCD795F008A1AC3 /* Combine_Comps.h */,
 				EEEE62C61FCDD464008A1AC3 /* Complete_Graph.h */,
-				EEEE62B51FCD7960008A1AC3 /* Connect_Clusters.h */,
+				EE063A9C20ED0DF40028FC04 /* Connect_Clusters.h */,
 				EE2E0D041FD0656400DF5608 /* Convert_Cloud.h */,
 				EE2E0D0C1FD0714800DF5608 /* Convert_Graph.h */,
 				EEEE62A51FCC557E008A1AC3 /* Data_Pt.cpp */,
@@ -287,6 +292,7 @@
 				EEEE62B81FCD7961008A1AC3 /* AlphaReeb_Parameters.cpp in Sources */,
 				EEEA2AAC1FD1C43F0074FC3E /* IndexValue.cpp in Sources */,
 				EEEA2A9D1FD198630074FC3E /* Node_Data.cpp in Sources */,
+				EE063A9B20ED06680028FC04 /* Binary_Search_Tree.cpp in Sources */,
 				EE2E0D091FD06AC100DF5608 /* Filtration.cpp in Sources */,
 				EEEE62C21FCDCD13008A1AC3 /* Mapper_Parameters.cpp in Sources */,
 				EEEA2AAF1FD1CAD80074FC3E /* Graph_H.cpp in Sources */,

@@ -25,7 +25,7 @@ bool cloud_input = true;
 
 bool write_input = true;
 
-vector<int> wheel_range = { 3/*3, 4, 5, 6, 7, 8, 9, 10*/ };
+vector<int> wheel_range = { 3, 6, 9/*3, 4, 5, 6, 7, 8, 9, 10*/ };
 vector<int> grid_cols_range = { /*1, 2, 3*/ };
 vector<int> grid_rows_range = { /*1, 2, 3*/ };
 vector<int> squares_range = { /*2, 3*/ };
@@ -34,15 +34,15 @@ bool graph_dependent_cloud_size = true;
 int cloud_size_parameter = 100;
 
 string noise_type = "uniform";
-vector<double> noise_parameter_range = { 0.05/*, 0.1, 0.15, 0.2, 0.25, 0.3*/ };
+vector<double> noise_parameter_range = { 0.05, 0.15, 0.25/*, 0.1, 0.15, 0.2, 0.25, 0.3*/ };
 
-bool alphaReeb = false;
+bool alphaReeb = true;
 vector<double> alpha_values = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 };
 double epsilon = 0.1;
 
-bool mapper = true;
-bool graph_dependent_num_intervals = true;
-vector<double> num_intervals_parameter = { 1.4/*1.2, 1.4, 1.6, 1.8, 2*/ };
+bool mapper = false;
+bool graph_dependent_num_intervals = false;
+vector<double> num_intervals_parameter = { 30/*1.2, 1.4, 1.6, 1.8, 2*/ };
 double overlap_ratio = 0.5;
 string filter_function = "Distance";
 double sigma = 0.1;
@@ -51,7 +51,7 @@ double mcsf = 0.01;
 
 bool hopes = false;
 
-int repetitions = 1;
+int repetitions = 10;
 
 bool validation = false;
 
@@ -212,11 +212,15 @@ int main ( int, char*[] )
                 
                 if (input.hopes) // Carries out hopes algorithm.
                 {
+                    vector<P2> converted_cloud;
+                    
+                    Convert_Cloud_1( cloud, converted_cloud ); // Converting points of type Data_Pt to type P2.
+                    
                     clock_t start_iter = clock(); // Start stopwatch for iteration.
                     
                     Graph_H hopes_graph;
                     
-                    Hopes( cloud, hopes_graph ); // Generating the Hopes graph.
+                    Hopes( converted_cloud, hopes_graph ); // Generating the Hopes graph.
                     
                     clock_t end_iter = clock(); // Stop stopwatch for iteration.
                     
@@ -299,7 +303,11 @@ int main ( int, char*[] )
             
             for (int counter = 0; counter < clouds.size(); ++counter)
             {
-                Hopes( clouds[counter], hopes_graph[counter] );
+                vector<P2> converted_cloud;
+                
+                Convert_Cloud_1( clouds[counter], converted_cloud );
+                
+                Hopes( converted_cloud, hopes_graph[counter] );
             }
             
             double scale = 2;

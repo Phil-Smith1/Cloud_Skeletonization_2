@@ -23,20 +23,17 @@ void Hopes ( vector<P2>& cloud, Graph_H& hopes_graph )
         
         filtration.Persistence1d( );
         
-        // Find k-th widest diagonal gap in Persistence, k = DiagGap.
-        
-        int num_dots = (int)filtration.persistence.size();
-        vector<int> indices_above_gap( num_dots, 0 );
-        vector<IndexValue> diagonal_gaps( num_dots );
+        int num_dots = (int)filtration.persistence.size(), index_above_gap;
         vector<int> graph_edges = filtration.negative_edges;
+        vector<IndexValue> diagonal_gaps( num_dots );
         
-        if ( filtration.persistence.size() )
+        if (filtration.persistence.size())
         {
-            Find_Diagonal_Gaps( filtration.persistence, indices_above_gap, diagonal_gaps );
+            Find_Diagonal_Gaps( filtration.persistence, index_above_gap, diagonal_gaps );
             
-            for (int i = indices_above_gap[0]; i < filtration.persistence.size(); ++i)
+            for (int i = index_above_gap; i < filtration.persistence.size(); ++i)
             {
-                graph_edges.push_back( filtration.persistence[ i ].edge );
+                graph_edges.push_back( filtration.persistence[i].edge );
             }
         }
         

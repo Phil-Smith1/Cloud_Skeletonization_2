@@ -4,6 +4,7 @@
 
 #include "Graph.h"
 #include "Cluster.h"
+#include "Binary_Search_Tree.h"
 
 void Remove_Small_Mapper_Components ( Graph& g, vector<Cluster>const& cluster, double min_comp_size )
 {
@@ -33,7 +34,7 @@ void Remove_Small_Mapper_Components ( Graph& g, vector<Cluster>const& cluster, d
         
         if (need_to_remove)
         {
-            Graph g_2;
+            Graph reduced_graph;
             
             for (int counter_1 = 0; counter_1 < num_comps; ++counter_1)
             {
@@ -41,34 +42,55 @@ void Remove_Small_Mapper_Components ( Graph& g, vector<Cluster>const& cluster, d
                 
                 else
                 {
-                    vector<Graph::vertex_descriptor> v;
-                    vector<pair<Graph::edge_descriptor, bool>> e;
                     size_t num_vertices = conn_comp_vertices[counter_1].size();
+                    vector<Graph::vertex_descriptor> v;
                     
                     for (int counter_2 = 0; counter_2 < num_vertices; ++counter_2)
                     {
-                        v.push_back( boost::add_vertex( g_2 ) );
-                        g_2[v[counter_2]].pt = g[conn_comp_vertices[counter_1][counter_2]].pt;
-                    }
-                    
-                    for (int counter_2 = 0; counter_2 < num_vertices; ++counter_2)
-                    {
-                        for (int counter_3 = counter_2 + 1; counter_3 < num_vertices; ++counter_3)
-                        {
-                            if (boost::edge( conn_comp_vertices[counter_1][counter_2], conn_comp_vertices[counter_1][counter_3], g ).second)
-                            {
-                                e.push_back( boost::add_edge( v[counter_2], v[counter_3], g_2 ) );
-                                Point2d source = g_2[boost::source( e.back().first, g_2 )].pt;
-                                Point2d target = g_2[boost::target( e.back().first, g_2 )].pt;
-                                double length = norm( target - source );
-                                boost::put( boost::edge_weight_t(), g_2, e.back().first, length );
-                            }
-                        }
+                        v.push_back( boost::add_vertex( reduced_graph ) );
+                        reduced_graph[v[counter_2]].pt = g[conn_comp_vertices[counter_1][counter_2]].pt;
+                        reduced_graph[v[counter_2]].index = g[conn_comp_vertices[counter_1][counter_2]].index;
                     }
                 }
             }
             
-            g = g_2;
+            vector<pair<Graph::edge_descriptor, bool>> e;
+            Binary_Search_Tree bst;
+            
+            for (auto vi = boost::vertices( reduced_graph ).first; vi != boost::vertices( reduced_graph ).second; ++vi)
+            {
+                bst.insert( reduced_graph[*vi].index );
+            }
+            
+            for (auto ei = boost::edges( g ).first; ei != boost::edges( g ).second; ++ei)
+            {
+                int s = g[boost::source( *ei, g )].index;
+                
+                if (bst.search( s ))
+                {
+                    vertex_iter vi_1, vi_2;
+                    
+                    for (vi_1 = boost::vertices( reduced_graph ).first; vi_1 != boost::vertices( reduced_graph ).second; ++vi_1)
+                    {
+                        if (reduced_graph[*vi_1].index == s) break;
+                    }
+                    
+                    int t = g[boost::target( *ei, g )].index;
+                    
+                    for (vi_2 = boost::vertices( reduced_graph ).first; vi_2 != boost::vertices( reduced_graph ).second; ++vi_2)
+                    {
+                        if (reduced_graph[*vi_2].index == t) break;
+                    }
+                    
+                    e.push_back( boost::add_edge( *vi_1, *vi_2, reduced_graph ) );
+                    Point2d source = reduced_graph[boost::source( e.back().first, reduced_graph )].pt;
+                    Point2d target = reduced_graph[boost::target( e.back().first, reduced_graph )].pt;
+                    double length = norm( target - source );
+                    boost::put( boost::edge_weight_t(), reduced_graph, e.back().first, length );
+                }
+            }
+            
+            g = reduced_graph;
         }
     }
 }

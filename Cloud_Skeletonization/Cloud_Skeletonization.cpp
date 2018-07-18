@@ -9,6 +9,7 @@
 #include "AlphaReeb_Algorithm.h"
 #include "Mapper.h"
 #include "Hopes.h"
+#include "Simplify_HoPeS.h"
 #include "Draw_Graph.h"
 #include "Write_Image.h"
 #include "Convert_Graph.h"
@@ -25,7 +26,7 @@ bool cloud_input = true;
 
 bool write_input = true;
 
-vector<int> wheel_range = { 3, 6, 9/*3, 4, 5, 6, 7, 8, 9, 10*/ };
+vector<int> wheel_range = { 3/*3, 4, 5, 6, 7, 8, 9, 10*/ };
 vector<int> grid_cols_range = { /*1, 2, 3*/ };
 vector<int> grid_rows_range = { /*1, 2, 3*/ };
 vector<int> squares_range = { /*2, 3*/ };
@@ -34,15 +35,15 @@ bool graph_dependent_cloud_size = true;
 int cloud_size_parameter = 100;
 
 string noise_type = "uniform";
-vector<double> noise_parameter_range = { 0.05, 0.15, 0.25/*, 0.1, 0.15, 0.2, 0.25, 0.3*/ };
+vector<double> noise_parameter_range = { 0.05/*0.05, 0.1, 0.15, 0.2, 0.25, 0.3*/ };
 
-bool alphaReeb = true;
-vector<double> alpha_values = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 };
+bool alphaReeb = false;
+vector<double> alpha_values = { 0.3/*0.1, 0.2, 0.3, 0.4, 0.5, 0.6*/ };
 double epsilon = 0.1;
 
-bool mapper = false;
-bool graph_dependent_num_intervals = false;
-vector<double> num_intervals_parameter = { 30/*1.2, 1.4, 1.6, 1.8, 2*/ };
+bool mapper = true;
+bool graph_dependent_num_intervals = true;
+vector<double> num_intervals_parameter = { 1.4/*1, 1.2, 1.4, 1.6, 1.8, 2*/ };
 double overlap_ratio = 0.5;
 string filter_function = "Distance";
 double sigma = 0.1;
@@ -51,9 +52,13 @@ double mcsf = 0.01;
 
 bool hopes = false;
 
-int repetitions = 10;
+int repetitions = 100;
 
 bool validation = false;
+
+bool test = false;
+
+// If test: wr 3; gdcp true; csp 100; nt uniform; npr 0.05; av 0.3; e 0.1; gdni true; nip 1.4; mcsf 0.01; r 5; v false.
 
 bool image_input = false;
 
@@ -78,7 +83,7 @@ const string input_file = root_directory + "Input/Input.txt";
 const string cloud_directory = root_directory + "Clouds/Txt_Files/";
 const string image_directory = root_directory + "Code_Output/Images/";
 const string graph_directory = root_directory + "Code_Output/Graphs/";
-const string result_directory = root_directory + "Results_t/";
+const string result_directory = root_directory + "Results/";
 const string imported_image_directory = root_directory + "BSDS500/";
 
 int main ( int, char*[] )
@@ -131,6 +136,8 @@ int main ( int, char*[] )
                 
                 cloud_size += cloud.size();
                 
+                bool draw_image = iteration % 50 == 0 || test ? true : false;
+                
                 if (input.alphaReeb) // Feeds cloud into the alpha-Reeb algorithm.
                 {
                     Graph nbhd_graph;
@@ -152,17 +159,17 @@ int main ( int, char*[] )
                         
                         alphaReeb_results[counter].first.second += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
                         
-                        if (iteration % 50 == 0)
+                        if (draw_image)
                         {
                             const Point image_sizes( 800, 800 );
                             Mat image( image_sizes, CV_8UC3, white );
                             
                             Draw_Graph( alphaReeb_graph, 4, -1, 2, black, image ); // Drawing the output graph.
                             
-                            Write_Image( image_directory, input, "Reeb", iteration, image ); // Writing the image to a png file.
+                            Write_Image( image_directory, input, "AlphaReeb", iteration, image ); // Writing the image to a png file.
                         }
                         
-                        Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "Reeb", iteration, alphaReeb_graph ); // Writing the graph to a txt file.
+                        Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "AlphaReeb", iteration, alphaReeb_graph ); // Writing the graph to a txt file.
                         
                         if (validation) alphaReeb_results[counter].second.push_back( Check( expected_Betti_num, alphaReeb_graph ) ); // Seeing if expected and actual Betti numbers agree.
                     }
@@ -194,7 +201,7 @@ int main ( int, char*[] )
                         
                         mapper_results[counter].first.second += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
                         
-                        if (iteration % 50 == 0)
+                        if (draw_image)
                         {
                             const Point image_sizes( 800, 800 );
                             Mat image( image_sizes, CV_8UC3, white );
@@ -226,14 +233,16 @@ int main ( int, char*[] )
                     
                     hopes_time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
                     
-                    if (iteration % 50 == 0)
+                    //Simplify_HoPeS( hopes_graph );
+                    
+                    if (draw_image)
                     {
                         const Point image_sizes( 800, 800 );
                         Mat image( image_sizes, CV_8UC3, white );
                         
                         Draw_Graph( hopes_graph, black, red, image ); // Drawing the output graph.
                         
-                        Write_Image( image_directory, input, "Hopes1", iteration, image ); // Writing the image to a png file.
+                        Write_Image( image_directory, input, "HoPeS1", iteration, image ); // Writing the image to a png file.
                     }
                     
                     Graph hopes;
@@ -257,7 +266,7 @@ int main ( int, char*[] )
                     
                     imwrite( "/Users/philsmith/Documents/Xcode Projects/Cloud_Skeletonization/haR.png", image_2 );*/
                     
-                    Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "Hopes", iteration, hopes ); // Writing the graph to a txt file.
+                    Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "HoPeS1", iteration, hopes ); // Writing the graph to a txt file.
                     
                     if (validation) hopes_results.push_back( Check( expected_Betti_num, hopes ) ); // Seeing if expected and actual Betti numbers agree.
                 }

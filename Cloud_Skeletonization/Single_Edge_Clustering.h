@@ -28,7 +28,7 @@ void Single_Edge_Clustering ( double gap, vector<vector<P2>>& clouds )
     
     for (int ind_edge = 0; ind_edge < filtration.edges.size(); ++ind_edge)
     {
-        Edge* edge = &filtration.edges[ind_edge];
+        Edge * edge = &filtration.edges[ind_edge];
         
         if (edge->length > gap) break;
         

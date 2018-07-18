@@ -5,7 +5,7 @@ Life::Life ( int i, double b, double d, int e )
     index = i;
     birth = b;
     death = d;
-    span = d-b;
+    span = d - b;
     edge = e;
 }
 

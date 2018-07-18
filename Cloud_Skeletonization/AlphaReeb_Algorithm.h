@@ -52,5 +52,7 @@ void AlphaReeb_Algorithm ( Graph const& input_graph, AlphaReeb_Parameters const&
         Generate_AlphaReeb_Graph( intermediate_graph, parameters.alpha, alphaReeb_comp[counter] );
     }
     
-    Combine_Comps( alphaReeb_comp, alphaReeb_graph ); // Combining the components into a single graph.
+    if (num_comps > 1) Combine_Comps( alphaReeb_comp, alphaReeb_graph ); // Combining the components into a single graph.
+    
+    else alphaReeb_graph = alphaReeb_comp[0];
 }

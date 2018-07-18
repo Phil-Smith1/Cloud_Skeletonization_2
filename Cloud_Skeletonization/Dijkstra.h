@@ -19,6 +19,6 @@ void Dijkstra ( Graph const& g, multimap<double, int>& filter_multimap )
 
 	for (int counter = 0; counter < num_vertices; ++counter)
 	{
-		filter_multimap.insert( pair<double, int>(distances[counter], counter) );
+		filter_multimap.insert( pair<double, int>( distances[counter], counter ) );
 	}
 }

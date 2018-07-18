@@ -3,35 +3,30 @@
 #include "Life.h"
 #include "IndexValue.h"
 
-bool IncreasingSpans ( Life const& l1, Life const& l2 )
+bool Increasing_Spans ( Life const& l1, Life const& l2 )
 {
     return l1.span < l2.span;
 }
 
-bool DecreasingValues ( IndexValue const& p1, IndexValue const& p2 )
+bool Decreasing_Values ( IndexValue const& p1, IndexValue const& p2 )
 {
     return p1.value > p2.value;
 }
 
-void Find_Diagonal_Gaps ( vector<Life>& Persistence, vector<int>& IndicesAbove, vector<IndexValue>& DiagonalGaps )
+void Find_Diagonal_Gaps ( vector<Life>& persistence, int& index_above_gap, vector<IndexValue>& diag_gaps )
 {
-    size_t nDots = Persistence.size();
+    size_t num_dots = persistence.size();
     
-    sort( Persistence.begin(), Persistence.end(), IncreasingSpans );
+    sort( persistence.begin(), persistence.end(), Increasing_Spans );
     
-    DiagonalGaps[0] = IndexValue( 0, Persistence[0].span ); // Smallest gap.
+    diag_gaps[0] = IndexValue( 0, persistence[0].span ); // Smallest gap.
     
-    for (int i = 1; i < nDots; ++i)
+    for (int i = 1; i < num_dots; ++i)
     {
-        DiagonalGaps[i] = IndexValue( i, Persistence[i].span - Persistence[i-1].span );
+        diag_gaps[i] = IndexValue( i, persistence[i].span - persistence[i - 1].span );
     }
     
-    sort( DiagonalGaps.begin(), DiagonalGaps.end(), DecreasingValues );
+    sort( diag_gaps.begin(), diag_gaps.end(), Decreasing_Values );
     
-    IndicesAbove[0] = DiagonalGaps[0].index; // Index of dots above the 1st widest diagonal gap.
-    
-    for (size_t i = 1; i < nDots; ++i)
-    {
-        IndicesAbove[i] = min( DiagonalGaps[i].index, IndicesAbove[i-1] );
-    }
+    index_above_gap = diag_gaps[0].index; // Index of dot above the 1st widest diagonal gap.
 }

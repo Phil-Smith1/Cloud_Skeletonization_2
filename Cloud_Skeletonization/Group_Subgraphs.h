@@ -32,7 +32,7 @@ void Group_Subgraphs ( vector<Graph>const& subgraph, vector<vector<Data_Pt>>cons
 
 	for (int subgraph_iter = 0; subgraph_iter < num_subgraphs; ++subgraph_iter)
 	{
-		if (boost::num_vertices( subgraph[subgraph_iter]) == 0 ) continue;
+		if (boost::num_vertices( subgraph[subgraph_iter] ) == 0) continue;
 
 		Grouping( subgraph[subgraph_iter], subcloud[subgraph_iter], subgraph_iter, cluster );
 	}

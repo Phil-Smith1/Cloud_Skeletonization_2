@@ -1,15 +1,12 @@
 #pragma once
 
 #include "Data_Pt.h"
-//#include "P2.h"
 #include "Filtration.h"
 
 void Convert_Graph ( Graph_H const& initial_graph, Graph& converted_graph )
 {
     vector<Graph::vertex_descriptor> v;
     vector<pair<Graph::edge_descriptor, bool>> e;
-    v.clear();
-    e.clear();
     
     int counter = 0;
     

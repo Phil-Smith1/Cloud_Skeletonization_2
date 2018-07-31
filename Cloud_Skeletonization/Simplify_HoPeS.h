@@ -78,7 +78,7 @@ bool Collapse_Shortest_Edge ( Graph_H& hopes_graph, double crit_length )
     return true;
 }
 
-void Simplify_HoPeS ( Graph_H& hopes_graph )
+void Simplify_HoPeS ( Graph_H& hopes_graph, double noise )
 {
-    while (Collapse_Shortest_Edge( hopes_graph, 0.3 ));
+    while (Collapse_Shortest_Edge( hopes_graph, noise ));
 }

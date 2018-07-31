@@ -16,6 +16,7 @@ class Graph_H
     vector<double> edgelengths;
     vector<vector<int>> wedges; // Indices of edges around a vertex.
     vector<vector<P2>> chains; // Degree 2 vertices along a polygonal edge.
+    vector<double> depth;
     
     Graph_H ( vector<Edge>const& DelEdges, vector<int>const& EdgeIndices, int nVertices );
     

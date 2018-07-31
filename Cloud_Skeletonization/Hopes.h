@@ -4,7 +4,7 @@
 #include "Single_Edge_Clustering.h"
 #include "Find_Diagonal_Gaps.h"
 
-void Hopes ( vector<P2>& cloud, Graph_H& hopes_graph )
+void Hopes ( vector<P2>& cloud, Graph_H& hopes_graph, double& noise )
 {
     vector<vector<P2>> clouds;
     clouds.assign( 1, cloud );
@@ -34,6 +34,7 @@ void Hopes ( vector<P2>& cloud, Graph_H& hopes_graph )
             for (int i = index_above_gap; i < filtration.persistence.size(); ++i)
             {
                 graph_edges.push_back( filtration.persistence[i].edge );
+                if (filtration.persistence[i].birth > noise) noise = filtration.persistence[i].birth;
             }
         }
         

@@ -41,6 +41,18 @@
 		EE063A9A20ED06680028FC04 /* Binary_Search_Tree.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Binary_Search_Tree.cpp; sourceTree = "<group>"; };
 		EE063A9C20ED0DF40028FC04 /* Connect_Clusters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connect_Clusters.h; sourceTree = "<group>"; };
 		EE063A9D20EE79ED0028FC04 /* Simplify_HoPeS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simplify_HoPeS.h; sourceTree = "<group>"; };
+		EE063A9E2106165D0028FC04 /* Simplify_HoPeS_2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simplify_HoPeS_2.h; sourceTree = "<group>"; };
+		EE063A9F210B2CCC0028FC04 /* Original_Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Original_Graph.h; sourceTree = "<group>"; };
+		EE063AA0210F61D70028FC04 /* Simplify_Boost_Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simplify_Boost_Graph.h; sourceTree = "<group>"; };
+		EE063AA121108B7B0028FC04 /* Is_Homeomorphic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Is_Homeomorphic.h; sourceTree = "<group>"; };
+		EE063AA221108C1A0028FC04 /* Generate_Adjacent_Vertices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Generate_Adjacent_Vertices.h; sourceTree = "<group>"; };
+		EE063AA321108C5F0028FC04 /* Remove_Degree_2_Vertices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Remove_Degree_2_Vertices.h; sourceTree = "<group>"; };
+		EE063AA4211094EA0028FC04 /* Check_Degrees.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Check_Degrees.h; sourceTree = "<group>"; };
+		EE063AA52110975F0028FC04 /* Factorial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Factorial.h; sourceTree = "<group>"; };
+		EE063AA6211097E90028FC04 /* Permute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Permute.h; sourceTree = "<group>"; };
+		EE063AA7211099570028FC04 /* Relabelling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Relabelling.h; sourceTree = "<group>"; };
+		EE063AA8211099A80028FC04 /* Is_Bijection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Is_Bijection.h; sourceTree = "<group>"; };
+		EE063AA921109A110028FC04 /* Reverse_Relabelling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reverse_Relabelling.h; sourceTree = "<group>"; };
 		EE2D96E31FD6CC18009F440A /* Check.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Check.h; sourceTree = "<group>"; };
 		EE2D96E41FD6F9D9009F440A /* Betti_Num.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Betti_Num.h; sourceTree = "<group>"; };
 		EE2D96E51FD6FD38009F440A /* Analysis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Analysis.h; sourceTree = "<group>"; };
@@ -154,6 +166,7 @@
 				EE2D96E41FD6F9D9009F440A /* Betti_Num.h */,
 				EE063A9A20ED06680028FC04 /* Binary_Search_Tree.cpp */,
 				EE063A9920ED04F00028FC04 /* Binary_Search_Tree.h */,
+				EE063AA4211094EA0028FC04 /* Check_Degrees.h */,
 				EE2D96E31FD6CC18009F440A /* Check.h */,
 				EEEE62AA1FCC557E008A1AC3 /* Cloud_File_Name.h */,
 				EEEE629A1FCC4837008A1AC3 /* Cloud_Skeletonization.cpp */,
@@ -175,6 +188,7 @@
 				EEEE62B91FCD7D66008A1AC3 /* Draw_Graph.h */,
 				EEEA2AA11FD19CF20074FC3E /* Edge.cpp */,
 				EEEA2A9E1FD19AB90074FC3E /* Edge.h */,
+				EE063AA52110975F0028FC04 /* Factorial.h */,
 				EEEE62BD1FCD82DA008A1AC3 /* File_Name.h */,
 				EE4DD40C20C55A920000C3C4 /* Filter_Function.h */,
 				EE2E0D071FD06AC100DF5608 /* Filtration.cpp */,
@@ -182,6 +196,7 @@
 				EE31843F1FD57C9F00CFF6E1 /* Find_Diagonal_Gaps.h */,
 				EEEE62C71FCDD464008A1AC3 /* Finding_MSTs.h */,
 				EEEE62C51FCDD464008A1AC3 /* Gauss_Density_Filter.h */,
+				EE063AA221108C1A0028FC04 /* Generate_Adjacent_Vertices.h */,
 				EE67632220A99EEC00CAE2AB /* Generate_AlphaReeb_Graph.h */,
 				EEEE62B31FCD7960008A1AC3 /* Generate_Subclouds.h */,
 				EEEE62AF1FCD7960008A1AC3 /* Generate_Subgraphs.h */,
@@ -196,6 +211,8 @@
 				EEEA2AAA1FD1C3EB0074FC3E /* IndexValue.h */,
 				EEEE62A31FCC530A008A1AC3 /* Input.cpp */,
 				EEEE62A11FCC530A008A1AC3 /* Input.h */,
+				EE063AA8211099A80028FC04 /* Is_Bijection.h */,
+				EE063AA121108B7B0028FC04 /* Is_Homeomorphic.h */,
 				EEEA2AA51FD1C1B30074FC3E /* Life.cpp */,
 				EEEA2AA41FD1C15B0074FC3E /* Life.h */,
 				EEEE62C11FCDCD13008A1AC3 /* Mapper_Parameters.cpp */,
@@ -205,7 +222,9 @@
 				EEEA2A9C1FD198630074FC3E /* Node_Data.cpp */,
 				EEEA2A9B1FD197D10074FC3E /* Node_Data.h */,
 				EEEE62A81FCC557E008A1AC3 /* Num_To_String.h */,
+				EE063A9F210B2CCC0028FC04 /* Original_Graph.h */,
 				EEEE62C41FCDD464008A1AC3 /* Output_Graph.h */,
+				EE063AA6211097E90028FC04 /* Permute.h */,
 				EEED833F1FDAB36D00D7F033 /* Print_Info.h */,
 				EE3159051FE9788500E21A29 /* Read_Cloud_From_Image.h */,
 				EEEE62A71FCC557E008A1AC3 /* Read_Cloud.h */,
@@ -214,10 +233,15 @@
 				EEEE62C91FCDD464008A1AC3 /* Reduce_MSTs.h */,
 				EEEA2AA81FD1C2990074FC3E /* Region.cpp */,
 				EEEA2AA71FD1C2240074FC3E /* Region.h */,
+				EE063AA7211099570028FC04 /* Relabelling.h */,
+				EE063AA321108C5F0028FC04 /* Remove_Degree_2_Vertices.h */,
 				EE41500020C6A8D000B60C51 /* Remove_Small_Mapper_Components.h */,
+				EE063AA921109A110028FC04 /* Reverse_Relabelling.h */,
 				EE3184411FD59DE300CFF6E1 /* Run_Input.cpp */,
 				EE3184401FD59DD300CFF6E1 /* Run_Input.h */,
 				EEEE62BA1FCD7D67008A1AC3 /* Scaling_Parameters.h */,
+				EE063AA0210F61D70028FC04 /* Simplify_Boost_Graph.h */,
+				EE063A9E2106165D0028FC04 /* Simplify_HoPeS_2.h */,
 				EE063A9D20EE79ED0028FC04 /* Simplify_HoPeS.h */,
 				EE2E0D061FD06A1B00DF5608 /* Single_Edge_Clustering.h */,
 				EEEE62B11FCD7960008A1AC3 /* Split_Into_Conn_Comps.h */,

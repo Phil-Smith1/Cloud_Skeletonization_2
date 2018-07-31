@@ -10,9 +10,13 @@
 #include "Mapper.h"
 #include "Hopes.h"
 #include "Simplify_HoPeS.h"
+#include "Simplify_HoPeS_2.h"
+#include "Simplify_Boost_Graph.h"
 #include "Draw_Graph.h"
 #include "Write_Image.h"
 #include "Convert_Graph.h"
+#include "Original_Graph.h"
+#include "Is_Homeomorphic.h"
 #include "Write_Graph.h"
 #include "Check.h"
 #include "Analysis.h"
@@ -35,15 +39,15 @@ bool graph_dependent_cloud_size = true;
 int cloud_size_parameter = 100;
 
 string noise_type = "uniform";
-vector<double> noise_parameter_range = { 0.05/*0.05, 0.1, 0.15, 0.2, 0.25, 0.3*/ };
+vector<double> noise_parameter_range = { 0.05/*0.25, 0.3*/ };
 
-bool alphaReeb = false;
+bool alphaReeb = true;
 vector<double> alpha_values = { 0.3/*0.1, 0.2, 0.3, 0.4, 0.5, 0.6*/ };
 double epsilon = 0.1;
 
-bool mapper = true;
+bool mapper = false;
 bool graph_dependent_num_intervals = true;
-vector<double> num_intervals_parameter = { 1.4/*1, 1.2, 1.4, 1.6, 1.8, 2*/ };
+vector<double> num_intervals_parameter = { 1, 1.2, 1.4, 1.6, 1.8, 2 };
 double overlap_ratio = 0.5;
 string filter_function = "Distance";
 double sigma = 0.1;
@@ -52,11 +56,11 @@ double mcsf = 0.01;
 
 bool hopes = false;
 
-int repetitions = 100;
+int repetitions = 5;
 
 bool validation = false;
 
-bool test = false;
+bool test = true;
 
 // If test: wr 3; gdcp true; csp 100; nt uniform; npr 0.05; av 0.3; e 0.1; gdni true; nip 1.4; mcsf 0.01; r 5; v false.
 
@@ -124,15 +128,18 @@ int main ( int, char*[] )
             }
             vector<bool> hopes_results;
             hopes_results.reserve( input.repetitions );
+            vector<bool> hopes_results_2;
+            hopes_results_2.reserve( input.repetitions );
             double hopes_time = 0;
             
             for (int iteration = 0; iteration < input.repetitions; ++iteration) // Looping algorithm over clouds.
             {
                 int expected_Betti_num;
                 double graph_length;
+                string diagonal_edges;
                 vector<Data_Pt> cloud;
                 
-                Read_Cloud( cloud_directory, input, iteration, expected_Betti_num, graph_length, cloud ); // Reading the cloud.
+                Read_Cloud( cloud_directory, input, iteration, expected_Betti_num, graph_length, diagonal_edges, cloud ); // Reading the cloud.
                 
                 cloud_size += cloud.size();
                 
@@ -154,7 +161,7 @@ int main ( int, char*[] )
                         Graph alphaReeb_graph;
                         
                         AlphaReeb_Algorithm( nbhd_graph, parameters, alphaReeb_graph ); // Alpha-Reeb algorithm.
-                        
+                        Simplify_Boost_Graph( alphaReeb_graph );
                         clock_t end_iter = clock(); // Stop stopwatch for iteration.
                         
                         alphaReeb_results[counter].first.second += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
@@ -226,14 +233,17 @@ int main ( int, char*[] )
                     clock_t start_iter = clock(); // Start stopwatch for iteration.
                     
                     Graph_H hopes_graph;
+                    double noise = 0;
                     
-                    Hopes( converted_cloud, hopes_graph ); // Generating the Hopes graph.
-                    
+                    Hopes( converted_cloud, hopes_graph, noise ); // Generating the Hopes graph.
+                    //cout << noise << endl;
                     clock_t end_iter = clock(); // Stop stopwatch for iteration.
                     
                     hopes_time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
                     
-                    //Simplify_HoPeS( hopes_graph );
+                    Simplify_HoPeS_2( hopes_graph );
+                    
+                    Simplify_HoPeS( hopes_graph, 3 * noise );
                     
                     if (draw_image)
                     {
@@ -248,6 +258,14 @@ int main ( int, char*[] )
                     Graph hopes;
                     
                     Convert_Graph( hopes_graph, hopes );
+                    
+                    Graph original_graph;
+                    
+                    Original_Graph( input.pattern_type, input.pattern_size_1, input.pattern_size_2, diagonal_edges, original_graph );
+                    
+                    bool homeomorphic = Is_Homeomorphic( original_graph, hopes );
+                    
+                    hopes_results_2.push_back( homeomorphic );
                     
                     /*int counter = 0;
                     for (auto it = boost::vertices( hopes ).first; it != boost::vertices( hopes ).second; ++it, ++counter)
@@ -315,8 +333,8 @@ int main ( int, char*[] )
                 vector<P2> converted_cloud;
                 
                 Convert_Cloud_1( clouds[counter], converted_cloud );
-                
-                Hopes( converted_cloud, hopes_graph[counter] );
+                double n = 0;
+                Hopes( converted_cloud, hopes_graph[counter], n );
             }
             
             double scale = 2;

@@ -2,6 +2,8 @@
 
 #include <vector>
 
+using namespace std;
+
 void Remove_Degree_2_Vertices ( vector<pair<int, vector<int>>>& adjacent_vertices )
 {
     for (int counter_1 = 0; counter_1 < adjacent_vertices.size(); ++counter_1)

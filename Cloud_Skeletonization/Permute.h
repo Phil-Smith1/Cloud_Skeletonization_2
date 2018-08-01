@@ -2,6 +2,10 @@
 
 #include <vector>
 
+#include "Factorial.h"
+
+using namespace std;
+
 void Permute ( vector<int>& elements, int n )
 {
     int num_elements = (int)elements.size();

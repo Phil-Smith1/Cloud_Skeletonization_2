@@ -2,6 +2,8 @@
 
 #include <vector>
 
+using namespace std;
+
 bool Check_Degrees ( vector<vector<int>>const& vertex_degrees_1, vector<vector<int>>const& vertex_degrees_2 )
 {
     if (vertex_degrees_1.size() != vertex_degrees_2.size()) return false;

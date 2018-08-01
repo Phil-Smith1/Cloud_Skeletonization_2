@@ -2,6 +2,8 @@
 
 #include <vector>
 
+using namespace std;
+
 void Reverse_Relabelling ( vector<int>& relabelling )
 {
     size_t relabelling_size = relabelling.size();

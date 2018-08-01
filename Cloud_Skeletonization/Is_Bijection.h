@@ -2,6 +2,8 @@
 
 #include <vector>
 
+using namespace std;
+
 bool Is_Bijection ( vector<pair<int, vector<int>>>const& adjacent_vertices_1, vector<pair<int, vector<int>>>const& adjacent_vertices_2 )
 {
     for (int counter_1 = 0; counter_1 < adjacent_vertices_1.size(); ++counter_1)

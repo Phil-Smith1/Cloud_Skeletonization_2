@@ -2,6 +2,8 @@
 
 #include <vector>
 
+using namespace std;
+
 void Relabelling ( vector<pair<int, vector<int>>>& data, vector<int>const& relabelling )
 {
     size_t data_size = data.size();

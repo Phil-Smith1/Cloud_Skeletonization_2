@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EE063A9B20ED06680028FC04 /* Binary_Search_Tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE063A9A20ED06680028FC04 /* Binary_Search_Tree.cpp */; };
+		EE063AAC2110B6540028FC04 /* Results.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE063AAB2110B6540028FC04 /* Results.cpp */; };
 		EE2E0D091FD06AC100DF5608 /* Filtration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE2E0D071FD06AC100DF5608 /* Filtration.cpp */; };
 		EE3184421FD59DE300CFF6E1 /* Run_Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE3184411FD59DE300CFF6E1 /* Run_Input.cpp */; };
 		EEE4FA8020ADD15A006554E6 /* Cluster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEE4FA7F20ADD15A006554E6 /* Cluster.cpp */; };
@@ -53,6 +54,8 @@
 		EE063AA7211099570028FC04 /* Relabelling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Relabelling.h; sourceTree = "<group>"; };
 		EE063AA8211099A80028FC04 /* Is_Bijection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Is_Bijection.h; sourceTree = "<group>"; };
 		EE063AA921109A110028FC04 /* Reverse_Relabelling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reverse_Relabelling.h; sourceTree = "<group>"; };
+		EE063AAA2110B63C0028FC04 /* Results.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Results.h; sourceTree = "<group>"; };
+		EE063AAB2110B6540028FC04 /* Results.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Results.cpp; sourceTree = "<group>"; };
 		EE2D96E31FD6CC18009F440A /* Check.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Check.h; sourceTree = "<group>"; };
 		EE2D96E41FD6F9D9009F440A /* Betti_Num.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Betti_Num.h; sourceTree = "<group>"; };
 		EE2D96E51FD6FD38009F440A /* Analysis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Analysis.h; sourceTree = "<group>"; };
@@ -236,6 +239,8 @@
 				EE063AA7211099570028FC04 /* Relabelling.h */,
 				EE063AA321108C5F0028FC04 /* Remove_Degree_2_Vertices.h */,
 				EE41500020C6A8D000B60C51 /* Remove_Small_Mapper_Components.h */,
+				EE063AAB2110B6540028FC04 /* Results.cpp */,
+				EE063AAA2110B63C0028FC04 /* Results.h */,
 				EE063AA921109A110028FC04 /* Reverse_Relabelling.h */,
 				EE3184411FD59DE300CFF6E1 /* Run_Input.cpp */,
 				EE3184401FD59DD300CFF6E1 /* Run_Input.h */,
@@ -323,6 +328,7 @@
 				EEEE62C21FCDCD13008A1AC3 /* Mapper_Parameters.cpp in Sources */,
 				EEEA2AAF1FD1CAD80074FC3E /* Graph_H.cpp in Sources */,
 				EEEA2AA21FD19CF20074FC3E /* Edge.cpp in Sources */,
+				EE063AAC2110B6540028FC04 /* Results.cpp in Sources */,
 				EEEE62AB1FCC557E008A1AC3 /* Data_Pt.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

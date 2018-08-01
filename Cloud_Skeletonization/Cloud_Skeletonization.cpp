@@ -5,6 +5,7 @@
 #include "Write_Input.h"
 #include "Read_Input.h"
 #include "Read_Cloud.h"
+#include "Results.h"
 #include "Cloud_To_Nbhd_Graph.h"
 #include "AlphaReeb_Algorithm.h"
 #include "Mapper.h"
@@ -45,20 +46,20 @@ bool alphaReeb = true;
 vector<double> alpha_values = { 0.3/*0.1, 0.2, 0.3, 0.4, 0.5, 0.6*/ };
 double epsilon = 0.1;
 
-bool mapper = false;
+bool mapper = true;
 bool graph_dependent_num_intervals = true;
-vector<double> num_intervals_parameter = { 1, 1.2, 1.4, 1.6, 1.8, 2 };
+vector<double> num_intervals_parameter = { 1.4/*1, 1.2, 1.4, 1.6, 1.8, 2*/ };
 double overlap_ratio = 0.5;
 string filter_function = "Distance";
 double sigma = 0.1;
 
 double mcsf = 0.01;
 
-bool hopes = false;
+bool hopes = true;
 
 int repetitions = 5;
 
-bool validation = false;
+bool validation = true;
 
 bool test = true;
 
@@ -114,23 +115,26 @@ int main ( int, char*[] )
             
             size_t cloud_size = 0;
             
-            vector<pair<pair<double, double>, vector<bool>>> alphaReeb_results( alpha_values.size() );
+            vector<Results> alphaReeb_results( alpha_values.size() );
             for (int counter = 0; counter < alpha_values.size(); ++counter)
             {
-                alphaReeb_results[counter].first.first = alpha_values[counter];
-                alphaReeb_results[counter].second.reserve( input.repetitions );
+                alphaReeb_results[counter].parameter = alpha_values[counter];
+                alphaReeb_results[counter].time = 0;
+                alphaReeb_results[counter].Betti_success.reserve( input.repetitions );
+                alphaReeb_results[counter].homeo_success.reserve( input.repetitions );
             }
-            vector<pair<pair<double, double>, vector<bool>>> mapper_results( num_intervals_parameter.size() );
+            vector<Results> mapper_results( num_intervals_parameter.size() );
             for (int counter = 0; counter < num_intervals_parameter.size(); ++counter)
             {
-                mapper_results[counter].first.first = num_intervals_parameter[counter];
-                mapper_results[counter].second.reserve( input.repetitions );
+                mapper_results[counter].parameter = num_intervals_parameter[counter];
+                mapper_results[counter].time = 0;
+                mapper_results[counter].Betti_success.reserve( input.repetitions );
+                mapper_results[counter].homeo_success.reserve( input.repetitions );
             }
-            vector<bool> hopes_results;
-            hopes_results.reserve( input.repetitions );
-            vector<bool> hopes_results_2;
-            hopes_results_2.reserve( input.repetitions );
-            double hopes_time = 0;
+            Results hopes_results;
+            hopes_results.Betti_success.reserve( input.repetitions );
+            hopes_results.homeo_success.reserve( input.repetitions );
+            hopes_results.time = 0;
             
             for (int iteration = 0; iteration < input.repetitions; ++iteration) // Looping algorithm over clouds.
             {
@@ -142,6 +146,10 @@ int main ( int, char*[] )
                 Read_Cloud( cloud_directory, input, iteration, expected_Betti_num, graph_length, diagonal_edges, cloud ); // Reading the cloud.
                 
                 cloud_size += cloud.size();
+                
+                Graph original_graph;
+                
+                Original_Graph( input.pattern_type, input.pattern_size_1, input.pattern_size_2, diagonal_edges, original_graph );
                 
                 bool draw_image = iteration % 50 == 0 || test ? true : false;
                 
@@ -161,10 +169,12 @@ int main ( int, char*[] )
                         Graph alphaReeb_graph;
                         
                         AlphaReeb_Algorithm( nbhd_graph, parameters, alphaReeb_graph ); // Alpha-Reeb algorithm.
-                        Simplify_Boost_Graph( alphaReeb_graph );
+                        
                         clock_t end_iter = clock(); // Stop stopwatch for iteration.
                         
-                        alphaReeb_results[counter].first.second += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
+                        alphaReeb_results[counter].time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
+                        
+                        Simplify_Boost_Graph( alphaReeb_graph );
                         
                         if (draw_image)
                         {
@@ -178,7 +188,12 @@ int main ( int, char*[] )
                         
                         Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "AlphaReeb", iteration, alphaReeb_graph ); // Writing the graph to a txt file.
                         
-                        if (validation) alphaReeb_results[counter].second.push_back( Check( expected_Betti_num, alphaReeb_graph ) ); // Seeing if expected and actual Betti numbers agree.
+                        if (validation)
+                        {
+                            alphaReeb_results[counter].Betti_success.push_back( Check( expected_Betti_num, alphaReeb_graph ) ); // Seeing if expected and actual Betti numbers agree.
+                            
+                            alphaReeb_results[counter].homeo_success.push_back( Is_Homeomorphic( original_graph, alphaReeb_graph ) );
+                        }
                     }
                 }
                 
@@ -206,7 +221,9 @@ int main ( int, char*[] )
                         
                         clock_t end_iter = clock(); // Stop stopwatch for iteration.
                         
-                        mapper_results[counter].first.second += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
+                        mapper_results[counter].time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
+                        
+                        Simplify_Boost_Graph( mapper_graph );
                         
                         if (draw_image)
                         {
@@ -220,7 +237,12 @@ int main ( int, char*[] )
                         
                         Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "Mapper", iteration, mapper_graph ); // Writing the graph to a txt file.
                         
-                        if (validation) mapper_results[counter].second.push_back( Check( expected_Betti_num, mapper_graph ) ); // Seeing if expected and actual Betti numbers agree.
+                        if (validation)
+                        {
+                            mapper_results[counter].Betti_success.push_back( Check( expected_Betti_num, mapper_graph ) ); // Seeing if expected and actual Betti numbers agree.
+                            
+                            mapper_results[counter].homeo_success.push_back( Is_Homeomorphic( original_graph, mapper_graph ) );
+                        }
                     }
                 }
                 
@@ -236,14 +258,14 @@ int main ( int, char*[] )
                     double noise = 0;
                     
                     Hopes( converted_cloud, hopes_graph, noise ); // Generating the Hopes graph.
-                    //cout << noise << endl;
+                    
                     clock_t end_iter = clock(); // Stop stopwatch for iteration.
                     
-                    hopes_time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
+                    hopes_results.time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
                     
                     Simplify_HoPeS_2( hopes_graph );
                     
-                    Simplify_HoPeS( hopes_graph, 3 * noise );
+                    //Simplify_HoPeS( hopes_graph, 3 * noise );
                     
                     if (draw_image)
                     {
@@ -258,14 +280,6 @@ int main ( int, char*[] )
                     Graph hopes;
                     
                     Convert_Graph( hopes_graph, hopes );
-                    
-                    Graph original_graph;
-                    
-                    Original_Graph( input.pattern_type, input.pattern_size_1, input.pattern_size_2, diagonal_edges, original_graph );
-                    
-                    bool homeomorphic = Is_Homeomorphic( original_graph, hopes );
-                    
-                    hopes_results_2.push_back( homeomorphic );
                     
                     /*int counter = 0;
                     for (auto it = boost::vertices( hopes ).first; it != boost::vertices( hopes ).second; ++it, ++counter)
@@ -286,7 +300,12 @@ int main ( int, char*[] )
                     
                     Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "HoPeS1", iteration, hopes ); // Writing the graph to a txt file.
                     
-                    if (validation) hopes_results.push_back( Check( expected_Betti_num, hopes ) ); // Seeing if expected and actual Betti numbers agree.
+                    if (validation)
+                    {
+                        hopes_results.Betti_success.push_back( Check( expected_Betti_num, hopes ) ); // Seeing if expected and actual Betti numbers agree.
+                        
+                        hopes_results.homeo_success.push_back( Is_Homeomorphic( original_graph, hopes ) );
+                    }
                 }
                 
                 if (iteration % 10 == 0) cout << "Experiment " << experiment_iter << ": Iteration " << iteration << "." << endl;
@@ -294,7 +313,7 @@ int main ( int, char*[] )
             
             size_t mean_cloud_size = cloud_size / input.repetitions;
             
-            if (validation) Analysis( result_directory, input, mean_cloud_size, alphaReeb_results, mapper_results, hopes_results, hopes_time );
+            if (validation) Analysis( result_directory, input, mean_cloud_size, alphaReeb_results, mapper_results, hopes_results );
         }
         
         // Printing summary.

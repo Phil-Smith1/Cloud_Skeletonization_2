@@ -16,6 +16,7 @@ typedef DT::Edge DE;
 typedef DT::Vertex_handle VH;
 typedef DT::Face_handle FH;
 typedef K::Point_2 P2;
+typedef K::Line_2 L2;
 
 class Edge
 {

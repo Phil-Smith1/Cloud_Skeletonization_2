@@ -30,12 +30,14 @@ void Hopes ( vector<P2>& cloud, Graph_H& hopes_graph, double& noise )
         if (filtration.persistence.size())
         {
             Find_Diagonal_Gaps( filtration.persistence, index_above_gap, diagonal_gaps );
-            
+            double dd = 1e10;
             for (int i = index_above_gap; i < filtration.persistence.size(); ++i)
             {
                 graph_edges.push_back( filtration.persistence[i].edge );
                 if (filtration.persistence[i].birth > noise) noise = filtration.persistence[i].birth;
+                if (filtration.persistence[i].death < dd) dd = filtration.persistence[i].death;
             }
+            noise = dd;
         }
         
         hopes_graph.Initialise_Graph( filtration.edges, graph_edges, (int)filtration.delaunay.number_of_vertices() );

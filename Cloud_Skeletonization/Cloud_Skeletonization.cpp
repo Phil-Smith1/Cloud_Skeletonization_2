@@ -1,7 +1,7 @@
 // Cloud skeletonization project.
 
 // Inclusions.
-
+#include "Find_Epsilon.h"
 #include "Write_Input.h"
 #include "Read_Input.h"
 #include "Read_Cloud.h"
@@ -13,6 +13,7 @@
 #include "Simplify_HoPeS.h"
 #include "Simplify_HoPeS_2.h"
 #include "Simplify_Boost_Graph.h"
+#include "Geometric_Approximation_Error.h"
 #include "Draw_Graph.h"
 #include "Write_Image.h"
 #include "Convert_Graph.h"
@@ -40,11 +41,11 @@ bool graph_dependent_cloud_size = true;
 int cloud_size_parameter = 100;
 
 string noise_type = "uniform";
-vector<double> noise_parameter_range = { 0.05/*0.25, 0.3*/ };
+vector<double> noise_parameter_range = { 0.05, 0.2 };
 
 bool alphaReeb = true;
-vector<double> alpha_values = { 0.3/*0.1, 0.2, 0.3, 0.4, 0.5, 0.6*/ };
-double epsilon = 0.1;
+vector<double> alpha_values = { 0.2/*0.1, 0.2, 0.3, 0.4, 0.5, 0.6*/ };
+//double epsilon = 0.1;
 
 bool mapper = true;
 bool graph_dependent_num_intervals = true;
@@ -57,11 +58,11 @@ double mcsf = 0.01;
 
 bool hopes = true;
 
-int repetitions = 5;
+int repetitions = 10;
 
 bool validation = true;
 
-bool test = true;
+bool test = false;
 
 // If test: wr 3; gdcp true; csp 100; nt uniform; npr 0.05; av 0.3; e 0.1; gdni true; nip 1.4; mcsf 0.01; r 5; v false.
 
@@ -122,6 +123,7 @@ int main ( int, char*[] )
                 alphaReeb_results[counter].time = 0;
                 alphaReeb_results[counter].Betti_success.reserve( input.repetitions );
                 alphaReeb_results[counter].homeo_success.reserve( input.repetitions );
+                alphaReeb_results[counter].geom_approx_error.reserve( input.repetitions );
             }
             vector<Results> mapper_results( num_intervals_parameter.size() );
             for (int counter = 0; counter < num_intervals_parameter.size(); ++counter)
@@ -130,10 +132,12 @@ int main ( int, char*[] )
                 mapper_results[counter].time = 0;
                 mapper_results[counter].Betti_success.reserve( input.repetitions );
                 mapper_results[counter].homeo_success.reserve( input.repetitions );
+                mapper_results[counter].geom_approx_error.reserve( input.repetitions );
             }
             Results hopes_results;
             hopes_results.Betti_success.reserve( input.repetitions );
             hopes_results.homeo_success.reserve( input.repetitions );
+            hopes_results.geom_approx_error.reserve( input.repetitions );
             hopes_results.time = 0;
             
             for (int iteration = 0; iteration < input.repetitions; ++iteration) // Looping algorithm over clouds.
@@ -141,11 +145,14 @@ int main ( int, char*[] )
                 int expected_Betti_num;
                 double graph_length;
                 string diagonal_edges;
-                vector<Data_Pt> cloud;
+                vector<Data_Pt> cloud_d;
+                vector<P2> cloud_p;
                 
-                Read_Cloud( cloud_directory, input, iteration, expected_Betti_num, graph_length, diagonal_edges, cloud ); // Reading the cloud.
+                Read_Cloud( cloud_directory, input, iteration, expected_Betti_num, graph_length, diagonal_edges, cloud_d ); // Reading the cloud.
                 
-                cloud_size += cloud.size();
+                cloud_size += cloud_d.size();
+                
+                Convert_Cloud_1( cloud_d, cloud_p );
                 
                 Graph original_graph;
                 
@@ -155,9 +162,15 @@ int main ( int, char*[] )
                 
                 if (input.alphaReeb) // Feeds cloud into the alpha-Reeb algorithm.
                 {
+                    double epsilon;
+                    
+                    Find_Epsilon( cloud_d, epsilon );
+                    
+                    if (epsilon > 0.125) epsilon = 0.125;
+                    
                     Graph nbhd_graph;
                     
-                    Cloud_To_Nbhd_Graph( cloud, epsilon, nbhd_graph ); // Generating the neighbourhood graph of the cloud.
+                    Cloud_To_Nbhd_Graph( cloud_d, epsilon, nbhd_graph ); // Generating the neighbourhood graph of the cloud.
                     
                     for (int counter = 0; counter < alpha_values.size(); ++counter) // Looping over alpha values.
                     {
@@ -181,7 +194,7 @@ int main ( int, char*[] )
                             const Point image_sizes( 800, 800 );
                             Mat image( image_sizes, CV_8UC3, white );
                             
-                            Draw_Graph( alphaReeb_graph, 4, -1, 2, black, image ); // Drawing the output graph.
+                            Draw_Graph( alphaReeb_graph, 1, -1, 1, black, image ); // Drawing the output graph.
                             
                             Write_Image( image_directory, input, "AlphaReeb", iteration, image ); // Writing the image to a png file.
                         }
@@ -193,6 +206,7 @@ int main ( int, char*[] )
                             alphaReeb_results[counter].Betti_success.push_back( Check( expected_Betti_num, alphaReeb_graph ) ); // Seeing if expected and actual Betti numbers agree.
                             
                             alphaReeb_results[counter].homeo_success.push_back( Is_Homeomorphic( original_graph, alphaReeb_graph ) );
+                        alphaReeb_results[counter].geom_approx_error.push_back( Geometric_Approximation_Error( alphaReeb_graph, cloud_p ) );
                         }
                     }
                 }
@@ -217,7 +231,7 @@ int main ( int, char*[] )
                         
                         Graph mapper_graph;
                         
-                        Mapper( cloud, parameters, mapper_graph ); // Generating the mapper graph.
+                        Mapper( cloud_d, parameters, mapper_graph ); // Generating the mapper graph.
                         
                         clock_t end_iter = clock(); // Stop stopwatch for iteration.
                         
@@ -242,22 +256,19 @@ int main ( int, char*[] )
                             mapper_results[counter].Betti_success.push_back( Check( expected_Betti_num, mapper_graph ) ); // Seeing if expected and actual Betti numbers agree.
                             
                             mapper_results[counter].homeo_success.push_back( Is_Homeomorphic( original_graph, mapper_graph ) );
+                            mapper_results[counter].geom_approx_error.push_back( Geometric_Approximation_Error( mapper_graph, cloud_p ) );
                         }
                     }
                 }
                 
                 if (input.hopes) // Carries out hopes algorithm.
                 {
-                    vector<P2> converted_cloud;
-                    
-                    Convert_Cloud_1( cloud, converted_cloud ); // Converting points of type Data_Pt to type P2.
-                    
                     clock_t start_iter = clock(); // Start stopwatch for iteration.
                     
                     Graph_H hopes_graph;
                     double noise = 0;
                     
-                    Hopes( converted_cloud, hopes_graph, noise ); // Generating the Hopes graph.
+                    Hopes( cloud_p, hopes_graph, noise ); // Generating the Hopes graph.
                     
                     clock_t end_iter = clock(); // Stop stopwatch for iteration.
                     
@@ -305,6 +316,8 @@ int main ( int, char*[] )
                         hopes_results.Betti_success.push_back( Check( expected_Betti_num, hopes ) ); // Seeing if expected and actual Betti numbers agree.
                         
                         hopes_results.homeo_success.push_back( Is_Homeomorphic( original_graph, hopes ) );
+                        
+                        hopes_results.geom_approx_error.push_back( Geometric_Approximation_Error( hopes, cloud_p ) );
                     }
                 }
                 

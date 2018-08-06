@@ -1,24 +1,24 @@
 // Cloud skeletonization project.
 
 // Inclusions.
-#include "Find_Epsilon.h"
+
 #include "Write_Input.h"
 #include "Read_Input.h"
 #include "Read_Cloud.h"
-#include "Results.h"
+#include "Original_Graph.h"
+#include "Find_Epsilon.h"
 #include "Cloud_To_Nbhd_Graph.h"
 #include "AlphaReeb_Algorithm.h"
+#include "Simplify_Boost_Graph.h"
+#include "Is_Homeomorphic.h"
+#include "Geometric_Approximation_Error.h"
 #include "Mapper.h"
 #include "Hopes.h"
 #include "Simplify_HoPeS.h"
 #include "Simplify_HoPeS_2.h"
-#include "Simplify_Boost_Graph.h"
-#include "Geometric_Approximation_Error.h"
 #include "Draw_Graph.h"
 #include "Write_Image.h"
 #include "Convert_Graph.h"
-#include "Original_Graph.h"
-#include "Is_Homeomorphic.h"
 #include "Write_Graph.h"
 #include "Check.h"
 #include "Analysis.h"
@@ -60,7 +60,7 @@ bool hopes = true;
 
 int repetitions = 10;
 
-bool validation = true;
+bool validation = false;
 
 bool test = false;
 
@@ -189,6 +189,14 @@ int main ( int, char*[] )
                         
                         Simplify_Boost_Graph( alphaReeb_graph );
                         
+                        if (validation)
+                        {
+                            alphaReeb_results[counter].Betti_success.push_back( Check( expected_Betti_num, alphaReeb_graph ) ); // Seeing if expected and actual Betti numbers agree.
+                            
+                            alphaReeb_results[counter].homeo_success.push_back( Is_Homeomorphic( original_graph, alphaReeb_graph ) );
+                            alphaReeb_results[counter].geom_approx_error.push_back( Geometric_Approximation_Error( alphaReeb_graph, cloud_p ) );
+                        }
+                        
                         if (draw_image)
                         {
                             const Point image_sizes( 800, 800 );
@@ -200,14 +208,6 @@ int main ( int, char*[] )
                         }
                         
                         Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "AlphaReeb", iteration, alphaReeb_graph ); // Writing the graph to a txt file.
-                        
-                        if (validation)
-                        {
-                            alphaReeb_results[counter].Betti_success.push_back( Check( expected_Betti_num, alphaReeb_graph ) ); // Seeing if expected and actual Betti numbers agree.
-                            
-                            alphaReeb_results[counter].homeo_success.push_back( Is_Homeomorphic( original_graph, alphaReeb_graph ) );
-                        alphaReeb_results[counter].geom_approx_error.push_back( Geometric_Approximation_Error( alphaReeb_graph, cloud_p ) );
-                        }
                     }
                 }
                 
@@ -239,6 +239,14 @@ int main ( int, char*[] )
                         
                         Simplify_Boost_Graph( mapper_graph );
                         
+                        if (validation)
+                        {
+                            mapper_results[counter].Betti_success.push_back( Check( expected_Betti_num, mapper_graph ) ); // Seeing if expected and actual Betti numbers agree.
+                            
+                            mapper_results[counter].homeo_success.push_back( Is_Homeomorphic( original_graph, mapper_graph ) );
+                            mapper_results[counter].geom_approx_error.push_back( Geometric_Approximation_Error( mapper_graph, cloud_p ) );
+                        }
+                        
                         if (draw_image)
                         {
                             const Point image_sizes( 800, 800 );
@@ -250,14 +258,6 @@ int main ( int, char*[] )
                         }
                         
                         Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "Mapper", iteration, mapper_graph ); // Writing the graph to a txt file.
-                        
-                        if (validation)
-                        {
-                            mapper_results[counter].Betti_success.push_back( Check( expected_Betti_num, mapper_graph ) ); // Seeing if expected and actual Betti numbers agree.
-                            
-                            mapper_results[counter].homeo_success.push_back( Is_Homeomorphic( original_graph, mapper_graph ) );
-                            mapper_results[counter].geom_approx_error.push_back( Geometric_Approximation_Error( mapper_graph, cloud_p ) );
-                        }
                     }
                 }
                 
@@ -278,6 +278,19 @@ int main ( int, char*[] )
                     
                     //Simplify_HoPeS( hopes_graph, 3 * noise );
                     
+                    Graph hopes;
+                    
+                    Convert_Graph( hopes_graph, hopes );
+                    
+                    if (validation)
+                    {
+                        hopes_results.Betti_success.push_back( Check( expected_Betti_num, hopes ) ); // Seeing if expected and actual Betti numbers agree.
+                        
+                        hopes_results.homeo_success.push_back( Is_Homeomorphic( original_graph, hopes ) );
+                        
+                        hopes_results.geom_approx_error.push_back( Geometric_Approximation_Error( hopes, cloud_p ) );
+                    }
+                    
                     if (draw_image)
                     {
                         const Point image_sizes( 800, 800 );
@@ -288,9 +301,7 @@ int main ( int, char*[] )
                         Write_Image( image_directory, input, "HoPeS1", iteration, image ); // Writing the image to a png file.
                     }
                     
-                    Graph hopes;
-                    
-                    Convert_Graph( hopes_graph, hopes );
+                    Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "HoPeS1", iteration, hopes ); // Writing the graph to a txt file.
                     
                     /*int counter = 0;
                     for (auto it = boost::vertices( hopes ).first; it != boost::vertices( hopes ).second; ++it, ++counter)
@@ -308,20 +319,9 @@ int main ( int, char*[] )
                     Draw_Graph( haR, 4, -1, 2, black, image_2 );
                     
                     imwrite( "/Users/philsmith/Documents/Xcode Projects/Cloud_Skeletonization/haR.png", image_2 );*/
-                    
-                    Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "HoPeS1", iteration, hopes ); // Writing the graph to a txt file.
-                    
-                    if (validation)
-                    {
-                        hopes_results.Betti_success.push_back( Check( expected_Betti_num, hopes ) ); // Seeing if expected and actual Betti numbers agree.
-                        
-                        hopes_results.homeo_success.push_back( Is_Homeomorphic( original_graph, hopes ) );
-                        
-                        hopes_results.geom_approx_error.push_back( Geometric_Approximation_Error( hopes, cloud_p ) );
-                    }
                 }
                 
-                if (iteration % 10 == 0) cout << "Experiment " << experiment_iter << ": Iteration " << iteration << "." << endl;
+                cout << "Experiment " << experiment_iter << ": Iteration " << iteration << "." << endl;
             }
             
             size_t mean_cloud_size = cloud_size / input.repetitions;
@@ -329,11 +329,7 @@ int main ( int, char*[] )
             if (validation) Analysis( result_directory, input, mean_cloud_size, alphaReeb_results, mapper_results, hopes_results );
         }
         
-        // Printing summary.
-        
-        cout << endl;
-        
-        Print_Summary( start_time, experiment_iter );
+        Print_Summary( start_time, experiment_iter ); // Printing summary.
     }
     
     if (image_input)

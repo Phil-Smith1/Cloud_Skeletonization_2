@@ -33,11 +33,6 @@ void Original_Graph ( string const& pattern_type, int pattern_size_1, int patter
             boost::add_vertex( g );
         }
         
-        for (int counter = 0; counter < (pattern_size_1 + 1) * (pattern_size_2 + 1); ++counter)
-        {
-            boost::add_vertex( g );
-        }
-        
         for (int counter_1 = 0; counter_1 < pattern_size_1 + 1; ++counter_1)
         {
             for (int counter_2 = 0; counter_2 < pattern_size_2; ++counter_2)

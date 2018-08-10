@@ -71,6 +71,7 @@ void Generate_AlphaReeb_Graph ( Graph const& input_graph, double alpha, Graph& a
     }
     
     vector<Graph::vertex_descriptor> vd;
+    vector<pair<Graph::edge_descriptor, bool>> e;
     
     for (int counter = 0; counter < 3 * num_vertices; ++counter)
     {
@@ -121,7 +122,11 @@ void Generate_AlphaReeb_Graph ( Graph const& input_graph, double alpha, Graph& a
             source = vertex_tree[source].second;
             target = vertex_tree[target].second;
             
-            boost::add_edge( source, target, alphaReeb_graph );
+            e.push_back( boost::add_edge( source, target, alphaReeb_graph ) );
+            Point2d src = alphaReeb_graph[boost::source( e.back().first, alphaReeb_graph )].pt;
+            Point2d trg = alphaReeb_graph[boost::target( e.back().first, alphaReeb_graph )].pt;
+            double length = norm( trg - src );
+            boost::put( boost::edge_weight_t(), alphaReeb_graph, e.back().first, length );
         }
     }
 }

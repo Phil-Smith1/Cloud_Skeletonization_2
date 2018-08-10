@@ -9,13 +9,13 @@
 #include "Find_Epsilon.h"
 #include "Cloud_To_Nbhd_Graph.h"
 #include "AlphaReeb_Algorithm.h"
-#include "Simplify_Boost_Graph.h"
+#include "Remove_Degree_1_Vertices.h"
+#include "Simplify_Graph.h"
 #include "Is_Homeomorphic.h"
 #include "Geometric_Approximation_Error.h"
 #include "Mapper.h"
 #include "Hopes.h"
 #include "Simplify_HoPeS.h"
-#include "Simplify_HoPeS_2.h"
 #include "Draw_Graph.h"
 #include "Write_Image.h"
 #include "Convert_Graph.h"
@@ -32,22 +32,21 @@ bool cloud_input = true;
 
 bool write_input = true;
 
-vector<int> wheel_range = { 3/*3, 4, 5, 6, 7, 8, 9, 10*/ };
-vector<int> grid_cols_range = { /*1, 2, 3*/ };
-vector<int> grid_rows_range = { /*1, 2, 3*/ };
-vector<int> squares_range = { /*2, 3*/ };
+vector<int> wheel_range = { 3, 4, 5, 6, 7, 8, 9, 10 };
+vector<int> grid_cols_range = { 1, 2, 3 };
+vector<int> grid_rows_range = { 1, 2, 3 };
+vector<int> squares_range = { 2, 3 };
 
 bool graph_dependent_cloud_size = true;
 int cloud_size_parameter = 100;
 
-string noise_type = "uniform";
-vector<double> noise_parameter_range = { 0.05, 0.2 };
+string noise_type = "gaussian";
+vector<double> noise_parameter_range = { 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1 };
 
-bool alphaReeb = true;
-vector<double> alpha_values = { 0.2/*0.1, 0.2, 0.3, 0.4, 0.5, 0.6*/ };
-//double epsilon = 0.1;
+bool alphaReeb = false;
+vector<double> alpha_values = { 0.3/*0.1, 0.2, 0.3, 0.4, 0.5, 0.6*/ };
 
-bool mapper = true;
+bool mapper = false;
 bool graph_dependent_num_intervals = true;
 vector<double> num_intervals_parameter = { 1.4/*1, 1.2, 1.4, 1.6, 1.8, 2*/ };
 double overlap_ratio = 0.5;
@@ -58,9 +57,9 @@ double mcsf = 0.01;
 
 bool hopes = true;
 
-int repetitions = 10;
+int repetitions = 100;
 
-bool validation = false;
+bool validation = true;
 
 bool test = false;
 
@@ -187,7 +186,9 @@ int main ( int, char*[] )
                         
                         alphaReeb_results[counter].time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
                         
-                        Simplify_Boost_Graph( alphaReeb_graph );
+                        Remove_Degree_1_Vertices( alphaReeb_graph );
+                        
+                        Simplify_Graph( 0.1, alphaReeb_graph );
                         
                         if (validation)
                         {
@@ -237,7 +238,9 @@ int main ( int, char*[] )
                         
                         mapper_results[counter].time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
                         
-                        Simplify_Boost_Graph( mapper_graph );
+                        Remove_Degree_1_Vertices( mapper_graph );
+                        
+                        Simplify_Graph( 0.1, mapper_graph );
                         
                         if (validation)
                         {
@@ -274,9 +277,9 @@ int main ( int, char*[] )
                     
                     hopes_results.time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
                     
-                    Simplify_HoPeS_2( hopes_graph );
+                    Remove_Degree_1_Vertices( hopes_graph );
                     
-                    //Simplify_HoPeS( hopes_graph, 3 * noise );
+                    Simplify_HoPeS( hopes_graph, 0.35 );
                     
                     Graph hopes;
                     

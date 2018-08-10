@@ -42,9 +42,8 @@
 		EE063A9A20ED06680028FC04 /* Binary_Search_Tree.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Binary_Search_Tree.cpp; sourceTree = "<group>"; };
 		EE063A9C20ED0DF40028FC04 /* Connect_Clusters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connect_Clusters.h; sourceTree = "<group>"; };
 		EE063A9D20EE79ED0028FC04 /* Simplify_HoPeS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simplify_HoPeS.h; sourceTree = "<group>"; };
-		EE063A9E2106165D0028FC04 /* Simplify_HoPeS_2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simplify_HoPeS_2.h; sourceTree = "<group>"; };
 		EE063A9F210B2CCC0028FC04 /* Original_Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Original_Graph.h; sourceTree = "<group>"; };
-		EE063AA0210F61D70028FC04 /* Simplify_Boost_Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simplify_Boost_Graph.h; sourceTree = "<group>"; };
+		EE063AA0210F61D70028FC04 /* Remove_Degree_1_Vertices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Remove_Degree_1_Vertices.h; sourceTree = "<group>"; };
 		EE063AA121108B7B0028FC04 /* Is_Homeomorphic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Is_Homeomorphic.h; sourceTree = "<group>"; };
 		EE063AA221108C1A0028FC04 /* Generate_Adjacent_Vertices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Generate_Adjacent_Vertices.h; sourceTree = "<group>"; };
 		EE063AA321108C5F0028FC04 /* Remove_Degree_2_Vertices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Remove_Degree_2_Vertices.h; sourceTree = "<group>"; };
@@ -59,6 +58,8 @@
 		EE063AAD211203510028FC04 /* Find_Epsilon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Find_Epsilon.h; sourceTree = "<group>"; };
 		EE063AAE211863EB0028FC04 /* Geometric_Approximation_Error.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Geometric_Approximation_Error.h; sourceTree = "<group>"; };
 		EE063AAF211868AF0028FC04 /* Extract_Edges.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Extract_Edges.h; sourceTree = "<group>"; };
+		EE063AB02119B27A0028FC04 /* Simplify_Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simplify_Graph.h; sourceTree = "<group>"; };
+		EE063AB12119E7040028FC04 /* DBSCAN.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBSCAN.h; sourceTree = "<group>"; };
 		EE2D96E31FD6CC18009F440A /* Check.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Check.h; sourceTree = "<group>"; };
 		EE2D96E41FD6F9D9009F440A /* Betti_Num.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Betti_Num.h; sourceTree = "<group>"; };
 		EE2D96E51FD6FD38009F440A /* Analysis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Analysis.h; sourceTree = "<group>"; };
@@ -187,6 +188,7 @@
 				EE2E0D0C1FD0714800DF5608 /* Convert_Graph.h */,
 				EEEE62A51FCC557E008A1AC3 /* Data_Pt.cpp */,
 				EEEE62A91FCC557E008A1AC3 /* Data_Pt.h */,
+				EE063AB12119E7040028FC04 /* DBSCAN.h */,
 				EEEE62B41FCD7960008A1AC3 /* Dijkstra.h */,
 				EEEE62BC1FCD82DA008A1AC3 /* Directory.h */,
 				EEEE62C31FCDD463008A1AC3 /* Distance_Filter.h */,
@@ -243,6 +245,7 @@
 				EEEA2AA81FD1C2990074FC3E /* Region.cpp */,
 				EEEA2AA71FD1C2240074FC3E /* Region.h */,
 				EE063AA7211099570028FC04 /* Relabelling.h */,
+				EE063AA0210F61D70028FC04 /* Remove_Degree_1_Vertices.h */,
 				EE063AA321108C5F0028FC04 /* Remove_Degree_2_Vertices.h */,
 				EE41500020C6A8D000B60C51 /* Remove_Small_Mapper_Components.h */,
 				EE063AAB2110B6540028FC04 /* Results.cpp */,
@@ -251,8 +254,7 @@
 				EE3184411FD59DE300CFF6E1 /* Run_Input.cpp */,
 				EE3184401FD59DD300CFF6E1 /* Run_Input.h */,
 				EEEE62BA1FCD7D67008A1AC3 /* Scaling_Parameters.h */,
-				EE063AA0210F61D70028FC04 /* Simplify_Boost_Graph.h */,
-				EE063A9E2106165D0028FC04 /* Simplify_HoPeS_2.h */,
+				EE063AB02119B27A0028FC04 /* Simplify_Graph.h */,
 				EE063A9D20EE79ED0028FC04 /* Simplify_HoPeS.h */,
 				EE2E0D061FD06A1B00DF5608 /* Single_Edge_Clustering.h */,
 				EEEE62B11FCD7960008A1AC3 /* Split_Into_Conn_Comps.h */,

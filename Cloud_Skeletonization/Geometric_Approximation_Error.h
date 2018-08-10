@@ -31,6 +31,8 @@ double Geometric_Approximation_Error ( Graph const& g, vector<P2>const& cloud )
             else distance = min( sqrt( CGAL::squared_distance( cloud[counter], l.first ) ), sqrt( CGAL::squared_distance( cloud[counter], l.second ) ) );
             
             if (distance < min_dist) min_dist = distance;
+            
+            if (min_dist < gae) break;
         }
         
         if (min_dist > gae) gae = min_dist;

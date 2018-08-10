@@ -13,7 +13,7 @@ bool Collapse_Shortest_Edge ( Graph_H& hopes_graph, double crit_length )
     {
         double length = sqrt( squared_distance( hopes_graph.vertices[hopes_graph.edges[counter].first], hopes_graph.vertices[hopes_graph.edges[counter].second] ) );
         
-        if (length < min_length)
+        if (length < min_length && length != 0)
         {
             min_length = length;
             edge = counter;
@@ -23,10 +23,27 @@ bool Collapse_Shortest_Edge ( Graph_H& hopes_graph, double crit_length )
     if (min_length > crit_length) return false;
     
     int v1 = hopes_graph.edges[edge].first, v2 = hopes_graph.edges[edge].second;
+    double x,y;
     
-    double x = 0.5 * (hopes_graph.vertices[v1].x() + hopes_graph.vertices[v2].x());
-    double y = 0.5 * (hopes_graph.vertices[v1].y() + hopes_graph.vertices[v2].y());
-    P2 v(x,y);
+    if ((hopes_graph.wedges[v1].size() < 3 && hopes_graph.wedges[v2].size() < 3) || (hopes_graph.wedges[v1].size() >=3 && hopes_graph.wedges[v2].size() >= 3))
+    {
+        x = 0.5 * (hopes_graph.vertices[v1].x() + hopes_graph.vertices[v2].x());
+        y = 0.5 * (hopes_graph.vertices[v1].y() + hopes_graph.vertices[v2].y());
+    }
+    
+    else if (hopes_graph.wedges[v1].size() >= 3)
+    {
+        x = hopes_graph.vertices[v1].x();
+        y = hopes_graph.vertices[v1].y();
+    }
+    
+    else
+    {
+        x = hopes_graph.vertices[v2].x();
+        y = hopes_graph.vertices[v2].y();
+    }
+    
+    P2 v( x, y );
     
     hopes_graph.vertices[v1] = v;
     

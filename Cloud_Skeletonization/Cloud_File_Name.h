@@ -19,7 +19,15 @@ void Cloud_File_Name ( string const& directory, Input const& input, int iteratio
         
     if (input.pattern_type == "grid")
     {
-        file_name += input.pattern_type + "/" + Num_To_String( input.pattern_size_1 ) + "," + Num_To_String( input.pattern_size_2 ) + "/" + input.pattern_type + Num_To_String( input.pattern_size_1 ) + "," + Num_To_String( input.pattern_size_2 ) + "_" + input.noise_type + Num_To_String( input.noise_parameter ) + "_cloud" + Num_To_String_2( iteration + 1 ) + ".txt";
+        if (input.regular)
+        {
+            file_name += input.pattern_type + "/Regular/" + Num_To_String( input.pattern_size_1 ) + "," + Num_To_String( input.pattern_size_2 ) + "/" + input.pattern_type + Num_To_String( input.pattern_size_1 ) + "," + Num_To_String( input.pattern_size_2 ) + "_" + input.noise_type + Num_To_String( input.noise_parameter ) + "_cloud" + Num_To_String_2( iteration + 1 ) + ".txt";
+        }
+        
+        else
+        {
+            file_name += input.pattern_type + "/Varied/" + Num_To_String( input.pattern_size_1 ) + "," + Num_To_String( input.pattern_size_2 ) + "/" + input.pattern_type + Num_To_String( input.pattern_size_1 ) + "," + Num_To_String( input.pattern_size_2 ) + "_" + input.noise_type + Num_To_String( input.noise_parameter ) + "_cloud" + Num_To_String_2( iteration + 1 ) + ".txt";
+        }
     }
     
     else if (input.pattern_type == "squares")

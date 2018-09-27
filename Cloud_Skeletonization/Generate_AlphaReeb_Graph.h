@@ -21,7 +21,7 @@ void Generate_AlphaReeb_Graph ( Graph const& input_graph, double alpha, Graph& a
     {
         int source, target;
         
-        if (input_graph[boost::source( *ei, input_graph )].interval < input_graph[boost::source( *ei, input_graph )].interval)
+        if (input_graph[boost::source( *ei, input_graph )].interval < input_graph[boost::target( *ei, input_graph )].interval)
         {
             source = input_graph[boost::source( *ei, input_graph )].index;
             target = input_graph[boost::target( *ei, input_graph )].index;
@@ -65,8 +65,8 @@ void Generate_AlphaReeb_Graph ( Graph const& input_graph, double alpha, Graph& a
         
         if (s != t)
         {
-            vertex_tree[t].first = false;
-            vertex_tree[t].second = s;
+            vertex_tree[s].first = false;
+            vertex_tree[s].second = t;
         }
     }
     

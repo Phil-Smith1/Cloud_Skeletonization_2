@@ -7,7 +7,6 @@
 void Split_Into_Conn_Comps ( Graph const& g, int& num_comps, vector<vector<Data_Pt>>& conn_comp_cloud, vector<Graph>& conn_comp )
 {
 	size_t num_vertices = boost::num_vertices( g );
-
 	vector<int> comp( num_vertices );
     
 	num_comps = boost::connected_components( g, &comp[0] ); // Assigns each vertex to its connected component.

@@ -3,16 +3,12 @@
 #include "Convert_Cloud.h"
 #include "Hopes.h"
 
-void Find_Epsilon ( vector<Data_Pt>const& cloud, double& epsilon )
+void Find_Epsilon ( vector<P2>const& cloud, double& epsilon )
 {
-    vector<P2> converted_cloud;
-    
-    Convert_Cloud_1( cloud, converted_cloud ); // Converting points of type Data_Pt to type P2.
-    
     Graph_H hopes_graph;
-    double noise = 0;
+    double max_birth = 0, min_death = 1e10;
     
-    Hopes( converted_cloud, hopes_graph, noise ); // Generating the Hopes graph.
+    Hopes( cloud, hopes_graph, max_birth, min_death );
     
-    epsilon = noise;
+    epsilon = 2 * max_birth + 0.0001;
 }

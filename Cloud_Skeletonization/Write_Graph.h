@@ -12,6 +12,7 @@
 void Write_Graph ( string const& graph_directory, Input const& input, int expected_Betti_num, double graph_length, string const& algorithm, int iteration, Graph const& g )
 {
     string directory;
+    
     Directory( graph_directory, input, algorithm, directory );
     
     if (!boost::filesystem::is_directory( directory ))
@@ -20,6 +21,7 @@ void Write_Graph ( string const& graph_directory, Input const& input, int expect
     }
     
 	string graph_file;
+    
 	File_Name( directory, input, algorithm, iteration, ".txt", graph_file );
 
 	ofstream ofs( graph_file );

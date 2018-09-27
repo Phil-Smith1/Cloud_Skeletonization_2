@@ -11,6 +11,7 @@
 #include "AlphaReeb_Algorithm.h"
 #include "Remove_Degree_1_Vertices.h"
 #include "Simplify_Graph.h"
+#include "Simplify_Graph_2.h"
 #include "Is_Homeomorphic.h"
 #include "Geometric_Approximation_Error.h"
 #include "Mapper.h"
@@ -28,52 +29,55 @@
 
 // Global variables.
 
-bool cloud_input = true;
+const bool cloud_input = true;
 
-bool write_input = true;
+const bool write_input = true;
 
-vector<int> wheel_range = { 3, 4, 5, 6, 7, 8, 9, 10 };
-vector<int> grid_cols_range = { 1, 2, 3 };
-vector<int> grid_rows_range = { 1, 2, 3 };
-vector<int> squares_range = { 2, 3 };
+const vector<int> wheel_range = { /*3, 4, 5, 6, 7, 8, 9, 10*/ };
+const vector<int> grid_cols_range = { 3/*1, 2, 3*/ };
+const vector<int> grid_rows_range = { 3/*1, 2, 3*/ };
 
-bool graph_dependent_cloud_size = true;
-int cloud_size_parameter = 100;
+const bool regular = false;
 
-string noise_type = "gaussian";
-vector<double> noise_parameter_range = { 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1 };
+const vector<int> squares_range = { /*2, 3*/ };
 
-bool alphaReeb = false;
-vector<double> alpha_values = { 0.3/*0.1, 0.2, 0.3, 0.4, 0.5, 0.6*/ };
+const bool graph_dependent_cloud_size = true;
+const int cloud_size_parameter = 100;
 
-bool mapper = false;
-bool graph_dependent_num_intervals = true;
-vector<double> num_intervals_parameter = { 1.4/*1, 1.2, 1.4, 1.6, 1.8, 2*/ };
-double overlap_ratio = 0.5;
-string filter_function = "Distance";
-double sigma = 0.1;
+const string noise_type = "uniform";
+const vector<double> noise_parameter_range = { 0.15 /*0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1*/ };
 
-double mcsf = 0.01;
+const bool alphaReeb = true;
+const vector<double> alpha_values = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 };
 
-bool hopes = true;
+const bool mapper = true;
+const bool graph_dependent_num_intervals = true;
+const vector<double> num_intervals_parameter = { 1, 1.2, 1.4, 1.6, 1.8, 2 };
+const double overlap_ratio = 0.5;
+const string filter_function = "Distance";
+const double sigma = 0.1;
 
-int repetitions = 100;
+const double mcsf = 0.01;
 
-bool validation = true;
+const bool hopes = true;
 
-bool test = false;
+const int repetitions = 1;
+
+const bool validation = true;
+
+const bool test = false;
 
 // If test: wr 3; gdcp true; csp 100; nt uniform; npr 0.05; av 0.3; e 0.1; gdni true; nip 1.4; mcsf 0.01; r 5; v false.
 
-bool image_input = false;
+const bool image_input = false;
 
-bool alphaReeb_on_image = true;
+const bool alphaReeb_on_image = true;
 
-bool mapper_on_image = true;
+const bool mapper_on_image = true;
 
-bool hopes_on_image = true;
+const bool hopes_on_image = true;
 
-Run_Input run_input( wheel_range, grid_cols_range, grid_rows_range, squares_range, graph_dependent_cloud_size, cloud_size_parameter, noise_type, noise_parameter_range, alphaReeb, mapper, hopes, repetitions );
+Run_Input run_input( wheel_range, grid_cols_range, grid_rows_range, regular, squares_range, graph_dependent_cloud_size, cloud_size_parameter, noise_type, noise_parameter_range, alphaReeb, mapper, hopes, repetitions );
 
 // Global constants.
 
@@ -137,6 +141,7 @@ int main ( int, char*[] )
             hopes_results.Betti_success.reserve( input.repetitions );
             hopes_results.homeo_success.reserve( input.repetitions );
             hopes_results.geom_approx_error.reserve( input.repetitions );
+            hopes_results.rms.reserve( input.repetitions );
             hopes_results.time = 0;
             
             for (int iteration = 0; iteration < input.repetitions; ++iteration) // Looping algorithm over clouds.
@@ -163,9 +168,7 @@ int main ( int, char*[] )
                 {
                     double epsilon;
                     
-                    Find_Epsilon( cloud_d, epsilon );
-                    
-                    if (epsilon > 0.125) epsilon = 0.125;
+                    Find_Epsilon( cloud_p, epsilon );
                     
                     Graph nbhd_graph;
                     
@@ -188,14 +191,16 @@ int main ( int, char*[] )
                         
                         Remove_Degree_1_Vertices( alphaReeb_graph );
                         
-                        Simplify_Graph( 0.1, alphaReeb_graph );
+                        //Simplify_Graph( 0.1, alphaReeb_graph );
                         
                         if (validation)
                         {
                             alphaReeb_results[counter].Betti_success.push_back( Check( expected_Betti_num, alphaReeb_graph ) ); // Seeing if expected and actual Betti numbers agree.
-                            
                             alphaReeb_results[counter].homeo_success.push_back( Is_Homeomorphic( original_graph, alphaReeb_graph ) );
-                            alphaReeb_results[counter].geom_approx_error.push_back( Geometric_Approximation_Error( alphaReeb_graph, cloud_p ) );
+                            
+                            pair<double, double> gae_rms = Geometric_Approximation_Error( alphaReeb_graph, cloud_p );
+                            
+                            alphaReeb_results[counter].geom_approx_error.push_back( gae_rms.first );
                         }
                         
                         if (draw_image)
@@ -203,7 +208,7 @@ int main ( int, char*[] )
                             const Point image_sizes( 800, 800 );
                             Mat image( image_sizes, CV_8UC3, white );
                             
-                            Draw_Graph( alphaReeb_graph, 1, -1, 1, black, image ); // Drawing the output graph.
+                            Draw_Graph( alphaReeb_graph, 2, -1, 1, black, image ); // Drawing the output graph.
                             
                             Write_Image( image_directory, input, "AlphaReeb", iteration, image ); // Writing the image to a png file.
                         }
@@ -240,14 +245,16 @@ int main ( int, char*[] )
                         
                         Remove_Degree_1_Vertices( mapper_graph );
                         
-                        Simplify_Graph( 0.1, mapper_graph );
+                        //Simplify_Graph( 0.1, mapper_graph );
                         
                         if (validation)
                         {
                             mapper_results[counter].Betti_success.push_back( Check( expected_Betti_num, mapper_graph ) ); // Seeing if expected and actual Betti numbers agree.
-                            
                             mapper_results[counter].homeo_success.push_back( Is_Homeomorphic( original_graph, mapper_graph ) );
-                            mapper_results[counter].geom_approx_error.push_back( Geometric_Approximation_Error( mapper_graph, cloud_p ) );
+                            
+                            pair<double, double> gae_rms = Geometric_Approximation_Error( mapper_graph, cloud_p );
+                            
+                            mapper_results[counter].geom_approx_error.push_back( gae_rms.first );
                         }
                         
                         if (draw_image)
@@ -268,30 +275,86 @@ int main ( int, char*[] )
                 {
                     clock_t start_iter = clock(); // Start stopwatch for iteration.
                     
+                    double max_birth = 0, min_death = 1e10;
                     Graph_H hopes_graph;
-                    double noise = 0;
                     
-                    Hopes( cloud_p, hopes_graph, noise ); // Generating the Hopes graph.
+                    Hopes( cloud_p, hopes_graph, max_birth, min_death ); // Generating the Hopes graph.
                     
                     clock_t end_iter = clock(); // Stop stopwatch for iteration.
                     
                     hopes_results.time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
                     
-                    Remove_Degree_1_Vertices( hopes_graph );
-                    
-                    Simplify_HoPeS( hopes_graph, 0.35 );
-                    
                     Graph hopes;
                     
-                    Convert_Graph( hopes_graph, hopes );
+                    int simplify_version = 4; // 0: No simplification; 1: RD1V; 2: RD1V SH; 3: aR RD1V; 4: RD1V aR RD1V; 5: SH2.
+                    
+                    if (simplify_version == 0)
+                    {
+                        Convert_Graph( hopes_graph, hopes );
+                    }
+                    
+                    if (simplify_version == 1)
+                    {
+                        Remove_Degree_1_Vertices( hopes_graph );
+                        
+                        Convert_Graph( hopes_graph, hopes );
+                    }
+                    
+                    if (simplify_version == 2)
+                    {
+                        Remove_Degree_1_Vertices( hopes_graph );
+                        
+                        Simplify_HoPeS( hopes_graph, 2 * min_death );
+                        
+                        Convert_Graph( hopes_graph, hopes );
+                    }
+                    
+                    if (simplify_version == 3)
+                    {
+                        Convert_Graph( hopes_graph, hopes );
+                        
+                        AlphaReeb_Parameters parameters( 2 * min_death, mcsf );
+                        Graph aR;
+                         
+                        AlphaReeb_Algorithm( hopes, parameters, aR );
+                         
+                        Remove_Degree_1_Vertices( aR );
+                         
+                        hopes = aR;
+                    }
+                    
+                    if (simplify_version == 4)
+                    {
+                        Remove_Degree_1_Vertices( hopes_graph );
+                        
+                        Convert_Graph( hopes_graph, hopes );
+                        
+                        AlphaReeb_Parameters parameters( 2 * min_death, mcsf );
+                        Graph aR;
+                        
+                        AlphaReeb_Algorithm( hopes, parameters, aR );
+                        
+                        Remove_Degree_1_Vertices( aR );
+                        
+                        hopes = aR;
+                    }
+                    
+                    if (simplify_version == 5)
+                    {
+                        Convert_Graph( hopes_graph, hopes );
+                        
+                        Simplify_Graph_2( hopes );
+                    }
                     
                     if (validation)
                     {
                         hopes_results.Betti_success.push_back( Check( expected_Betti_num, hopes ) ); // Seeing if expected and actual Betti numbers agree.
-                        
                         hopes_results.homeo_success.push_back( Is_Homeomorphic( original_graph, hopes ) );
                         
-                        hopes_results.geom_approx_error.push_back( Geometric_Approximation_Error( hopes, cloud_p ) );
+                        pair<double, double> gae_rms = Geometric_Approximation_Error( hopes, cloud_p );
+                        
+                        hopes_results.geom_approx_error.push_back( gae_rms.first );
+                        hopes_results.rms.push_back( gae_rms.second );
                     }
                     
                     if (draw_image)
@@ -299,29 +362,14 @@ int main ( int, char*[] )
                         const Point image_sizes( 800, 800 );
                         Mat image( image_sizes, CV_8UC3, white );
                         
-                        Draw_Graph( hopes_graph, black, red, image ); // Drawing the output graph.
+                        if (simplify_version <= 1) Draw_Graph( hopes_graph, black, red, image ); // Drawing the output graph.
                         
+                        else Draw_Graph( hopes, 2, -1, 1, black, image );
+                                                    
                         Write_Image( image_directory, input, "HoPeS1", iteration, image ); // Writing the image to a png file.
                     }
                     
                     Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "HoPeS1", iteration, hopes ); // Writing the graph to a txt file.
-                    
-                    /*int counter = 0;
-                    for (auto it = boost::vertices( hopes ).first; it != boost::vertices( hopes ).second; ++it, ++counter)
-                    {
-                        hopes[*it].index = counter;
-                    }
-                    
-                    AlphaReeb_Parameters parameters( 0.2, 0.01 );
-                    Graph haR;
-                    
-                    AlphaReeb( hopes, parameters, haR );
-                    
-                    Mat image_2( image_sizes, CV_8UC3, white );
-                    
-                    Draw_Graph( haR, 4, -1, 2, black, image_2 );
-                    
-                    imwrite( "/Users/philsmith/Documents/Xcode Projects/Cloud_Skeletonization/haR.png", image_2 );*/
                 }
                 
                 cout << "Experiment " << experiment_iter << ": Iteration " << iteration << "." << endl;
@@ -364,8 +412,8 @@ int main ( int, char*[] )
                 vector<P2> converted_cloud;
                 
                 Convert_Cloud_1( clouds[counter], converted_cloud );
-                double n = 0;
-                Hopes( converted_cloud, hopes_graph[counter], n );
+                double n = 0, m = 1e10;
+                Hopes( converted_cloud, hopes_graph[counter], n, m );
             }
             
             double scale = 2;

@@ -291,6 +291,12 @@ void Filtration::Persistence1d ()
     if (SumCores + ExtCore != delaunay.number_of_faces() + 1) cout << "\nError with cores of initial regions.\n";
     
     for (size_t i = 0; i < persistence.size(); ++i) positive_edges.push_back( persistence[i].edge );
+    
+    /*negative_edges.clear();
+    for (int ei = 0; ei < edges.size(); ++ei)
+    {
+        negative_edges.push_back( ei );
+    }*/
 }
 
 Filtration::Filtration(){}

@@ -3,8 +3,9 @@
 #include "Graph_H.h"
 #include "Single_Edge_Clustering.h"
 #include "Find_Diagonal_Gaps.h"
+#include "Draw_1D_PD.h"
 
-void Hopes ( vector<P2>& cloud, Graph_H& hopes_graph, double& noise )
+void Hopes ( vector<P2>const& cloud, Graph_H& hopes_graph, double& max_birth, double& min_death )
 {
     vector<vector<P2>> clouds;
     clouds.assign( 1, cloud );
@@ -15,8 +16,6 @@ void Hopes ( vector<P2>& cloud, Graph_H& hopes_graph, double& noise )
     
     for (int counter = 0; counter < cloud_size; ++counter)
     {
-        cloud = clouds[counter];
-        
         if (clouds[counter].size() < 9) continue;
         
         Filtration filtration( clouds[counter] );
@@ -30,14 +29,24 @@ void Hopes ( vector<P2>& cloud, Graph_H& hopes_graph, double& noise )
         if (filtration.persistence.size())
         {
             Find_Diagonal_Gaps( filtration.persistence, index_above_gap, diagonal_gaps );
-            double dd = 1e10;
-            for (int i = index_above_gap; i < filtration.persistence.size(); ++i)
+            
+            for (int counter = index_above_gap; counter < filtration.persistence.size(); ++counter)
             {
-                graph_edges.push_back( filtration.persistence[i].edge );
-                if (filtration.persistence[i].birth > noise) noise = filtration.persistence[i].birth;
-                if (filtration.persistence[i].death < dd) dd = filtration.persistence[i].death;
+                graph_edges.push_back( filtration.persistence[counter].edge );
+                if (filtration.persistence[counter].birth > max_birth) max_birth = filtration.persistence[counter].birth;
+                if (filtration.persistence[counter].death < min_death) min_death = filtration.persistence[counter].death;
             }
-            noise = dd;
+            
+            /*///////////////// Uncomment to draw 1D PD.
+            
+            const Point image_sizes( 800, 800 );
+            Mat image( image_sizes, CV_8UC3, CV_RGB( 255, 255, 255 ) );
+            
+            Draw_1D_PD(filtration.persistence, index_above_gap, image );
+            
+            imwrite( "/Users/philsmith/Documents/Xcode Projects/Cloud_Skeletonization/pd.png", image );
+            
+            ////////////////*/
         }
         
         hopes_graph.Initialise_Graph( filtration.edges, graph_edges, (int)filtration.delaunay.number_of_vertices() );

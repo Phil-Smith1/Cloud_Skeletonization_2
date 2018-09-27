@@ -2,16 +2,18 @@
 
 #include "Extract_Edges.h"
 
-double Geometric_Approximation_Error ( Graph const& g, vector<P2>const& cloud )
+pair<double, double> Geometric_Approximation_Error ( Graph const& g, vector<P2>const& cloud )
 {
     vector<pair<P2, P2>> lines;
     
     Extract_Edges( g, lines );
     
     double gae = 0;
+    double rms = 0;
     
     for (int counter = 0; counter < cloud.size(); ++counter)
     {
+        if (lines.size() == 0) return pair<double, double>( 0, 0 );
         double min_dist = 1e10;
         
         for (auto l : lines)
@@ -32,11 +34,15 @@ double Geometric_Approximation_Error ( Graph const& g, vector<P2>const& cloud )
             
             if (distance < min_dist) min_dist = distance;
             
-            if (min_dist < gae) break;
+            //if (min_dist < gae) break;
         }
         
         if (min_dist > gae) gae = min_dist;
+        rms += min_dist * min_dist;
     }
     
-    return gae;
+    rms = rms /(double)cloud.size();
+    rms = sqrt( rms );
+    
+    return pair<double, double>( gae, rms );
 }

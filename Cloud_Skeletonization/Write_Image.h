@@ -19,6 +19,6 @@ void Write_Image ( string const& image_directory, Input const& input, string con
 	string image_file;
     
 	File_Name( directory, input, algorithm, iteration, ".png", image_file );
-
-	imwrite( image_file, image );
+    
+    imwrite( image_file, image );
 }

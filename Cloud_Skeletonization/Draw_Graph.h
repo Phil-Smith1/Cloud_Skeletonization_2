@@ -12,7 +12,7 @@ void Draw_Vertices ( Graph const& g, double scale, Point2d& shift, int radius_ve
 	if (fill) thickness = -1;
 
 	pair<vertex_iter, vertex_iter> VertexPair;
-
+    
 	for (VertexPair = boost::vertices( g ); VertexPair.first != VertexPair.second; ++VertexPair.first)
 	{
 		circle( image, Point(scale * g[*VertexPair.first].pt + shift), radius_vertices, colour, thickness );

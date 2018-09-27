@@ -9,15 +9,32 @@ void Simplify_Graph ( double threshold, Graph& g )
 {
     vector<pair<int, int>> removed_edges;
     
-    for (auto ei = boost::edges( g ).first; ei != boost::edges( g ).second; ++ei)
+    bool remove = true;
+    int not_removed = 0;
+    
+    while (remove)
     {
-        if (get( boost::edge_weight_t(), g, *ei ) > threshold)
+        remove = false;
+        
+        auto ei = boost::edges( g ).first;
+        advance( ei, not_removed );
+        
+        for (; ei != boost::edges( g ).second; ++ei)
         {
-            int source = (int)boost::source( *ei, g ), target = (int)boost::target( *ei, g );
+            if (get( boost::edge_weight_t(), g, *ei ) > threshold)
+            {
+                int source = (int)boost::source( *ei, g ), target = (int)boost::target( *ei, g );
+                
+                removed_edges.push_back( pair<int, int>( source, target ) );
+                
+                boost::remove_edge( *ei, g );
+                
+                remove = true;
+                
+                break;
+            }
             
-            removed_edges.push_back( pair<int, int>( source, target ) );
-            
-            boost::remove_edge( *ei, g );
+            else ++not_removed;
         }
     }
     

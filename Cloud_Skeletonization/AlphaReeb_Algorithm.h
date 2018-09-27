@@ -49,7 +49,49 @@ void AlphaReeb_Algorithm ( Graph const& input_graph, AlphaReeb_Parameters const&
         
         Connect_Clusters( cluster, intermediate_graph );
         
+        Graph g;
+        
+        Graph::vertex_descriptor v1 = boost::add_vertex( g );
+        g[v1].pt = Point2d(0,0);
+        g[v1].interval = 0;
+        g[v1].index = 0;
+        Graph::vertex_descriptor v2 = boost::add_vertex( g );
+        g[v2].pt = Point2d(1,1);
+        g[v2].interval = 1;
+        g[v2].index = 1;
+        Graph::vertex_descriptor v3 = boost::add_vertex( g );
+        g[v3].pt = Point2d(-1,1);
+        g[v3].interval = 1;
+        g[v3].index = 2;
+        Graph::vertex_descriptor v4 = boost::add_vertex( g );
+        g[v4].pt = Point2d(1,2);
+        g[v4].interval = 2;
+        g[v4].index = 3;
+        Graph::vertex_descriptor v5 = boost::add_vertex( g );
+        g[v5].pt = Point2d(-1,2);
+        g[v5].interval = 2;
+        g[v5].index = 4;
+        Graph::vertex_descriptor v6 = boost::add_vertex( g );
+        g[v6].pt = Point2d(0,3);
+        g[v6].interval = 3;
+        g[v6].index = 5;
+        Graph::vertex_descriptor v7 = boost::add_vertex( g );
+        g[v7].pt = Point2d(0,4);
+        g[v7].interval = 4;
+        g[v7].index = 6;
+        
+        boost::add_edge( 0 , 1, g);
+        boost::add_edge( 0 , 2, g);
+        boost::add_edge( 1 , 3, g);
+        boost::add_edge( 2 , 4, g);
+        boost::add_edge( 3 , 5, g);
+        boost::add_edge( 4 , 5, g);
+        boost::add_edge( 5 , 6, g);
+        
+        //intermediate_graph = g;
+        
         Generate_AlphaReeb_Graph( intermediate_graph, parameters.alpha, alphaReeb_comp[counter] );
+        alphaReeb_comp[counter] = intermediate_graph;
     }
     
     if (num_comps > 1) Combine_Comps( alphaReeb_comp, alphaReeb_graph ); // Combining the components into a single graph.

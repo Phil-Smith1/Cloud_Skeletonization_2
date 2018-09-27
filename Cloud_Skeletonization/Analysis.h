@@ -40,23 +40,26 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
         
         alphaReeb_results[optimal_parameter].mean_time = alphaReeb_results[optimal_parameter].time / (double)input.repetitions;
         
-        string result_file = result_directory + "AlphaReeb/AlphaReeb.txt";
+        string result_file = result_directory + "AlphaReeb/List_Of_Results/AlphaReeb.txt";
         
         ofstream ofs( result_file, ios::app );
         
         ofs << left << setw( 14 ) << input.pattern_type;
         ofs << left << setw( 16 ) << input.pattern_size_1;
         ofs << left << setw( 16 ) << input.pattern_size_2;
+        ofs << left << setw( 5 ) << input.regular;
         ofs << left << setw( 6 ) << input.graph_dependent_cloud_size;
         ofs << left << setw( 10 ) << input.cloud_size_parameter;
         ofs << left << setw( 9 ) << mean_cloud_size;
         ofs << left << setw( 12 ) << input.noise_type;
         ofs << left << setw( 13 ) << input.noise_parameter;
         ofs << left << setw( 12 ) << input.repetitions;
+        ofs << left << setw( 11 ) << "AlphaReeb";
         ofs << left << setw( 15 ) << alphaReeb_results[optimal_parameter].parameter;
-        ofs << left << setw( 23 ) << alphaReeb_results[optimal_parameter].Betti_success_rate;
-        ofs << left << setw( 23 ) << alphaReeb_results[optimal_parameter].homeo_success_rate;
+        ofs << left << setw( 13 ) << alphaReeb_results[optimal_parameter].Betti_success_rate;
+        ofs << left << setw( 13 ) << alphaReeb_results[optimal_parameter].homeo_success_rate;
         ofs << left << setw( 11 ) << alphaReeb_results[optimal_parameter].mgae;
+        ofs << left << setw( 11 ) << alphaReeb_results[optimal_parameter].mrms;
         ofs << left << setw( 8 ) << alphaReeb_results[optimal_parameter].mean_time << endl;
         
         ofs.close();
@@ -94,23 +97,26 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
         
         mapper_results[optimal_parameter].mean_time = mapper_results[optimal_parameter].time / (double)input.repetitions;
         
-        string result_file = result_directory + "Mapper/Mapper.txt";
+        string result_file = result_directory + "Mapper/List_Of_Results/Mapper.txt";
         
         ofstream ofs( result_file, ios::app );
         
         ofs << left << setw( 14 ) << input.pattern_type;
         ofs << left << setw( 16 ) << input.pattern_size_1;
         ofs << left << setw( 16 ) << input.pattern_size_2;
+        ofs << left << setw( 5 ) << input.regular;
         ofs << left << setw( 6 ) << input.graph_dependent_cloud_size;
         ofs << left << setw( 10 ) << input.cloud_size_parameter;
         ofs << left << setw( 9 ) << mean_cloud_size;
         ofs << left << setw( 12 ) << input.noise_type;
         ofs << left << setw( 13 ) << input.noise_parameter;
         ofs << left << setw( 12 ) << input.repetitions;
-        ofs << left << setw( 29 ) << mapper_results[optimal_parameter].parameter;
-        ofs << left << setw( 23 ) << mapper_results[optimal_parameter].Betti_success_rate;
-        ofs << left << setw( 23 ) << mapper_results[optimal_parameter].homeo_success_rate;
+        ofs << left << setw( 11 ) << "Mapper";
+        ofs << left << setw( 13 ) << mapper_results[optimal_parameter].parameter;
+        ofs << left << setw( 13 ) << mapper_results[optimal_parameter].Betti_success_rate;
+        ofs << left << setw( 13 ) << mapper_results[optimal_parameter].homeo_success_rate;
         ofs << left << setw( 11 ) << mapper_results[optimal_parameter].mgae;
+        ofs << left << setw( 11 ) << mapper_results[optimal_parameter].mrms;
         ofs << left << setw( 8 ) << mapper_results[optimal_parameter].mean_time << endl;
         
         ofs.close();
@@ -120,7 +126,7 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
     {
         size_t attempts = hopes_results.Betti_success.size();
         int Betti_successes = 0, homeo_successes = 0;
-        double gae = 0;
+        double gae = 0, rms = 0;
         
         for (auto r : hopes_results.Betti_success) if (r) ++Betti_successes;
         
@@ -128,31 +134,37 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
         
         for (auto r : hopes_results.geom_approx_error) gae += r;
         
+        for (auto r : hopes_results.rms) rms += r;
+        
         double Betti_success_rate = 100 * Betti_successes / (double)attempts;
         double homeo_success_rate = 100 * homeo_successes / (double)attempts;
         
         hopes_results.Betti_success_rate = Betti_success_rate;
         hopes_results.homeo_success_rate = homeo_success_rate;
         hopes_results.mgae = gae / (double)attempts;
+        hopes_results.mrms = rms / (double)attempts;
         
         hopes_results.mean_time = hopes_results.time / (double)input.repetitions;
         
-        string result_file = result_directory + "Hopes/Hopes.txt";
+        string result_file = result_directory + "HoPeS/List_Of_Results/Hopes.txt";
 
         ofstream ofs( result_file, ios::app );
         
         ofs << left << setw( 14 ) << input.pattern_type;
         ofs << left << setw( 16 ) << input.pattern_size_1;
         ofs << left << setw( 16 ) << input.pattern_size_2;
+        ofs << left << setw( 5 ) << input.regular;
         ofs << left << setw( 6 ) << input.graph_dependent_cloud_size;
         ofs << left << setw( 10 ) << input.cloud_size_parameter;
         ofs << left << setw( 9 ) << mean_cloud_size;
         ofs << left << setw( 12 ) << input.noise_type;
         ofs << left << setw( 13 ) << input.noise_parameter;
         ofs << left << setw( 12 ) << attempts;
-        ofs << left << setw( 23 ) << hopes_results.Betti_success_rate;
-        ofs << left << setw( 23 ) << hopes_results.homeo_success_rate;
+        ofs << left << setw( 11 ) << "HoPeS";
+        ofs << left << setw( 13 ) << hopes_results.Betti_success_rate;
+        ofs << left << setw( 13 ) << hopes_results.homeo_success_rate;
         ofs << left << setw( 11 ) << hopes_results.mgae;
+        ofs << left << setw( 11 ) << hopes_results.mrms;
         ofs << left << setw( 8 ) << hopes_results.mean_time << endl;
         
         ofs.close();

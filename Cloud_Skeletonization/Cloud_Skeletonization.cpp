@@ -4,6 +4,7 @@
 
 #include "Write_Input.h"
 #include "Read_Input.h"
+#include "Initialise_Results.h"
 #include "Read_Cloud.h"
 #include "Original_Graph.h"
 #include "Find_Epsilon.h"
@@ -118,31 +119,11 @@ int main ( int, char*[] )
             Read_Input( line_data, input ); // Reading the input.
             
             size_t cloud_size = 0;
-            
             vector<Results> alphaReeb_results( alpha_values.size() );
-            for (int counter = 0; counter < alpha_values.size(); ++counter)
-            {
-                alphaReeb_results[counter].parameter = alpha_values[counter];
-                alphaReeb_results[counter].time = 0;
-                alphaReeb_results[counter].Betti_success.reserve( input.repetitions );
-                alphaReeb_results[counter].homeo_success.reserve( input.repetitions );
-                alphaReeb_results[counter].geom_approx_error.reserve( input.repetitions );
-            }
             vector<Results> mapper_results( num_intervals_parameter.size() );
-            for (int counter = 0; counter < num_intervals_parameter.size(); ++counter)
-            {
-                mapper_results[counter].parameter = num_intervals_parameter[counter];
-                mapper_results[counter].time = 0;
-                mapper_results[counter].Betti_success.reserve( input.repetitions );
-                mapper_results[counter].homeo_success.reserve( input.repetitions );
-                mapper_results[counter].geom_approx_error.reserve( input.repetitions );
-            }
             Results hopes_results;
-            hopes_results.Betti_success.reserve( input.repetitions );
-            hopes_results.homeo_success.reserve( input.repetitions );
-            hopes_results.geom_approx_error.reserve( input.repetitions );
-            hopes_results.rms.reserve( input.repetitions );
-            hopes_results.time = 0;
+            
+            Initialise_Results( alphaReeb_results, alpha_values, mapper_results, num_intervals_parameter, hopes_results, input.repetitions );
             
             for (int iteration = 0; iteration < input.repetitions; ++iteration) // Looping algorithm over clouds.
             {

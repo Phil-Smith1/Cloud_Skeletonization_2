@@ -30,12 +30,12 @@ void Draw_Edges ( Graph const& g, double scale, Point2d& shift, int thickness_ed
             if (boost::target( *oei, g ) == boost::target( *ei, g )) ++parallel_counter;
         }
         
-        if (parallel_counter != 2)
+        if (true)
         {
             line( image, Point( scale * g[boost::source( *ei, g )].pt + shift ), Point( scale * g[boost::target( *ei, g )].pt + shift ), colour, thickness_edge );
         }
         
-        if (parallel_counter != 1)
+        if (false)
         {
             Point v = Point( scale * g[boost::target( *ei, g )].pt + shift ) - Point( scale * g[boost::source( *ei, g )].pt + shift );
             double n = norm ( v );

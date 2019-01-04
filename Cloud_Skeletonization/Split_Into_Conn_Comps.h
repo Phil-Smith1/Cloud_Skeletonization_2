@@ -20,9 +20,14 @@ void Split_Into_Conn_Comps ( Graph const& g, int& num_comps, vector<vector<Data_
         data_pt.index = g[*vi].index;
         conn_comp_cloud[comp[data_pt.index]].push_back( data_pt );
     }
+    
+    if (num_comps == 1) conn_comp[0] = g;
 
-	for (int counter = 0; counter < num_comps; ++counter)
-	{
-		Recover_Components( g, conn_comp_cloud[counter], conn_comp[counter] ); // Assigns an edge between two vertices in each component if an edge exists in the input graph.
-	}
+    else
+    {
+        for (int counter = 0; counter < num_comps; ++counter)
+        {
+            Recover_Components( g, conn_comp_cloud[counter], conn_comp[counter] ); // Assigns an edge between two vertices in each component if an edge exists in the input graph.
+        }
+    }
 }

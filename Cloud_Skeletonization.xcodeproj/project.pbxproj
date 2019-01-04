@@ -63,6 +63,7 @@
 		EE063AD12142996E0028FC04 /* Simplify_Graph_2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simplify_Graph_2.h; sourceTree = "<group>"; };
 		EE063AD2215A8B8D0028FC04 /* Draw_1D_PD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Draw_1D_PD.h; sourceTree = "<group>"; };
 		EE063AD3215D09610028FC04 /* Initialise_Results.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Initialise_Results.h; sourceTree = "<group>"; };
+		EE29492A21DE3970001B4110 /* BSD_File.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BSD_File.h; sourceTree = "<group>"; };
 		EE2D96E31FD6CC18009F440A /* Check.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Check.h; sourceTree = "<group>"; };
 		EE2D96E41FD6F9D9009F440A /* Betti_Num.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Betti_Num.h; sourceTree = "<group>"; };
 		EE2D96E51FD6FD38009F440A /* Analysis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Analysis.h; sourceTree = "<group>"; };
@@ -176,6 +177,7 @@
 				EE2D96E41FD6F9D9009F440A /* Betti_Num.h */,
 				EE063A9A20ED06680028FC04 /* Binary_Search_Tree.cpp */,
 				EE063A9920ED04F00028FC04 /* Binary_Search_Tree.h */,
+				EE29492A21DE3970001B4110 /* BSD_File.h */,
 				EE063AA4211094EA0028FC04 /* Check_Degrees.h */,
 				EE2D96E31FD6CC18009F440A /* Check.h */,
 				EEEE62AA1FCC557E008A1AC3 /* Cloud_File_Name.h */,

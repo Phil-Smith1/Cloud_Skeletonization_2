@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 
 #include "Graph.h"
 
@@ -76,12 +77,26 @@ void Original_Graph ( string const& pattern_type, int pattern_size_1, int patter
             boost::add_edge( 4 * counter_1, 4 * counter_1 + 3, g );
         }
         
-        for (int counter = 0; counter < (pattern_size_1 - 1) * 4; ++counter)
+        if (pattern_size_1 < 6)
         {
-            char c = diagonal_edges.at( counter );
-            int i = c - '0';
-            
-            if (i == 1) boost::add_edge( counter, counter + 4, g );
+            for (int counter = 0; counter < 4; ++counter)
+            {
+                char c = diagonal_edges.at( counter );
+                int i = c - '0';
+                
+                if (i == 1) boost::add_edge( counter, counter + 4, g );
+            }
+        }
+        
+        else
+        {
+            for (int counter = 0; counter < 8; ++counter)
+            {
+                char c = diagonal_edges.at( counter );
+                int i = c - '0';
+                
+                if (i == 1) boost::add_edge( counter, counter + 4, g );
+            }
         }
     }
 }

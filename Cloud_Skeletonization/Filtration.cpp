@@ -61,50 +61,53 @@ Filtration::Filtration ( vector<P2>const& cloud )
     delaunay.clear();
     delaunay.insert( cloud.begin(), cloud.end() );
     
-    // Update info at vertices and faces: parent = itself, birth = circumradius for acute triangles.
-    
-    int ind = 0;
-    
-    for (VI iV = delaunay.vertices_begin(); iV != delaunay.vertices_end(); ++iV, ++ind) iV->info() = ind;
-    
-    faces.resize( delaunay.number_of_faces() + 1 );
-    double radius = 0, death_max = 0;
-    ind = 0;
-    
-    for (FFI iF = delaunay.finite_faces_begin(); iF != delaunay.finite_faces_end(); ++iF)
+    if (delaunay.number_of_faces() != 0)
     {
-        ++ind;
-        faces[ind] = iF;
-        faces[ind]->info().index = ind; // Set index.
-        faces[ind]->info().uplink = ind; // Parent = itself.
-        faces[ind]->info().live.resize( 1 );
-        faces[ind]->info().live[0] = ind; // The only live triangle is the current.
-        faces[ind]->info().birth = 0;
+        // Update info at vertices and faces: parent = itself, birth = circumradius for acute triangles.
         
-        K::Triangle_2 Triangle( iF->vertex(0)->point(), iF->vertex(1)->point(), iF->vertex(2)->point() );
+        int ind = 0;
         
-        if ( !is_acute( Triangle, radius ) ) continue; // Non-acute triangle.
+        for (VI iV = delaunay.vertices_begin(); iV != delaunay.vertices_end(); ++iV, ++ind) iV->info() = ind;
         
-        faces[ind]->info().birth = radius;
+        faces.resize( delaunay.number_of_faces() + 1 );
+        double radius = 0, death_max = 0;
+        ind = 0;
         
-        if (radius > death_max) death_max = radius;
-    }
-    
-    faces[0] = delaunay.infinite_face(); // Default handle isn't used for external region.
-    faces[0]->info().birth = death_max + 1e-2; // External region is born at alpha = death_max.
-    faces[0]->info().index = 0;
-    faces[0]->info().uplink = 0;
-    faces[0]->info().live.resize( 1 );
-    faces[0]->info().live[0] = 0;
-    auto iF = faces[0];
-    
-    // Build vector DelEdges.
-    
-    ind = 0;
-    
-    for (FEI iE = delaunay.finite_edges_begin(); iE != delaunay.finite_edges_end(); ++iE, ++ind)
-    {
-        edges.push_back( Edge( *iE, ind ) );
+        for (FFI iF = delaunay.finite_faces_begin(); iF != delaunay.finite_faces_end(); ++iF)
+        {
+            ++ind;
+            faces[ind] = iF;
+            faces[ind]->info().index = ind; // Set index.
+            faces[ind]->info().uplink = ind; // Parent = itself.
+            faces[ind]->info().live.resize( 1 );
+            faces[ind]->info().live[0] = ind; // The only live triangle is the current.
+            faces[ind]->info().birth = 0;
+            
+            K::Triangle_2 Triangle( iF->vertex(0)->point(), iF->vertex(1)->point(), iF->vertex(2)->point() );
+            
+            if ( !is_acute( Triangle, radius ) ) continue; // Non-acute triangle.
+            
+            faces[ind]->info().birth = radius;
+            
+            if (radius > death_max) death_max = radius;
+        }
+        
+        faces[0] = delaunay.infinite_face(); // Default handle isn't used for external region.
+        faces[0]->info().birth = death_max + 1e-2; // External region is born at alpha = death_max.
+        faces[0]->info().index = 0;
+        faces[0]->info().uplink = 0;
+        faces[0]->info().live.resize( 1 );
+        faces[0]->info().live[0] = 0;
+        auto iF = faces[0];
+        
+        // Build vector DelEdges.
+        
+        ind = 0;
+        
+        for (FEI iE = delaunay.finite_edges_begin(); iE != delaunay.finite_edges_end(); ++iE, ++ind)
+        {
+            edges.push_back( Edge( *iE, ind ) );
+        }
     }
 }
 

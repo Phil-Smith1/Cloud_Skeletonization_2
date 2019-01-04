@@ -20,57 +20,60 @@ void Single_Edge_Clustering ( double gap, vector<vector<P2>>& clouds )
     
     Filtration filtration( cloud ); // Edges and faces are found.
     
-    vector<int> uplinks;
-    
-    for (int i = 0; i < filtration.delaunay.number_of_vertices(); ++i) uplinks.push_back( i );
-    
-    sort( filtration.edges.begin(), filtration.edges.end(), IncreasingLengths );
-    
-    for (int ind_edge = 0; ind_edge < filtration.edges.size(); ++ind_edge)
+    if (filtration.delaunay.number_of_faces() != 0)
     {
-        Edge * edge = &filtration.edges[ind_edge];
+        vector<int> uplinks;
         
-        if (edge->length > gap) break;
+        for (int i = 0; i < filtration.delaunay.number_of_vertices(); ++i) uplinks.push_back( i );
         
-        int node_u = edge->end1->info();
-        int node_v = edge->end2->info();
-        int root_u = Root( node_u, uplinks );
-        int root_v = Root( node_v, uplinks );
-        uplinks[node_u] = root_u;
-        uplinks[node_v] = root_v;
+        sort( filtration.edges.begin(), filtration.edges.end(), IncreasingLengths );
         
-        if (root_u == root_v) continue; // Already connected.
-        
-        uplinks[root_u] = root_v;
-        uplinks[node_u] = root_v;
-    }
-    
-    vector<int> indices = uplinks;
-    clouds.clear();
-    int num_components = 0;
-    
-    for (auto v = filtration.delaunay.vertices_begin(); v != filtration.delaunay.vertices_end(); ++v)
-    {
-        uplinks[v->info()] = Root( v->info(), uplinks ); // Final root  determines a component.
-        
-        int ind = -1, i = 0;
-        
-        for (; i < v->info(); ++i)
+        for (int ind_edge = 0; ind_edge < filtration.edges.size(); ++ind_edge)
         {
-            if (uplinks[v->info()] == uplinks[i]) // i and v are in the same component.
-            {
-                ind = indices[uplinks[i]];
-                break;
-            }
-        }
+            Edge * edge = &filtration.edges[ind_edge];
             
-        if (ind < 0)
-        {
-            ind = num_components++; // New component.
-            clouds.push_back( vector<P2>{} ); // Empty cloud.
+            if (edge->length > gap) break;
+            
+            int node_u = edge->end1->info();
+            int node_v = edge->end2->info();
+            int root_u = Root( node_u, uplinks );
+            int root_v = Root( node_v, uplinks );
+            uplinks[node_u] = root_u;
+            uplinks[node_v] = root_v;
+            
+            if (root_u == root_v) continue; // Already connected.
+            
+            uplinks[root_u] = root_v;
+            uplinks[node_u] = root_v;
         }
         
-        indices[uplinks[v->info()]] = ind;
-        clouds[ind].push_back( v->point() );
+        vector<int> indices = uplinks;
+        clouds.clear();
+        int num_components = 0;
+        
+        for (auto v = filtration.delaunay.vertices_begin(); v != filtration.delaunay.vertices_end(); ++v)
+        {
+            uplinks[v->info()] = Root( v->info(), uplinks ); // Final root  determines a component.
+            
+            int ind = -1, i = 0;
+            
+            for (; i < v->info(); ++i)
+            {
+                if (uplinks[v->info()] == uplinks[i]) // i and v are in the same component.
+                {
+                    ind = indices[uplinks[i]];
+                    break;
+                }
+            }
+            
+            if (ind < 0)
+            {
+                ind = num_components++; // New component.
+                clouds.push_back( vector<P2>{} ); // Empty cloud.
+            }
+            
+            indices[uplinks[v->info()]] = ind;
+            clouds[ind].push_back( v->point() );
+        }
     }
 }

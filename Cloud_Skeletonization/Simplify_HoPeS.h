@@ -25,13 +25,13 @@ bool Collapse_Shortest_Edge ( Graph_H& hopes_graph, double crit_length )
     int v1 = hopes_graph.edges[edge].first, v2 = hopes_graph.edges[edge].second;
     double x,y;
     
-    if ((hopes_graph.wedges[v1].size() < 3 && hopes_graph.wedges[v2].size() < 3) || (hopes_graph.wedges[v1].size() >=3 && hopes_graph.wedges[v2].size() >= 3))
+    if ((hopes_graph.wedges[v1].size() == 2 && hopes_graph.wedges[v2].size() == 2) || (hopes_graph.wedges[v1].size() != 2 && hopes_graph.wedges[v2].size() != 2))
     {
         x = 0.5 * (hopes_graph.vertices[v1].x() + hopes_graph.vertices[v2].x());
         y = 0.5 * (hopes_graph.vertices[v1].y() + hopes_graph.vertices[v2].y());
     }
     
-    else if (hopes_graph.wedges[v1].size() >= 3)
+    else if (hopes_graph.wedges[v1].size() != 2)
     {
         x = hopes_graph.vertices[v1].x();
         y = hopes_graph.vertices[v1].y();

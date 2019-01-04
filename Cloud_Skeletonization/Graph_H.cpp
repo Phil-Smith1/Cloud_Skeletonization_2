@@ -61,7 +61,7 @@ void Graph_H::Draw (double scale, Point2d shift, Scalar color, Scalar crit_color
         int v1 = edges[e].first, v2 = edges[e].second;
         P2 p1 = vertices[v1], p2 = vertices[v2];
         
-        DrawEdge( p1, p2, scale, shift, c, thick, image );
+        DrawEdge( p1, p2, scale, shift, c, 2 * thick, image );
     }
     
     for (size_t i = 0; i < vertices.size(); ++i)

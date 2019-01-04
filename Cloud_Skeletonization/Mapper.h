@@ -29,7 +29,7 @@ void Mapper ( vector<Data_Pt>const& cloud, Mapper_Parameters const& parameters, 
     
     for (int counter = 0; counter < parameters.num_intervals; ++counter)
     {
-        DBSCAN( subcloud[counter], 0.1, 5, counter, cluster );
+        DBSCAN( subcloud[counter], parameters.DBSCAN, 5, counter, cluster );
     }
     
     double min_comp_size = cloud.size() * parameters.mcsf;

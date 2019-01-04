@@ -16,7 +16,7 @@ void Draw_Clouds ( vector<vector<Data_Pt>>const& clouds, Mat& image )
     {
         for (auto p : c)
         {
-            circle( image, Point( scale * p.pt + shift ), 1, CV_RGB( 0, 0, 0 ), -1 );
+            circle( image, Point( scale * p.pt + shift ), 2, CV_RGB( 0, 0, 0 ), -1 );
         }
     }
 }

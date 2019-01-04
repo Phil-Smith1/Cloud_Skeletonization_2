@@ -20,6 +20,8 @@ void Hopes ( vector<P2>const& cloud, Graph_H& hopes_graph, double& max_birth, do
         
         Filtration filtration( clouds[counter] );
         
+        if (filtration.delaunay.number_of_faces() == 0) continue;
+        
         filtration.Persistence1d( );
         
         int num_dots = (int)filtration.persistence.size(), index_above_gap;

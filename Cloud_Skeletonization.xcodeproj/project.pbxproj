@@ -42,7 +42,7 @@
 		EE063A9A20ED06680028FC04 /* Binary_Search_Tree.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Binary_Search_Tree.cpp; sourceTree = "<group>"; };
 		EE063A9C20ED0DF40028FC04 /* Connect_Clusters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connect_Clusters.h; sourceTree = "<group>"; };
 		EE063A9D20EE79ED0028FC04 /* Simplify_HoPeS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simplify_HoPeS.h; sourceTree = "<group>"; };
-		EE063A9F210B2CCC0028FC04 /* Original_Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Original_Graph.h; sourceTree = "<group>"; };
+		EE063A9F210B2CCC0028FC04 /* Original_Pattern.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Original_Pattern.h; sourceTree = "<group>"; };
 		EE063AA0210F61D70028FC04 /* Remove_Degree_1_Vertices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Remove_Degree_1_Vertices.h; sourceTree = "<group>"; };
 		EE063AA121108B7B0028FC04 /* Is_Homeomorphic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Is_Homeomorphic.h; sourceTree = "<group>"; };
 		EE063AA221108C1A0028FC04 /* Generate_Adjacent_Vertices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Generate_Adjacent_Vertices.h; sourceTree = "<group>"; };
@@ -240,7 +240,7 @@
 				EEEA2A9C1FD198630074FC3E /* Node_Data.cpp */,
 				EEEA2A9B1FD197D10074FC3E /* Node_Data.h */,
 				EEEE62A81FCC557E008A1AC3 /* Num_To_String.h */,
-				EE063A9F210B2CCC0028FC04 /* Original_Graph.h */,
+				EE063A9F210B2CCC0028FC04 /* Original_Pattern.h */,
 				EEEE62C41FCDD464008A1AC3 /* Output_Graph.h */,
 				EE063AA6211097E90028FC04 /* Permute.h */,
 				EEED833F1FDAB36D00D7F033 /* Print_Info.h */,

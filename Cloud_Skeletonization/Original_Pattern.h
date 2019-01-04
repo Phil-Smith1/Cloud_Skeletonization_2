@@ -5,7 +5,7 @@
 
 #include "Graph.h"
 
-void Original_Graph ( string const& pattern_type, int pattern_size_1, int pattern_size_2, string const& diagonal_edges, Graph& g )
+void Original_Pattern ( string const& pattern_type, int pattern_size_1, int pattern_size_2, string const& diagonal_edges, Graph& g )
 {
     if (pattern_type == "wheel")
     {
@@ -59,12 +59,17 @@ void Original_Graph ( string const& pattern_type, int pattern_size_1, int patter
     
     else if (pattern_type == "squares")
     {
-        for (int counter = 0; counter < pattern_size_1 * 4; ++counter)
+        int num_squares;
+        
+        if (pattern_size_1 < 6) num_squares = 2;
+        else num_squares = 3;
+        
+        for (int counter = 0; counter < num_squares * 4; ++counter)
         {
             boost::add_vertex( g );
         }
         
-        for (int counter_1 = 0; counter_1 < pattern_size_1; ++counter_1)
+        for (int counter_1 = 0; counter_1 < num_squares; ++counter_1)
         {
             for (int counter_2 = 0; counter_2 < 3; ++counter_2)
             {
@@ -77,26 +82,12 @@ void Original_Graph ( string const& pattern_type, int pattern_size_1, int patter
             boost::add_edge( 4 * counter_1, 4 * counter_1 + 3, g );
         }
         
-        if (pattern_size_1 < 6)
+        for (int counter = 0; counter < 4 * (num_squares - 1); ++counter)
         {
-            for (int counter = 0; counter < 4; ++counter)
-            {
-                char c = diagonal_edges.at( counter );
-                int i = c - '0';
-                
-                if (i == 1) boost::add_edge( counter, counter + 4, g );
-            }
-        }
-        
-        else
-        {
-            for (int counter = 0; counter < 8; ++counter)
-            {
-                char c = diagonal_edges.at( counter );
-                int i = c - '0';
-                
-                if (i == 1) boost::add_edge( counter, counter + 4, g );
-            }
+            char c = diagonal_edges.at( counter );
+            int i = c - '0';
+            
+            if (i == 1) boost::add_edge( counter, counter + 4, g );
         }
     }
 }

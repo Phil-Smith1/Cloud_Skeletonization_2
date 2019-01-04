@@ -6,7 +6,7 @@
 #include "Read_Input.h"
 #include "Initialise_Results.h"
 #include "Read_Cloud.h"
-#include "Original_Graph.h"
+#include "Original_Pattern.h"
 #include "Find_Epsilon.h"
 #include "Cloud_To_Nbhd_Graph.h"
 #include "AlphaReeb_Algorithm.h"
@@ -149,15 +149,15 @@ int main ( int, char*[] )
                 
                 Graph original_pattern;
                 
-                Original_Pattern( input.pattern_type, input.pattern_size_1, input.pattern_size_2, diagonal_edges, original_pattern ); //
+                Original_Pattern( input.pattern_type, input.pattern_size_1, input.pattern_size_2, diagonal_edges, original_pattern ); // Reconstructing the original pattern from which the cloud was produced.
                 
-                bool draw_image = iteration % 50 == 0 || test ? true : false;
+                bool draw_image = iteration % 50 == 0 || test ? true : false; // Draw every fiftieth image.
                 
                 if (input.alphaReeb) // Feeds cloud into the alpha-Reeb algorithm.
                 {
                     double epsilon;
                     
-                    Find_Epsilon( cloud_p, epsilon );
+                    Find_Epsilon( cloud_p, epsilon ); // 
                     
                     Graph nbhd_graph;
                     

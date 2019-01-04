@@ -10,7 +10,7 @@ void Read_Cloud ( string const& cloud_directory, Input const& input, int iterati
 {
     string cloud_file_name;
     
-    Cloud_File_Name( cloud_directory, input, iteration, cloud_file_name );
+    Cloud_File_Name( cloud_directory, input, iteration, cloud_file_name ); // Finding the cloud file.
     
     ifstream ifs( cloud_file_name );
     
@@ -35,7 +35,7 @@ void Read_Cloud ( string const& cloud_directory, Input const& input, int iterati
         
         if (stream >> x >> y)
         {
-            cloud.push_back( Data_Pt( Point2d( x, y ) ) );
+            cloud.push_back( Data_Pt( Point2d( x, y ) ) ); // Extracting the cloud from the file.
         }
     }
     
@@ -43,6 +43,6 @@ void Read_Cloud ( string const& cloud_directory, Input const& input, int iterati
     
     for (int counter = 0; counter < c_s; ++counter)
     {
-        cloud[counter].index = counter;
+        cloud[counter].index = counter; // Allocating each point in the cloud an index.
     }
 }

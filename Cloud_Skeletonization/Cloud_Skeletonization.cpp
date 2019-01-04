@@ -31,63 +31,60 @@
 
 // Global variables.
 
-const bool cloud_input = true;
-
-const bool write_input = true;
+const bool cloud_input = true; // Run algorithms over cloud dataset.
 
 const vector<int> wheel_range = { /*3, 4, 5, 6, 7, 8, 9*/ };
 const vector<int> grid_cols_range = { /*1, 2, 3*/ };
 const vector<int> grid_rows_range = { /*1, 2, 3*/ };
+const vector<int> squares_range = { /*2, 3, 4, 5, 6, 7, 8, 9*/ };
 
-const bool regular = true;
+const bool regular = true; // All grid patterns are regular.
 
-const vector<int> squares_range = { 4/*2, 3, 4, 5, 6, 7, 8, 9*/ };
+const bool graph_dependent_cloud_size = true; // Cloud size is dependent on the length of the pattern.
+const int cloud_size_parameter = 100; // Number of points in the cloud per unit length of the pattern.
 
-const bool graph_dependent_cloud_size = true;
-const int cloud_size_parameter = 100;
+const string noise_type = "uniform"; // Type of noise used to produce the cloud: uniform or gaussian.
+const vector<double> noise_parameter_range = { 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4/*0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2*/ }; // Range of magnitude of noise.
 
-const string noise_type = "uniform";
-const vector<double> noise_parameter_range = { 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4/*0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2*/ };
+const bool alphaReeb = true; // Run the cloud through the alpha-Reeb algorithm.
+const vector<double> alpha_values = { 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6 }; // Range of alpha values.
+const int alphaReeb_simp_type = 1; // Type of simplication of the alpha-Reeb output: 0: No simplification; 1: RD1V.
 
-const bool alphaReeb = true;
-const vector<double> alpha_values = { 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6 };
-const int alphaReeb_simp_type = 1; // 0: No simplification; 1: RD1V.
-
-const bool mapper = true;
-const bool graph_dependent_num_intervals = true;
-const vector<double> num_intervals_parameter = { 1.5, 1.7, 1.9, 2.1, 2.3, 2.5, 2.7, 2.9, 3.1, 3.3 };
-const vector<double> DBSCAN_parameter = { 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5 };
-const double overlap_ratio = 0.5;
+const bool mapper = true; // Run the cloud through the Mapper algorithm.
+const bool graph_dependent_num_intervals = true; // Number of intervals is dependent on the length of the pattern.
+const vector<double> num_intervals_parameter = { 1.5, 1.7, 1.9, 2.1, 2.3, 2.5, 2.7, 2.9, 3.1, 3.3 }; // Range of the number of intervals parameter: number of intervals = parameter x pattern length.
+const vector<double> DBSCAN_parameter = { 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5 }; // Range of DBSCAN parameter.
+const double overlap_ratio = 0.5; // Ratio of overlap of adjacent intervals.
 const string filter_function = "Distance";
-const double sigma = 0.1;
-const int mapper_simp_type = 1; // 0: No simplification; 1: RD1V.
+const double sigma = 0.1; // Used in the Gaussian density filter function.
+const int mapper_simp_type = 1; // Type of simplication of the Mapper output: 0: No simplification; 1: RD1V.
 
-const double mcsf = 0.05;
+const double mcsf = 0.05; // A component must represent a fraction of points greater than this fraction to be included in the output.
 
-const bool hopes = true;
-const int hopes_simp_type = 2; // 0: No simplification; 1: RD1V; 2: RD1V SH MD; 3: RD1V SH 2MD; 4: aR RD1V; 5: RD1V aR RD1V; 6: SH2.
+const bool hopes = true; // Run the cloud through the HoPeS algorithm.
+const int hopes_simp_type = 2; // Type of simplification of the HoPeS output: 0: No simplification; 1: RD1V; 2: RD1V SH MD; 3: RD1V SH 2MD; 4: aR RD1V; 5: RD1V aR RD1V; 6: SH2; 7: SH MD.
 
-const int repetitions = 200;
+const int repetitions = 200; // Number of repetitions of the same type of cloud.
 
-const bool validation = true;
+const bool validation = true; // Record the results.
 
-const bool test = false;
+const bool test = false; // To do a test run.
 
 // If test: wr 3; gdcp true; csp 100; nt uniform; npr 0.05; av 0.3; e 0.1; gdni true; nip 1.4; mcsf 0.01; r 5; v false.
 
-const bool image_input = false;
+const bool image_input = false; // Run algorithms over an image.
 
-const string image_name = "Woman"; // Woman, Bird_and_nest, Dog.
+const string image_name = "Woman"; // Woman, Bird, Dog.
 
-const bool alphaReeb_on_image = true;
+const bool BSD = false; // Run algorithms over the BSD database.
 
-const bool mapper_on_image = true;
+const bool alphaReeb_on_image = true; // Run alpha-Reeb algorithm on images.
 
-const bool hopes_on_image = true;
+const bool mapper_on_image = true; // Run Mapper algorithm on images.
 
-const int hopes_simp_type_2 = 7;
+const bool hopes_on_image = true; // Run HoPeS algorithm on images.
 
-const bool BSD = false;
+const int hopes_simp_type_2 = 7; // Type of simplification of the HoPeS output for images: 0: No simplification; 1: RD1V; 2: RD1V SH MD; 3: RD1V SH 2MD; 4: aR RD1V; 5: RD1V aR RD1V; 6: SH2; 7: SH MD.
 
 Run_Input run_input( wheel_range, grid_cols_range, grid_rows_range, regular, squares_range, graph_dependent_cloud_size, cloud_size_parameter, noise_type, noise_parameter_range, alphaReeb, alphaReeb_simp_type, mapper, mapper_simp_type, hopes, hopes_simp_type, repetitions );
 
@@ -113,7 +110,7 @@ int main ( int, char*[] )
     {
         clock_t start_time = clock(); // Start stopwatch.
         
-        if (write_input) Write_Input( input_file, run_input ); // Writing input.
+        Write_Input( input_file, run_input ); // Writing input.
         
         int experiment_iter = 0; // Counter for the number of experiments performed.
         
@@ -136,7 +133,7 @@ int main ( int, char*[] )
             
             Initialise_Results( alphaReeb_results, alpha_values, mapper_results, num_intervals_parameter, DBSCAN_parameter, hopes_results, input.repetitions );
             
-            for (int iteration = 0; iteration < input.repetitions; ++iteration) // Looping algorithm over clouds.
+            for (int iteration = 0; iteration < input.repetitions; ++iteration) // Looping over clouds.
             {
                 int expected_Betti_num;
                 double graph_length;
@@ -148,11 +145,11 @@ int main ( int, char*[] )
                 
                 cloud_size += cloud_d.size();
                 
-                Convert_Cloud_1( cloud_d, cloud_p );
+                Convert_Cloud_1( cloud_d, cloud_p ); // Creating a P2 cloud from a Data_Pt cloud.
                 
-                Graph original_graph;
+                Graph original_pattern;
                 
-                Original_Graph( input.pattern_type, input.pattern_size_1, input.pattern_size_2, diagonal_edges, original_graph );
+                Original_Pattern( input.pattern_type, input.pattern_size_1, input.pattern_size_2, diagonal_edges, original_pattern ); //
                 
                 bool draw_image = iteration % 50 == 0 || test ? true : false;
                 
@@ -193,7 +190,7 @@ int main ( int, char*[] )
                             {
                                 pair<double, double> gae_rms = Geometric_Approximation_Error( alphaReeb_graph, cloud_p );
                                 
-                                alphaReeb_results[counter].homeo_success.push_back( Is_Homeomorphic( original_graph, alphaReeb_graph ) );
+                                alphaReeb_results[counter].homeo_success.push_back( Is_Homeomorphic( original_pattern, alphaReeb_graph ) );
                                 alphaReeb_results[counter].geom_approx_error.push_back( gae_rms.first );
                                 alphaReeb_results[counter].rms.push_back( gae_rms.second );
                             }
@@ -255,7 +252,7 @@ int main ( int, char*[] )
                                 {
                                     pair<double, double> gae_rms = Geometric_Approximation_Error( mapper_graph, cloud_p );
                                     
-                                    mapper_results[counter_1 * DBSCAN_parameter.size() + counter_2].homeo_success.push_back( Is_Homeomorphic( original_graph, mapper_graph ) );
+                                    mapper_results[counter_1 * DBSCAN_parameter.size() + counter_2].homeo_success.push_back( Is_Homeomorphic( original_pattern, mapper_graph ) );
                                     mapper_results[counter_1 * DBSCAN_parameter.size() + counter_2].geom_approx_error.push_back( gae_rms.first );
                                     mapper_results[counter_1 * DBSCAN_parameter.size() + counter_2].rms.push_back( gae_rms.second );
                                 }
@@ -303,7 +300,7 @@ int main ( int, char*[] )
                         {
                             pair<double, double> gae_rms = Geometric_Approximation_Error( hopes, cloud_p );
                             
-                            hopes_results.homeo_success.push_back( Is_Homeomorphic( original_graph, hopes ) );
+                            hopes_results.homeo_success.push_back( Is_Homeomorphic( original_pattern, hopes ) );
                             hopes_results.geom_approx_error.push_back( gae_rms.first );
                             hopes_results.rms.push_back( gae_rms.second );
                         }

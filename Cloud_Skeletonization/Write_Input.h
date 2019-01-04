@@ -36,7 +36,7 @@ void Write_Input ( string const& input_file, Run_Input const& run_input )
         {
             for (auto it_3 = run_input.grid_rows_range.begin(); it_3 != run_input.grid_rows_range.end(); ++it_3)
             {
-                if (*it_3 < *it_2) continue;
+                if (*it_3 < *it_2) continue; // Ensures number of rows is >= number of columns.
                 
                 ofs << left << setw( 9 ) << "grid";
                 ofs << left << setw( 7 ) << *it_2;

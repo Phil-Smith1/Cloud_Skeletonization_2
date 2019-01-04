@@ -9,20 +9,16 @@
 #include "Original_Pattern.h"
 #include "Find_Epsilon.h"
 #include "Cloud_To_Nbhd_Graph.h"
-#include "AlphaReeb_Algorithm.h"
-#include "Remove_Degree_1_Vertices.h"
-#include "Simplify_Graph.h"
-#include "Simplify_Graph_2.h"
-#include "Is_Homeomorphic.h"
-#include "Geometric_Approximation_Error.h"
 #include "Mapper.h"
+#include "AlphaReeb_Algorithm.h"
 #include "Hopes.h"
+#include "Simplify_Graph.h"
 #include "Simplify_HoPeS.h"
+#include "Validation.h"
 #include "Draw_Graph.h"
 #include "Write_Image.h"
 #include "Convert_Graph.h"
 #include "Write_Graph.h"
-#include "Check.h"
 #include "Analysis.h"
 #include "Read_Cloud_From_Image.h"
 #include "Draw_Clouds.h"
@@ -33,7 +29,7 @@
 
 const bool cloud_input = true; // Run algorithms over cloud dataset.
 
-const vector<int> wheel_range = { /*3, 4, 5, 6, 7, 8, 9*/ };
+const vector<int> wheel_range = { 3/*3, 4, 5, 6, 7, 8, 9*/ };
 const vector<int> grid_cols_range = { /*1, 2, 3*/ };
 const vector<int> grid_rows_range = { /*1, 2, 3*/ };
 const vector<int> squares_range = { /*2, 3, 4, 5, 6, 7, 8, 9*/ };
@@ -46,10 +42,6 @@ const int cloud_size_parameter = 100; // Number of points in the cloud per unit 
 const string noise_type = "uniform"; // Type of noise used to produce the cloud: uniform or gaussian.
 const vector<double> noise_parameter_range = { 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4/*0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2*/ }; // Range of magnitude of noise.
 
-const bool alphaReeb = true; // Run the cloud through the alpha-Reeb algorithm.
-const vector<double> alpha_values = { 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6 }; // Range of alpha values.
-const int alphaReeb_simp_type = 1; // Type of simplication of the alpha-Reeb output: 0: No simplification; 1: RD1V.
-
 const bool mapper = true; // Run the cloud through the Mapper algorithm.
 const bool graph_dependent_num_intervals = true; // Number of intervals is dependent on the length of the pattern.
 const vector<double> num_intervals_parameter = { 1.5, 1.7, 1.9, 2.1, 2.3, 2.5, 2.7, 2.9, 3.1, 3.3 }; // Range of the number of intervals parameter: number of intervals = parameter x pattern length.
@@ -58,6 +50,10 @@ const double overlap_ratio = 0.5; // Ratio of overlap of adjacent intervals.
 const string filter_function = "Distance";
 const double sigma = 0.1; // Used in the Gaussian density filter function.
 const int mapper_simp_type = 1; // Type of simplication of the Mapper output: 0: No simplification; 1: RD1V.
+
+const bool alphaReeb = true; // Run the cloud through the alpha-Reeb algorithm.
+const vector<double> alpha_values = { 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6 }; // Range of alpha values.
+const int alphaReeb_simp_type = 1; // Type of simplication of the alpha-Reeb output: 0: No simplification; 1: RD1V.
 
 const double mcsf = 0.05; // A component must represent a fraction of points greater than this fraction to be included in the output.
 
@@ -78,15 +74,15 @@ const string image_name = "Woman"; // Woman, Bird, Dog.
 
 const bool BSD = false; // Run algorithms over the BSD database.
 
-const bool alphaReeb_on_image = true; // Run alpha-Reeb algorithm on images.
-
 const bool mapper_on_image = true; // Run Mapper algorithm on images.
+
+const bool alphaReeb_on_image = true; // Run alpha-Reeb algorithm on images.
 
 const bool hopes_on_image = true; // Run HoPeS algorithm on images.
 
 const int hopes_simp_type_2 = 7; // Type of simplification of the HoPeS output for images: 0: No simplification; 1: RD1V; 2: RD1V SH MD; 3: RD1V SH 2MD; 4: aR RD1V; 5: RD1V aR RD1V; 6: SH2; 7: SH MD.
 
-Run_Input run_input( wheel_range, grid_cols_range, grid_rows_range, regular, squares_range, graph_dependent_cloud_size, cloud_size_parameter, noise_type, noise_parameter_range, alphaReeb, alphaReeb_simp_type, mapper, mapper_simp_type, hopes, hopes_simp_type, repetitions );
+Run_Input run_input( wheel_range, grid_cols_range, grid_rows_range, regular, squares_range, graph_dependent_cloud_size, cloud_size_parameter, noise_type, noise_parameter_range, mapper, mapper_simp_type, alphaReeb, alphaReeb_simp_type, hopes, hopes_simp_type, repetitions );
 
 // Global constants.
 
@@ -127,11 +123,11 @@ int main ( int, char*[] )
             Read_Input( line_data, input ); // Reading the input.
             
             size_t cloud_size = 0;
-            vector<Results> alphaReeb_results( alpha_values.size() );
             vector<Results> mapper_results( num_intervals_parameter.size() * DBSCAN_parameter.size() );
+            vector<Results> alphaReeb_results( alpha_values.size() );
             Results hopes_results;
             
-            Initialise_Results( alphaReeb_results, alpha_values, mapper_results, num_intervals_parameter, DBSCAN_parameter, hopes_results, input.repetitions );
+            Initialise_Results( mapper_results, num_intervals_parameter, DBSCAN_parameter, alphaReeb_results, alpha_values, hopes_results, input.repetitions );
             
             for (int iteration = 0; iteration < input.repetitions; ++iteration) // Looping over clouds.
             {
@@ -153,68 +149,11 @@ int main ( int, char*[] )
                 
                 bool draw_image = iteration % 50 == 0 || test ? true : false; // Draw every fiftieth image.
                 
-                if (input.alphaReeb) // Feeds cloud into the alpha-Reeb algorithm.
-                {
-                    double epsilon;
-                    
-                    Find_Epsilon( cloud_p, epsilon ); // 
-                    
-                    Graph nbhd_graph;
-                    
-                    Cloud_To_Nbhd_Graph( cloud_d, epsilon, nbhd_graph ); // Generating the neighbourhood graph of the cloud.
-                    
-                    for (int counter = 0; counter < alpha_values.size(); ++counter) // Looping over alpha values.
-                    {
-                        input.alpha = alpha_values[counter];
-                        AlphaReeb_Parameters parameters( input.alpha, mcsf );
-                        
-                        clock_t start_iter = clock(); // Start stopwatch for iteration.
-                        
-                        Graph alphaReeb_graph;
-                        
-                        AlphaReeb_Algorithm( nbhd_graph, parameters, alphaReeb_graph ); // Alpha-Reeb algorithm.
-                        
-                        clock_t end_iter = clock(); // Stop stopwatch for iteration.
-                        
-                        alphaReeb_results[counter].time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
-                        
-                        Simplify_Graph( alphaReeb_graph, alphaReeb_simp_type );
-                        
-                        if (validation)
-                        {
-                            bool correct_Betti = Check( expected_Betti_num, alphaReeb_graph );
-                            
-                            alphaReeb_results[counter].Betti_success.push_back( correct_Betti );
-                            
-                            if (correct_Betti)
-                            {
-                                pair<double, double> gae_rms = Geometric_Approximation_Error( alphaReeb_graph, cloud_p );
-                                
-                                alphaReeb_results[counter].homeo_success.push_back( Is_Homeomorphic( original_pattern, alphaReeb_graph ) );
-                                alphaReeb_results[counter].geom_approx_error.push_back( gae_rms.first );
-                                alphaReeb_results[counter].rms.push_back( gae_rms.second );
-                            }
-                        }
-                        
-                        if (draw_image)
-                        {
-                            const Point image_sizes( 800, 800 );
-                            Mat image( image_sizes, CV_8UC3, white );
-                            
-                            Draw_Graph( alphaReeb_graph, 5, -1, 2, black, image ); // Drawing the output graph.
-                            
-                            Write_Image( image_directory, input, "AlphaReeb", iteration, image ); // Writing the image to a png file.
-                        }
-                        
-                        Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "AlphaReeb", iteration, alphaReeb_graph ); // Writing the graph to a txt file.
-                    }
-                }
-                
                 if (input.mapper) // Feeds cloud into Mapper.
                 {
                     for (int counter_1 = 0; counter_1 < num_intervals_parameter.size(); ++counter_1) // Looping over number of intervals;
                     {
-                        for (int counter_2 = 0; counter_2 < DBSCAN_parameter.size(); ++counter_2)
+                        for (int counter_2 = 0; counter_2 < DBSCAN_parameter.size(); ++counter_2) // Looping over DBSCAN parameter values.
                         {
                             input.graph_dependent_num_intervals = graph_dependent_num_intervals;
                             
@@ -240,22 +179,11 @@ int main ( int, char*[] )
                             
                             mapper_results[counter_1 * DBSCAN_parameter.size() + counter_2].time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
                             
-                            Simplify_Graph( mapper_graph, mapper_simp_type );
+                            Simplify_Graph( mapper_graph, mapper_simp_type ); // Simplifying the output.
                             
                             if (validation)
                             {
-                                bool correct_Betti = Check( expected_Betti_num, mapper_graph );
-                                
-                                mapper_results[counter_1 * DBSCAN_parameter.size() + counter_2].Betti_success.push_back( correct_Betti );
-                                
-                                if (correct_Betti)
-                                {
-                                    pair<double, double> gae_rms = Geometric_Approximation_Error( mapper_graph, cloud_p );
-                                    
-                                    mapper_results[counter_1 * DBSCAN_parameter.size() + counter_2].homeo_success.push_back( Is_Homeomorphic( original_pattern, mapper_graph ) );
-                                    mapper_results[counter_1 * DBSCAN_parameter.size() + counter_2].geom_approx_error.push_back( gae_rms.first );
-                                    mapper_results[counter_1 * DBSCAN_parameter.size() + counter_2].rms.push_back( gae_rms.second );
-                                }
+                                Validation( expected_Betti_num, original_pattern, cloud_p, mapper_graph, mapper_results[counter_1 * DBSCAN_parameter.size() + counter_2] ); // Testing Betti number, homeomorphism, geometric errors.
                             }
                             
                             if (draw_image)
@@ -270,6 +198,52 @@ int main ( int, char*[] )
                             
                             Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "Mapper", iteration, mapper_graph ); // Writing the graph to a txt file.
                         }
+                    }
+                }
+                
+                if (input.alphaReeb) // Feeds cloud into the alpha-Reeb algorithm.
+                {
+                    double epsilon;
+                    
+                    Find_Epsilon( cloud_p, epsilon ); // Epsilon is used to create a nbhd graph of the cloud, and is equal to twice the max birth of cycles above the widest gap in the PD.
+                    
+                    Graph nbhd_graph;
+                    
+                    Cloud_To_Nbhd_Graph( cloud_d, epsilon, nbhd_graph ); // Generating the neighbourhood graph of the cloud.
+                    
+                    for (int counter = 0; counter < alpha_values.size(); ++counter) // Looping over alpha values.
+                    {
+                        input.alpha = alpha_values[counter];
+                        AlphaReeb_Parameters parameters( input.alpha, mcsf );
+                        
+                        clock_t start_iter = clock(); // Start stopwatch for iteration.
+                        
+                        Graph alphaReeb_graph;
+                        
+                        AlphaReeb_Algorithm( nbhd_graph, parameters, alphaReeb_graph ); // Alpha-Reeb algorithm.
+                        
+                        clock_t end_iter = clock(); // Stop stopwatch for iteration.
+                        
+                        alphaReeb_results[counter].time += (end_iter - start_iter) * 1000 / (double)(CLOCKS_PER_SEC);
+                        
+                        Simplify_Graph( alphaReeb_graph, alphaReeb_simp_type ); // Simplifying the output.
+                        
+                        if (validation)
+                        {
+                            Validation( expected_Betti_num, original_pattern, cloud_p, alphaReeb_graph, alphaReeb_results[counter] ); // Testing Betti number, homeomorphism, geometric errors.
+                        }
+                        
+                        if (draw_image)
+                        {
+                            const Point image_sizes( 800, 800 );
+                            Mat image( image_sizes, CV_8UC3, white );
+                            
+                            Draw_Graph( alphaReeb_graph, 5, -1, 2, black, image ); // Drawing the output graph.
+                            
+                            Write_Image( image_directory, input, "AlphaReeb", iteration, image ); // Writing the image to a png file.
+                        }
+                        
+                        Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "AlphaReeb", iteration, alphaReeb_graph ); // Writing the graph to a txt file.
                     }
                 }
                 
@@ -288,22 +262,11 @@ int main ( int, char*[] )
                     
                     Graph hopes;
                     
-                    Simplify_Graph( hopes_graph, hopes_simp_type, min_death, mcsf, hopes );
+                    Simplify_Graph( hopes_graph, hopes_simp_type, min_death, mcsf, hopes ); // Simplifying the output.
                     
                     if (validation)
                     {
-                        bool correct_Betti = Check( expected_Betti_num, hopes );
-                        
-                        hopes_results.Betti_success.push_back( correct_Betti );
-                        
-                        if (correct_Betti)
-                        {
-                            pair<double, double> gae_rms = Geometric_Approximation_Error( hopes, cloud_p );
-                            
-                            hopes_results.homeo_success.push_back( Is_Homeomorphic( original_pattern, hopes ) );
-                            hopes_results.geom_approx_error.push_back( gae_rms.first );
-                            hopes_results.rms.push_back( gae_rms.second );
-                        }
+                        Validation( expected_Betti_num, original_pattern, cloud_p, hopes, hopes_results ); // Testing Betti number, homeomorphism, geometric errors.
                     }
                     
                     if (draw_image)
@@ -326,7 +289,7 @@ int main ( int, char*[] )
             
             size_t mean_cloud_size = cloud_size / input.repetitions;
             
-            if (validation) Analysis( result_directory, input, mean_cloud_size, alphaReeb_results, mapper_results, hopes_results );
+            if (validation) Analysis( result_directory, input, mean_cloud_size, mapper_results, alphaReeb_results, hopes_results ); // Writing results to a txt file.
         }
         
         Print_Summary( start_time, experiment_iter ); // Printing summary.
@@ -338,80 +301,68 @@ int main ( int, char*[] )
         
         input_image = imread( BSD_directory + image_name + "/" + image_name + ".jpg" );
 
-        vector<vector<Data_Pt>> clouds;
+        vector<vector<Data_Pt>> clouds_d;
+        vector<vector<P2>> clouds_p;
         
-        Read_Cloud_From_Image( BSD_directory, image_name, input_image, clouds );
+        Read_Cloud_From_Image( BSD_directory, image_name, input_image, clouds_d );
+        
+        clouds_p.resize( clouds_d.size() );
+        
+        for (int counter = 0; counter < clouds_d.size(); ++counter)
+        {
+            Convert_Cloud_1( clouds_d[counter], clouds_p[counter] );
+        }
         
         const Point image_sizes( 2 * input_image.cols, 2 * input_image.rows );
         Mat cloud_image( image_sizes, CV_8UC3, white );
         
-        Draw_Clouds( clouds, cloud_image );
+        Draw_Clouds( clouds_d, cloud_image );
         
         imwrite( BSD_directory + image_name + "/" + image_name + "_Cloud.png", cloud_image );
         
-        if (hopes_on_image)
+        if (mapper_on_image)
         {
-            Mat hopes_image( image_sizes, CV_8UC3, white );
+            Mat mapper_image( image_sizes, CV_8UC3, white );
             
-            vector<Graph> hopes_graph( clouds.size() );
+            vector<Graph> mapper_graph( clouds_p.size() );
             
-            for (int counter = 0; counter < clouds.size(); ++counter)
+            for (int counter = 0; counter < clouds_p.size(); ++counter)
             {
-                vector<P2> converted_cloud;
+                Mapper_Parameters parameters( 15, 0.5, "Distance", 0.1, 3, 0 );
                 
-                Convert_Cloud_1( clouds[counter], converted_cloud );
-                
-                double max_birth = 0, min_death = 1e10;
-                Graph_H g;
-                
-                Hopes( converted_cloud, g, max_birth, min_death );
-                
-                Simplify_Graph( g, hopes_simp_type_2, min_death, mcsf, hopes_graph[counter] );
+                Mapper( clouds_d[counter], parameters, mapper_graph[counter] );
             }
             
             double scale = 2;
             Point2d shift = Point2d( 0, 0 );
             
-            for (int counter = 0; counter < hopes_graph.size(); ++counter)
+            for (int counter = 0; counter < mapper_graph.size(); ++counter)
             {
-                Draw_Vertices( hopes_graph[counter], scale, shift, 2, -1, black, hopes_image );
+                Draw_Vertices( mapper_graph[counter], scale, shift, 2, -1, black, mapper_image );
                 
-                Draw_Edges( hopes_graph[counter], scale, shift, 2, black, hopes_image );
+                Draw_Edges( mapper_graph[counter], scale, shift, 2, black, mapper_image );
             }
             
-            /*for (int counter = 0; counter < hopes_graph.size(); ++counter)
-            {
-                hopes_graph[counter].Draw( scale, shift, black, red, 1, hopes_image );
-            }*/
+            imwrite( BSD_directory + image_name + "/" + image_name + "_Mapper.png", mapper_image );
             
-            imwrite( BSD_directory + image_name + "/" + image_name + "_Hopes.png", hopes_image );
-            
-            cout << "Completed hopes algorithm on " << image_name << "." << endl << endl;
+            cout << "Completed mapper algorithm on " << image_name << "." << endl << endl;
         }
         
         if (alphaReeb_on_image)
         {
             Mat alphaReeb_image( image_sizes, CV_8UC3, white );
             
-            vector<Graph> alphaReeb_graph( clouds.size() );
+            vector<Graph> alphaReeb_graph( clouds_p.size() );
             
-            for (int counter = 0; counter < clouds.size(); ++counter)
+            for (int counter = 0; counter < clouds_p.size(); ++counter)
             {
-                 double min_x = 1e10, min_y = 1e10, max_x = -1e10, max_y = -1e10;
+                double epsilon;
                 
-                 for (auto p : clouds[counter])
-                 {
-                     if (p.pt.x < min_x) min_x = p.pt.x;
-                     if (p.pt.x > max_x) max_x = p.pt.x;
-                     if (p.pt.y < min_y) min_y = p.pt.y;
-                     if (p.pt.y > max_y) max_y = p.pt.y;
-                 }
-                
-                double epsilon = max( max_x - min_x, max_y - min_y ) * 0.05;
+                Find_Epsilon( clouds_p[counter], epsilon ); // Epsilon is used to create a nbhd graph of the cloud, and is equal to twice the max birth of cycles above the widest gap in the PD.
                 
                 Graph nbhd_graph;
                 
-                Cloud_To_Nbhd_Graph( clouds[counter], epsilon, nbhd_graph );
+                Cloud_To_Nbhd_Graph( clouds_d[counter], epsilon, nbhd_graph );
                 
                 AlphaReeb_Parameters parameters( 4, 0 );
                 
@@ -433,32 +384,35 @@ int main ( int, char*[] )
             cout << "Completed alpha-Reeb algorithm on " << image_name << "." << endl << endl;
         }
         
-        if (mapper_on_image)
+        if (hopes_on_image)
         {
-            Mat mapper_image( image_sizes, CV_8UC3, white );
+            Mat hopes_image( image_sizes, CV_8UC3, white );
             
-            vector<Graph> mapper_graph( clouds.size() );
+            vector<Graph> hopes_graph( clouds_p.size() );
             
-            for (int counter = 0; counter < clouds.size(); ++counter)
+            for (int counter = 0; counter < clouds_p.size(); ++counter)
             {
-                Mapper_Parameters parameters( 15, 0.5, "Distance", 0.1, 3, 0 );
+                double max_birth = 0, min_death = 1e10;
+                Graph_H g;
                 
-                Mapper( clouds[counter], parameters, mapper_graph[counter] );
+                Hopes( clouds_p[counter], g, max_birth, min_death );
+                
+                Simplify_Graph( g, hopes_simp_type_2, min_death, mcsf, hopes_graph[counter] );
             }
             
             double scale = 2;
             Point2d shift = Point2d( 0, 0 );
             
-            for (int counter = 0; counter < mapper_graph.size(); ++counter)
+            for (int counter = 0; counter < hopes_graph.size(); ++counter)
             {
-                Draw_Vertices( mapper_graph[counter], scale, shift, 2, -1, black, mapper_image );
+                Draw_Vertices( hopes_graph[counter], scale, shift, 2, -1, black, hopes_image );
                 
-                Draw_Edges( mapper_graph[counter], scale, shift, 2, black, mapper_image );
+                Draw_Edges( hopes_graph[counter], scale, shift, 2, black, hopes_image );
             }
             
-            imwrite( BSD_directory + image_name + "/" + image_name + "_Mapper.png", mapper_image );
+            imwrite( BSD_directory + image_name + "/" + image_name + "_Hopes.png", hopes_image );
             
-            cout << "Completed mapper algorithm on " << image_name << "." << endl << endl;
+            cout << "Completed hopes algorithm on " << image_name << "." << endl << endl;
         }
     }
     
@@ -491,7 +445,7 @@ int main ( int, char*[] )
         int directory_size = test_directory_size + train_directory_size + val_directory_size;
         int iterations = directory_size;
         int skip = 0;
-        double hopes_rms_error = 0, aR_rms_error = 0, mapper_rms_error = 0;
+        double mapper_rms_error = 0, aR_rms_error = 0, hopes_rms_error = 0;
         string image_file;
         
         for (int counter_1 = 0; counter_1 < iterations; ++counter_1)
@@ -506,57 +460,43 @@ int main ( int, char*[] )
              
             input_image = imread( image_file );
             
-            vector<P2> cloud;
-            vector<vector<Data_Pt>> clouds;
+            vector<P2> cloud_p;
+            vector<vector<P2>> clouds_p;
+            vector<vector<Data_Pt>> clouds_d;
              
-            Read_Cloud_From_Image( input_image, cloud, clouds );
+            Read_Cloud_From_Image( input_image, cloud_p, clouds_p, clouds_d );
             
-            if (hopes_on_image)
+            if (mapper_on_image)
             {
-                vector<Graph> hopes_graph( clouds.size() );
+                vector<Graph> mapper_graph( clouds_p.size() );
                 
-                for (int counter = 0; counter < clouds.size(); ++counter)
+                for (int counter = 0; counter < clouds_p.size(); ++counter)
                 {
-                    vector<P2> converted_cloud;
+                    Mapper_Parameters parameters( 15, 0.5, "Distance", 0.1, 3, 0 );
                     
-                    Convert_Cloud_1( clouds[counter], converted_cloud );
-                    
-                    double max_birth = 0, min_death = 1e10;
-                    Graph_H g;
-                    
-                    Hopes( converted_cloud, g, max_birth, min_death );
-                    
-                    Simplify_Graph( g, hopes_simp_type_2, min_death, mcsf, hopes_graph[counter] );
+                    Mapper( clouds_d[counter], parameters, mapper_graph[counter] );
                 }
                 
-                Graph hopes;
+                Graph mapper;
                 
-                Combine_Comps( hopes_graph, hopes );
+                Combine_Comps( mapper_graph, mapper );
                 
-                hopes_rms_error += Geometric_Approximation_Error( hopes, cloud ).second;
+                mapper_rms_error += Geometric_Approximation_Error( mapper, cloud_p ).second;
             }
             
             if (alphaReeb_on_image)
             {
-                vector<Graph> alphaReeb_graph( clouds.size() );
+                vector<Graph> alphaReeb_graph( clouds_p.size() );
                 
-                for (int counter = 0; counter < clouds.size(); ++counter)
+                for (int counter = 0; counter < clouds_p.size(); ++counter)
                 {
-                    double min_x = 1e10, min_y = 1e10, max_x = -1e10, max_y = -1e10;
+                    double epsilon;
                     
-                    for (auto p : clouds[counter])
-                    {
-                        if (p.pt.x < min_x) min_x = p.pt.x;
-                        if (p.pt.x > max_x) max_x = p.pt.x;
-                        if (p.pt.y < min_y) min_y = p.pt.y;
-                        if (p.pt.y > max_y) max_y = p.pt.y;
-                    }
-                    
-                    double epsilon = max( max_x - min_x, max_y - min_y ) * 0.05;
+                    Find_Epsilon( clouds_p[counter], epsilon ); // Epsilon is used to create a nbhd graph of the cloud, and is equal to twice the max birth of cycles above the widest gap in the PD.
                     
                     Graph nbhd_graph;
                     
-                    Cloud_To_Nbhd_Graph( clouds[counter], epsilon, nbhd_graph );
+                    Cloud_To_Nbhd_Graph( clouds_d[counter], epsilon, nbhd_graph );
                     
                     AlphaReeb_Parameters parameters( 4, 0 );
                     
@@ -567,38 +507,41 @@ int main ( int, char*[] )
                 
                 Combine_Comps( alphaReeb_graph, alphaReeb );
                 
-                aR_rms_error += Geometric_Approximation_Error( alphaReeb, cloud ).second;
+                aR_rms_error += Geometric_Approximation_Error( alphaReeb, cloud_p ).second;
             }
             
-            if (mapper_on_image)
+            if (hopes_on_image)
             {
-                vector<Graph> mapper_graph( clouds.size() );
+                vector<Graph> hopes_graph( clouds_p.size() );
                 
-                for (int counter = 0; counter < clouds.size(); ++counter)
+                for (int counter = 0; counter < clouds_p.size(); ++counter)
                 {
-                    Mapper_Parameters parameters( 15, 0.5, "Distance", 0.1, 3, 0 );
+                    double max_birth = 0, min_death = 1e10;
+                    Graph_H g;
                     
-                    Mapper( clouds[counter], parameters, mapper_graph[counter] );
+                    Hopes( clouds_p[counter], g, max_birth, min_death );
+                    
+                    Simplify_Graph( g, hopes_simp_type_2, min_death, mcsf, hopes_graph[counter] );
                 }
                 
-                Graph mapper;
+                Graph hopes;
                 
-                Combine_Comps( mapper_graph, mapper );
+                Combine_Comps( hopes_graph, hopes );
                 
-                mapper_rms_error += Geometric_Approximation_Error( mapper, cloud ).second;
+                hopes_rms_error += Geometric_Approximation_Error( hopes, cloud_p ).second;
             }
             
             cout << "Completed iteration " << counter_1 + 1 - skip << "." << endl;
         }
         
-        hopes_rms_error = hopes_rms_error / (double)(iterations - skip);
-        aR_rms_error = aR_rms_error / (double)(iterations - skip);
         mapper_rms_error = mapper_rms_error / (double)(iterations - skip);
+        aR_rms_error = aR_rms_error / (double)(iterations - skip);
+        hopes_rms_error = hopes_rms_error / (double)(iterations - skip);
         
         cout << endl;
-        cout << hopes_rms_error << endl;
-        cout << aR_rms_error << endl;
         cout << mapper_rms_error << endl << endl;
+        cout << aR_rms_error << endl;
+        cout << hopes_rms_error << endl;
         
         ofstream ofs( BSD_directory + "Results/Results.txt" );
         

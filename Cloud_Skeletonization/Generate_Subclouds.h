@@ -2,7 +2,7 @@
 
 #include "Data_Pt.h"
 
-// Alpha-Reeb.
+// Intervals function and Generate_Subclouds function for the alpha-Reeb algorithm.
 
 void Intervals ( double alpha, double max, vector<pair<double, double>>& intervals )
 {
@@ -36,8 +36,6 @@ void Generate_Subclouds ( vector<Data_Pt>const& cloud, multimap<double, int>& fi
 		it_end = filter_multimap.upper_bound( intervals[counter].second );
 		pointers.push_back( make_pair( it_start, it_end ) );
 	}
-
-	// Assigning points to subclouds.
     
     subcloud.resize( num_intervals );
 
@@ -45,12 +43,12 @@ void Generate_Subclouds ( vector<Data_Pt>const& cloud, multimap<double, int>& fi
 	{
 		for (auto it = pointers[counter].first; it != pointers[counter].second; ++it)
 		{
-			subcloud[counter].push_back( cloud[it->second] );
+			subcloud[counter].push_back( cloud[it->second] ); // Assigning points to subclouds.
 		}
 	}
 }
 
-// Mapper.
+// Intervals function and Generate_Subclouds function for the Mapper algorithm.
 
 void Intervals ( double min, double max, int num_intervals, double overlap_ratio, vector<pair<double, double>>& intervals )
 {
@@ -89,15 +87,13 @@ void Generate_Subclouds ( vector<Data_Pt>const& cloud, multimap<double, int>& fi
         pointers.push_back( make_pair( it_start, it_end ) );
     }
     
-    // Assigning points to subclouds.
-    
     subcloud.resize( num_intervals );
     
     for (int counter = 0; counter < num_intervals; ++counter)
     {
         for (auto it = pointers[counter].first; it != pointers[counter].second; ++it)
         {
-            subcloud[counter].push_back( cloud[it->second] );
+            subcloud[counter].push_back( cloud[it->second] ); // Assigning points to subclouds.
         }
     }
 }

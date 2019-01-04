@@ -65,7 +65,7 @@ void Scaling_Parameters ( vector<vector<Data_Pt>>const& clouds, Point image_size
     
     scale = min( image_sizes.x / cloud_sizes.x, image_sizes.y / cloud_sizes.y );
     
-    // transformation: point -> scale * (point - cloud_center) + image_center.
+    // Transformation: point -> scale * (point - cloud_center) + image_center.
     
     shift = image_center - scale * cloud_center;
 }
@@ -84,7 +84,7 @@ void Scaling_Parameters ( Graph const& g, Point image_sizes, double& scale, Poin
 
 	scale = min( image_sizes.x / cloud_sizes.x, image_sizes.y / cloud_sizes.y );
 
-	// transformation: point -> scale * (point - cloud_center) + image_center. 
+	// Transformation: point -> scale * (point - cloud_center) + image_center.
 
 	shift = image_center - scale * cloud_center;
 }
@@ -103,7 +103,7 @@ void Scaling_Parameters ( Graph_H const& g, Point image_sizes, double& scale, Po
     
     scale = min( image_sizes.x / cloud_sizes.x, image_sizes.y / cloud_sizes.y );
     
-    // transformation: point -> scale * (point - cloud_center) + image_center.
+    // Transformation: point -> scale * (point - cloud_center) + image_center.
     
     shift = image_center - scale * cloud_center;
 }

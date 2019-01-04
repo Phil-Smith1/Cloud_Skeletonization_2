@@ -64,7 +64,7 @@
 		EE063AD2215A8B8D0028FC04 /* Draw_1D_PD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Draw_1D_PD.h; sourceTree = "<group>"; };
 		EE063AD3215D09610028FC04 /* Initialise_Results.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Initialise_Results.h; sourceTree = "<group>"; };
 		EE29492A21DE3970001B4110 /* BSD_File.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BSD_File.h; sourceTree = "<group>"; };
-		EE2D96E31FD6CC18009F440A /* Check.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Check.h; sourceTree = "<group>"; };
+		EE2D96E31FD6CC18009F440A /* Check_Betti.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Check_Betti.h; sourceTree = "<group>"; };
 		EE2D96E41FD6F9D9009F440A /* Betti_Num.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Betti_Num.h; sourceTree = "<group>"; };
 		EE2D96E51FD6FD38009F440A /* Analysis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Analysis.h; sourceTree = "<group>"; };
 		EE2E0D041FD0656400DF5608 /* Convert_Cloud.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Convert_Cloud.h; sourceTree = "<group>"; };
@@ -98,6 +98,7 @@
 		EEEA2AAE1FD1CAD80074FC3E /* Graph_H.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Graph_H.cpp; sourceTree = "<group>"; };
 		EEED833F1FDAB36D00D7F033 /* Print_Info.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Print_Info.h; sourceTree = "<group>"; };
 		EEED83401FDAB97200D7F033 /* Write_Input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Write_Input.h; sourceTree = "<group>"; };
+		EEED9C4721DFBB2C00999D53 /* Validation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Validation.h; sourceTree = "<group>"; };
 		EEEE62971FCC4837008A1AC3 /* Cloud_Skeletonization */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Cloud_Skeletonization; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEEE629A1FCC4837008A1AC3 /* Cloud_Skeletonization.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Cloud_Skeletonization.cpp; sourceTree = "<group>"; };
 		EEEE62A11FCC530A008A1AC3 /* Input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Input.h; sourceTree = "<group>"; };
@@ -179,7 +180,7 @@
 				EE063A9920ED04F00028FC04 /* Binary_Search_Tree.h */,
 				EE29492A21DE3970001B4110 /* BSD_File.h */,
 				EE063AA4211094EA0028FC04 /* Check_Degrees.h */,
-				EE2D96E31FD6CC18009F440A /* Check.h */,
+				EE2D96E31FD6CC18009F440A /* Check_Betti.h */,
 				EEEE62AA1FCC557E008A1AC3 /* Cloud_File_Name.h */,
 				EEEE629A1FCC4837008A1AC3 /* Cloud_Skeletonization.cpp */,
 				EEEE62B21FCD7960008A1AC3 /* Cloud_To_Nbhd_Graph.h */,
@@ -266,6 +267,7 @@
 				EE063A9D20EE79ED0028FC04 /* Simplify_HoPeS.h */,
 				EE2E0D061FD06A1B00DF5608 /* Single_Edge_Clustering.h */,
 				EEEE62B11FCD7960008A1AC3 /* Split_Into_Conn_Comps.h */,
+				EEED9C4721DFBB2C00999D53 /* Validation.h */,
 				EEEE62BE1FCD8CA7008A1AC3 /* Write_Graph.h */,
 				EEEE62BB1FCD82DA008A1AC3 /* Write_Image.h */,
 				EEED83401FDAB97200D7F033 /* Write_Input.h */,

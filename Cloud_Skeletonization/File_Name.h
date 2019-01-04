@@ -15,14 +15,14 @@ void File_Name ( string const& directory, Input const& input, string const& algo
         file_name = directory + "/" + input.pattern_type + Num_To_String(input.pattern_size_1 ) + "_" + input.noise_type + Num_To_String( input.noise_parameter ) + "_cloud" + Num_To_String_2( iteration + 1 ) + "_" + algorithm;
     }
     
-    if (algorithm == "AlphaReeb")
-    {
-        file_name += Num_To_String( input.alpha );
-    }
-    
-    else if (algorithm == "Mapper")
+    if (algorithm == "Mapper")
     {
         file_name += Num_To_String( input.num_intervals_param );
+    }
+    
+    else if (algorithm == "AlphaReeb")
+    {
+        file_name += Num_To_String( input.alpha );
     }
     
     file_name += ext;

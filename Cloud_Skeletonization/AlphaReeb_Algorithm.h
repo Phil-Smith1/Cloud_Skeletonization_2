@@ -24,9 +24,9 @@ void AlphaReeb_Algorithm ( Graph const& input_graph, AlphaReeb_Parameters const&
     
     for (int counter = 0; counter < num_comps; ++counter) // Looping over connected components.
     {
-        if (conn_comp_cloud[counter].size() < min_comp_size) continue; // Disregards components with fewer vertices than the value of min_comp_size.
+        if (conn_comp_cloud[counter].size() < min_comp_size) continue; // Disregards components with fewer points than the value of min_comp_size.
         
-        if (conn_comp_cloud[counter].size() == 1)
+        if (conn_comp_cloud[counter].size() == 1) // Case when component consists of a single point.
         {
             Graph::vertex_descriptor v = boost::add_vertex( alphaReeb_comp[counter] );
             alphaReeb_comp[counter][v].pt = conn_comp_cloud[counter][0].pt;
@@ -41,15 +41,15 @@ void AlphaReeb_Algorithm ( Graph const& input_graph, AlphaReeb_Parameters const&
         
         Dijkstra( conn_comp[counter], dijkstra_multimap ); // Assigning filter values to each point.
         
-        Generate_Subclouds( conn_comp_cloud[counter], dijkstra_multimap, parameters.alpha, subcloud );
+        Generate_Subclouds( conn_comp_cloud[counter], dijkstra_multimap, parameters.alpha, subcloud ); // Assigning points to subclouds.
         
-        Generate_Subgraphs( conn_comp[counter], subcloud, subgraph );
+        Generate_Subgraphs( conn_comp[counter], subcloud, subgraph ); // Recover subgraph for each subcloud.
         
-        Group_Subgraphs( subgraph, subcloud, cluster );
+        Group_Subgraphs( subgraph, subcloud, cluster ); // Cluster each connected component of each subgraph.
         
-        Connect_Clusters( cluster, intermediate_graph );
+        Connect_Clusters( cluster, intermediate_graph ); // Connect clusters whose intersection of points is non-empty.
         
-        Generate_AlphaReeb_Graph( intermediate_graph, parameters.alpha, alphaReeb_comp[counter] );
+        Generate_AlphaReeb_Graph( intermediate_graph, parameters.alpha, alphaReeb_comp[counter] ); // Perform the final step of the alpha-Reeb algorithm.
     }
     
     if (num_comps > 1) Combine_Comps( alphaReeb_comp, alphaReeb_graph ); // Combining the components into a single graph.

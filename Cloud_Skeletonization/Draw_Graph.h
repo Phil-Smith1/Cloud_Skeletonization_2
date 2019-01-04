@@ -3,7 +3,6 @@
 #include <opencv2/imgproc/imgproc.hpp>
 
 #include "Scaling_Parameters.h"
-
 #include "Filtration.h"
 
 void Draw_Vertices ( Graph const& g, double scale, Point2d& shift, int radius_vertices, bool fill, Scalar const& colour, Mat& image )

@@ -23,11 +23,6 @@ void Directory ( string const& initial_directory, Input const& input, string con
         directory = initial_directory + algorithm + "/Graph_Dependent_Cloud_Size/" + Num_To_String( input.cloud_size_parameter ) + "/" + input.noise_type + "/" + Num_To_String( input.noise_parameter ) + "/" + input.pattern_type + "/" + Num_To_String( input.pattern_size_1 );
     }
 
-    if (algorithm == "AlphaReeb")
-    {
-        directory = directory + "/Alpha_" + Num_To_String( input.alpha );
-    }
-
     if (algorithm == "Mapper")
     {
         if (input.graph_dependent_num_intervals)
@@ -36,5 +31,10 @@ void Directory ( string const& initial_directory, Input const& input, string con
         }
         
         else directory = directory + "/" + Num_To_String( input.num_intervals ) + "_Intervals";
+    }
+    
+    if (algorithm == "AlphaReeb")
+    {
+        directory = directory + "/Alpha_" + Num_To_String( input.alpha );
     }
 }

@@ -81,7 +81,7 @@ void Read_Cloud_From_Image ( string const& image_directory, string const& image_
     imwrite( image_directory + image_name + "/" + "Edges_On_" + image_name + ".png", dst );
 }
 
-void Read_Cloud_From_Image ( Mat const& input_image, vector<P2>& cloud, vector<vector<Data_Pt>>& clouds )
+void Read_Cloud_From_Image ( Mat const& input_image, vector<P2>& cloud_p, vector<vector<P2>>& clouds_p, vector<vector<Data_Pt>>& clouds_d )
 {
     int Canny_low_threshold = 75;
     double Canny_ratio = 3;
@@ -89,17 +89,16 @@ void Read_Cloud_From_Image ( Mat const& input_image, vector<P2>& cloud, vector<v
     
     Canny_Detector( input_image, Canny_low_threshold, Canny_ratio, Canny_edges );
     
-    Load_Cloud( Canny_edges, cloud );
+    Load_Cloud( Canny_edges, cloud_p );
     
-    vector<vector<P2>> P2_clouds;
-    P2_clouds.assign( 1, cloud );
+    clouds_p.assign( 1, cloud_p );
     
-    Single_Edge_Clustering( 3, P2_clouds );
+    Single_Edge_Clustering( 3, clouds_p );
     
-    clouds.resize( P2_clouds.size() );
+    clouds_d.resize( clouds_p.size() );
     
-    for (int counter = 0; counter < P2_clouds.size(); ++counter)
+    for (int counter = 0; counter < clouds_p.size(); ++counter)
     {
-        Convert_Cloud_2( P2_clouds[counter], clouds[counter] );
+        Convert_Cloud_2( clouds_p[counter], clouds_d[counter] );
     }
 }

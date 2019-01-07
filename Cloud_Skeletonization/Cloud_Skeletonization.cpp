@@ -24,6 +24,7 @@
 #include "Draw_Clouds.h"
 #include "Print_Info.h"
 #include "BSD_File.h"
+#include "Write_Results.h"
 
 // Global variables.
 
@@ -99,6 +100,7 @@ const string image_directory = root_directory + "Code_Output/Images/";
 const string graph_directory = root_directory + "Code_Output/Graphs/";
 const string result_directory = root_directory + "Results/";
 const string BSD_directory = root_directory + "BSDS500/";
+const string BSD_image_directory = BSD_directory + image_name + "/";
 
 int main ( int, char*[] )
 {
@@ -149,7 +151,7 @@ int main ( int, char*[] )
                 
                 bool draw_image = iteration % 50 == 0 || test ? true : false; // Draw every fiftieth image.
                 
-                if (input.mapper) // Feeds cloud into Mapper.
+                if (input.mapper) // Runs the cloud through the Mapper algorithm.
                 {
                     for (int counter_1 = 0; counter_1 < num_intervals_parameter.size(); ++counter_1) // Looping over number of intervals;
                     {
@@ -201,7 +203,7 @@ int main ( int, char*[] )
                     }
                 }
                 
-                if (input.alphaReeb) // Feeds cloud into the alpha-Reeb algorithm.
+                if (input.alphaReeb) // Runs the cloud through the alpha-Reeb algorithm.
                 {
                     double epsilon;
                     
@@ -247,7 +249,7 @@ int main ( int, char*[] )
                     }
                 }
                 
-                if (input.hopes) // Carries out hopes algorithm.
+                if (input.hopes) // Runs the cloud through the HoPeS algorithm.
                 {
                     clock_t start_iter = clock(); // Start stopwatch for iteration.
                     
@@ -299,38 +301,31 @@ int main ( int, char*[] )
     {
         Mat input_image;
         
-        input_image = imread( BSD_directory + image_name + "/" + image_name + ".jpg" );
+        input_image = imread( BSD_image_directory + image_name + ".jpg" ); // Reading the image.
 
-        vector<vector<Data_Pt>> clouds_d;
+        vector<P2> cloud_p;
         vector<vector<P2>> clouds_p;
+        vector<vector<Data_Pt>> clouds_d;
         
-        Read_Cloud_From_Image( BSD_directory, image_name, input_image, clouds_d );
-        
-        clouds_p.resize( clouds_d.size() );
-        
-        for (int counter = 0; counter < clouds_d.size(); ++counter)
-        {
-            Convert_Cloud_1( clouds_d[counter], clouds_p[counter] );
-        }
+        Read_Cloud_From_Image( BSD_image_directory, image_name, input_image, cloud_p, clouds_p, clouds_d ); // Extracting the cloud from the image.
         
         const Point image_sizes( 2 * input_image.cols, 2 * input_image.rows );
         Mat cloud_image( image_sizes, CV_8UC3, white );
         
         Draw_Clouds( clouds_d, cloud_image );
         
-        imwrite( BSD_directory + image_name + "/" + image_name + "_Cloud.png", cloud_image );
+        imwrite( BSD_directory + image_name + "/" + image_name + "_Cloud.png", cloud_image ); // Writing the cloud to a png file.
         
-        if (mapper_on_image)
+        if (mapper_on_image) // Runs the image through the Mapper algorithm.
         {
             Mat mapper_image( image_sizes, CV_8UC3, white );
-            
             vector<Graph> mapper_graph( clouds_p.size() );
             
-            for (int counter = 0; counter < clouds_p.size(); ++counter)
+            for (int counter = 0; counter < clouds_p.size(); ++counter) // Looping over clouds.
             {
                 Mapper_Parameters parameters( 15, 0.5, "Distance", 0.1, 3, 0 );
                 
-                Mapper( clouds_d[counter], parameters, mapper_graph[counter] );
+                Mapper( clouds_d[counter], parameters, mapper_graph[counter] ); // Generating the mapper graph.
             }
             
             double scale = 2;
@@ -338,23 +333,20 @@ int main ( int, char*[] )
             
             for (int counter = 0; counter < mapper_graph.size(); ++counter)
             {
-                Draw_Vertices( mapper_graph[counter], scale, shift, 2, -1, black, mapper_image );
-                
-                Draw_Edges( mapper_graph[counter], scale, shift, 2, black, mapper_image );
+                Draw_Graph( mapper_graph[counter], scale, shift, 2, -1, 2, black, mapper_image ); // Drawing the output graph.
             }
             
-            imwrite( BSD_directory + image_name + "/" + image_name + "_Mapper.png", mapper_image );
+            imwrite( BSD_directory + image_name + "/" + image_name + "_Mapper.png", mapper_image ); // Writing the image to a png file.
             
             cout << "Completed mapper algorithm on " << image_name << "." << endl << endl;
         }
         
-        if (alphaReeb_on_image)
+        if (alphaReeb_on_image) // Runs the image through the alpha-Reeb algorithm.
         {
             Mat alphaReeb_image( image_sizes, CV_8UC3, white );
-            
             vector<Graph> alphaReeb_graph( clouds_p.size() );
             
-            for (int counter = 0; counter < clouds_p.size(); ++counter)
+            for (int counter = 0; counter < clouds_p.size(); ++counter) // Looping over clouds.
             {
                 double epsilon;
                 
@@ -362,11 +354,11 @@ int main ( int, char*[] )
                 
                 Graph nbhd_graph;
                 
-                Cloud_To_Nbhd_Graph( clouds_d[counter], epsilon, nbhd_graph );
+                Cloud_To_Nbhd_Graph( clouds_d[counter], epsilon, nbhd_graph ); // Generating the neighbourhood graph of the cloud.
                 
                 AlphaReeb_Parameters parameters( 4, 0 );
                 
-                AlphaReeb_Algorithm( nbhd_graph, parameters, alphaReeb_graph[counter] );
+                AlphaReeb_Algorithm( nbhd_graph, parameters, alphaReeb_graph[counter] ); // Alpha-Reeb algorithm.
             }
             
             double scale = 2;
@@ -374,30 +366,27 @@ int main ( int, char*[] )
             
             for (int counter = 0; counter < alphaReeb_graph.size(); ++counter)
             {
-                Draw_Vertices( alphaReeb_graph[counter], scale, shift, 2, -1, black, alphaReeb_image );
-                
-                Draw_Edges( alphaReeb_graph[counter], scale, shift, 2, black, alphaReeb_image );
+                Draw_Graph( alphaReeb_graph[counter], scale, shift, 2, -1, 2, black, alphaReeb_image ); // Drawing the output graph.
             }
             
-            imwrite( BSD_directory + image_name + "/" + image_name + "_AlphaReeb.png", alphaReeb_image );
+            imwrite( BSD_directory + image_name + "/" + image_name + "_AlphaReeb.png", alphaReeb_image ); // Writing the image to a png file.
             
             cout << "Completed alpha-Reeb algorithm on " << image_name << "." << endl << endl;
         }
         
-        if (hopes_on_image)
+        if (hopes_on_image) // Runs the image through the HoPeS algorithm.
         {
             Mat hopes_image( image_sizes, CV_8UC3, white );
-            
             vector<Graph> hopes_graph( clouds_p.size() );
             
-            for (int counter = 0; counter < clouds_p.size(); ++counter)
+            for (int counter = 0; counter < clouds_p.size(); ++counter) // Looping over clouds.
             {
                 double max_birth = 0, min_death = 1e10;
                 Graph_H g;
                 
-                Hopes( clouds_p[counter], g, max_birth, min_death );
+                Hopes( clouds_p[counter], g, max_birth, min_death ); // Generating the Hopes graph.
                 
-                Simplify_Graph( g, hopes_simp_type_2, min_death, mcsf, hopes_graph[counter] );
+                Simplify_Graph( g, hopes_simp_type_2, min_death, mcsf, hopes_graph[counter] ); // Simplifying the output.
             }
             
             double scale = 2;
@@ -405,12 +394,10 @@ int main ( int, char*[] )
             
             for (int counter = 0; counter < hopes_graph.size(); ++counter)
             {
-                Draw_Vertices( hopes_graph[counter], scale, shift, 2, -1, black, hopes_image );
-                
-                Draw_Edges( hopes_graph[counter], scale, shift, 2, black, hopes_image );
+                Draw_Graph( hopes_graph[counter], scale, shift, 2, -1, 2, black, hopes_image ); // Drawing the output graph.
             }
             
-            imwrite( BSD_directory + image_name + "/" + image_name + "_Hopes.png", hopes_image );
+            imwrite( BSD_directory + image_name + "/" + image_name + "_Hopes.png", hopes_image ); // Writing the image to a png file.
             
             cout << "Completed hopes algorithm on " << image_name << "." << endl << endl;
         }
@@ -418,11 +405,9 @@ int main ( int, char*[] )
     
     if (BSD)
     {
-        clock_t start_time = clock();
+        clock_t start_time = clock(); // Start stopwatch.
         
-        int test_directory_size = 0;
-        int train_directory_size = 0;
-        int val_directory_size = 0;
+        int test_directory_size = 0, train_directory_size = 0, val_directory_size = 0;
         string test_directory = BSD_directory + "BSR/BSDS500/data/images/test/";
         string train_directory = BSD_directory + "BSR/BSDS500/data/images/train/";
         string val_directory = BSD_directory + "BSR/BSDS500/data/images/val/";
@@ -443,14 +428,13 @@ int main ( int, char*[] )
         }
         
         int directory_size = test_directory_size + train_directory_size + val_directory_size;
-        int iterations = directory_size;
-        int skip = 0;
+        int iterations = directory_size, skip = 0;
         double mapper_rms_error = 0, aR_rms_error = 0, hopes_rms_error = 0;
         string image_file;
         
-        for (int counter_1 = 0; counter_1 < iterations; ++counter_1)
+        for (int counter_1 = 0; counter_1 < iterations; ++counter_1) // Looping over images.
         {
-            if (!BSD_File( counter_1, test_directory, test_directory_size, train_directory, train_directory_size, val_directory, val_directory_size, image_file ))
+            if (!BSD_File( counter_1, test_directory, test_directory_size, train_directory, train_directory_size, val_directory, val_directory_size, image_file )) // Finding the file name of the image.
             {
                 ++skip;
                 continue;
@@ -458,37 +442,37 @@ int main ( int, char*[] )
             
             Mat input_image;
              
-            input_image = imread( image_file );
+            input_image = imread( image_file ); // Reading the image.
             
             vector<P2> cloud_p;
             vector<vector<P2>> clouds_p;
             vector<vector<Data_Pt>> clouds_d;
              
-            Read_Cloud_From_Image( input_image, cloud_p, clouds_p, clouds_d );
+            Read_Cloud_From_Image( input_image, cloud_p, clouds_p, clouds_d ); // Extracting the cloud from the image.
             
-            if (mapper_on_image)
+            if (mapper_on_image) // Runs the image through the Mapper algorithm.
             {
                 vector<Graph> mapper_graph( clouds_p.size() );
                 
-                for (int counter = 0; counter < clouds_p.size(); ++counter)
+                for (int counter = 0; counter < clouds_p.size(); ++counter) // Looping over clouds.
                 {
                     Mapper_Parameters parameters( 15, 0.5, "Distance", 0.1, 3, 0 );
                     
-                    Mapper( clouds_d[counter], parameters, mapper_graph[counter] );
+                    Mapper( clouds_d[counter], parameters, mapper_graph[counter] ); // Generating the mapper graph.
                 }
                 
                 Graph mapper;
                 
-                Combine_Comps( mapper_graph, mapper );
+                Combine_Comps( mapper_graph, mapper ); // Combining the components into a single graph.
                 
-                mapper_rms_error += Geometric_Approximation_Error( mapper, cloud_p ).second;
+                mapper_rms_error += Geometric_Approximation_Error( mapper, cloud_p ).second; // Calculating the RMS error of the output.
             }
             
-            if (alphaReeb_on_image)
+            if (alphaReeb_on_image) // Runs the image through the alpha-Reeb algorithm.
             {
                 vector<Graph> alphaReeb_graph( clouds_p.size() );
                 
-                for (int counter = 0; counter < clouds_p.size(); ++counter)
+                for (int counter = 0; counter < clouds_p.size(); ++counter) // Looping over clouds.
                 {
                     double epsilon;
                     
@@ -496,63 +480,47 @@ int main ( int, char*[] )
                     
                     Graph nbhd_graph;
                     
-                    Cloud_To_Nbhd_Graph( clouds_d[counter], epsilon, nbhd_graph );
+                    Cloud_To_Nbhd_Graph( clouds_d[counter], epsilon, nbhd_graph ); // Generating the neighbourhood graph of the cloud.
                     
                     AlphaReeb_Parameters parameters( 4, 0 );
                     
-                    AlphaReeb_Algorithm( nbhd_graph, parameters, alphaReeb_graph[counter] );
+                    AlphaReeb_Algorithm( nbhd_graph, parameters, alphaReeb_graph[counter] ); // Alpha-Reeb algorithm.
                 }
                 
                 Graph alphaReeb;
                 
-                Combine_Comps( alphaReeb_graph, alphaReeb );
+                Combine_Comps( alphaReeb_graph, alphaReeb ); // Combining the components into a single graph.
                 
-                aR_rms_error += Geometric_Approximation_Error( alphaReeb, cloud_p ).second;
+                aR_rms_error += Geometric_Approximation_Error( alphaReeb, cloud_p ).second; // Calculating the RMS error of the output.
             }
             
-            if (hopes_on_image)
+            if (hopes_on_image) // Runs the image through the HoPeS algorithm.
             {
                 vector<Graph> hopes_graph( clouds_p.size() );
                 
-                for (int counter = 0; counter < clouds_p.size(); ++counter)
+                for (int counter = 0; counter < clouds_p.size(); ++counter) // Looping over clouds.
                 {
                     double max_birth = 0, min_death = 1e10;
                     Graph_H g;
                     
-                    Hopes( clouds_p[counter], g, max_birth, min_death );
+                    Hopes( clouds_p[counter], g, max_birth, min_death ); // Generating the Hopes graph.
                     
-                    Simplify_Graph( g, hopes_simp_type_2, min_death, mcsf, hopes_graph[counter] );
+                    Simplify_Graph( g, hopes_simp_type_2, min_death, mcsf, hopes_graph[counter] ); // Simplifying the output.
                 }
                 
                 Graph hopes;
                 
-                Combine_Comps( hopes_graph, hopes );
+                Combine_Comps( hopes_graph, hopes ); // Combining the components into a single graph.
                 
-                hopes_rms_error += Geometric_Approximation_Error( hopes, cloud_p ).second;
+                hopes_rms_error += Geometric_Approximation_Error( hopes, cloud_p ).second; // Calculating the RMS error of the output.
             }
             
-            cout << "Completed iteration " << counter_1 + 1 - skip << "." << endl;
+            cout << "Completed iteration " << counter_1 + 1 - skip << "." << endl << endl;
         }
         
-        mapper_rms_error = mapper_rms_error / (double)(iterations - skip);
-        aR_rms_error = aR_rms_error / (double)(iterations - skip);
-        hopes_rms_error = hopes_rms_error / (double)(iterations - skip);
+        Write_Results( BSD_directory, mapper_rms_error, aR_rms_error, hopes_rms_error, iterations, skip );
         
-        cout << endl;
-        cout << mapper_rms_error << endl << endl;
-        cout << aR_rms_error << endl;
-        cout << hopes_rms_error << endl;
-        
-        ofstream ofs( BSD_directory + "Results/Results.txt" );
-        
-        ofs << "The RMS error of the three algorithms over " << iterations - skip << " images from the BSDS500 database:" << endl << endl;
-        ofs << "Mapper: " << mapper_rms_error << "." << endl;
-        ofs << "Alpha-Reeb: " << aR_rms_error << "." << endl;
-        ofs << "HoPeS: " << hopes_rms_error << "." << endl;
-        
-        ofs.close();
-        
-        clock_t end_time = clock();
+        clock_t end_time = clock(); // End stopwatch.
         
         cout << "Duration: " << (end_time - start_time) / (double)CLOCKS_PER_SEC << "s." << endl << endl;
     }

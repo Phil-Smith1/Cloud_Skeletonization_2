@@ -44,6 +44,13 @@ void Draw_Edges ( Graph const& g, double scale, Point2d& shift, int thickness_ed
 	}
 }
 
+void Draw_Graph ( Graph const& g, double scale, Point2d shift, int radius_vertices, bool fill, int thickness_edge, Scalar const& colour, Mat& image )
+{
+    Draw_Vertices( g, scale, shift, radius_vertices, fill, colour, image );
+    
+    Draw_Edges( g, scale, shift, thickness_edge, colour, image );
+}
+
 void Draw_Graph ( Graph const& g, int radius_vertices, bool fill, int thickness_edge, Scalar const& colour, Mat& image )
 {
     Point image_sizes( image.cols, image.rows );

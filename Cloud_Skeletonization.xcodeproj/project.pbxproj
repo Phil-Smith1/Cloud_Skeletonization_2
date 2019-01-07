@@ -77,6 +77,7 @@
 		EE3184401FD59DD300CFF6E1 /* Run_Input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Run_Input.h; sourceTree = "<group>"; };
 		EE3184411FD59DE300CFF6E1 /* Run_Input.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Run_Input.cpp; sourceTree = "<group>"; };
 		EE3184431FD5AF7A00CFF6E1 /* Go_To_Line.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Go_To_Line.h; sourceTree = "<group>"; };
+		EE3A99B821E37AA20036F1C0 /* Write_Results.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Write_Results.h; sourceTree = "<group>"; };
 		EE41500020C6A8D000B60C51 /* Remove_Small_Mapper_Components.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Remove_Small_Mapper_Components.h; sourceTree = "<group>"; };
 		EE4DD40C20C55A920000C3C4 /* Filter_Function.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Filter_Function.h; sourceTree = "<group>"; };
 		EE4DD40D20C563700000C3C4 /* MST.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MST.h; sourceTree = "<group>"; };
@@ -179,8 +180,8 @@
 				EE063A9A20ED06680028FC04 /* Binary_Search_Tree.cpp */,
 				EE063A9920ED04F00028FC04 /* Binary_Search_Tree.h */,
 				EE29492A21DE3970001B4110 /* BSD_File.h */,
-				EE063AA4211094EA0028FC04 /* Check_Degrees.h */,
 				EE2D96E31FD6CC18009F440A /* Check_Betti.h */,
+				EE063AA4211094EA0028FC04 /* Check_Degrees.h */,
 				EEEE62AA1FCC557E008A1AC3 /* Cloud_File_Name.h */,
 				EEEE629A1FCC4837008A1AC3 /* Cloud_Skeletonization.cpp */,
 				EEEE62B21FCD7960008A1AC3 /* Cloud_To_Nbhd_Graph.h */,
@@ -271,6 +272,7 @@
 				EEEE62BE1FCD8CA7008A1AC3 /* Write_Graph.h */,
 				EEEE62BB1FCD82DA008A1AC3 /* Write_Image.h */,
 				EEED83401FDAB97200D7F033 /* Write_Input.h */,
+				EE3A99B821E37AA20036F1C0 /* Write_Results.h */,
 			);
 			path = Cloud_Skeletonization;
 			sourceTree = "<group>";

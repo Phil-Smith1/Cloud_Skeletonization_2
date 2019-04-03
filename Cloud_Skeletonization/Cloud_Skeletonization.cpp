@@ -28,11 +28,12 @@
 
 // Global variables.
 
-const bool cloud_input = true; // Run algorithms over cloud dataset.
+const bool cloud_input = false; // Run algorithms over cloud dataset.
 
-const vector<int> wheel_range = { 3/*3, 4, 5, 6, 7, 8, 9*/ };
+const vector<int> wheel_range = { /*3, 4, 5, 6, 7, 8, 9*/ };
 const vector<int> grid_cols_range = { /*1, 2, 3*/ };
 const vector<int> grid_rows_range = { /*1, 2, 3*/ };
+const vector<int> triangles_range = { 1, 2, 3, 4, 5, 6, 7, 8 };
 const vector<int> squares_range = { /*2, 3, 4, 5, 6, 7, 8, 9*/ };
 
 const bool regular = true; // All grid patterns are regular.
@@ -40,8 +41,8 @@ const bool regular = true; // All grid patterns are regular.
 const bool graph_dependent_cloud_size = true; // Cloud size is dependent on the length of the pattern.
 const int cloud_size_parameter = 100; // Number of points in the cloud per unit length of the pattern.
 
-const string noise_type = "uniform"; // Type of noise used to produce the cloud: uniform or gaussian.
-const vector<double> noise_parameter_range = { 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4/*0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2*/ }; // Range of magnitude of noise.
+const string noise_type = "gaussian"; // Type of noise used to produce the cloud: uniform or gaussian.
+const vector<double> noise_parameter_range = { /*0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4*/0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14/*, 0.16, 0.18, 0.2*/ }; // Range of magnitude of noise.
 
 const bool mapper = true; // Run the cloud through the Mapper algorithm.
 const bool graph_dependent_num_intervals = true; // Number of intervals is dependent on the length of the pattern.
@@ -69,9 +70,9 @@ const bool test = false; // To do a test run.
 
 // If test: wr 3; gdcp true; csp 100; nt uniform; npr 0.05; av 0.3; e 0.1; gdni true; nip 1.4; mcsf 0.01; r 5; v false.
 
-const bool image_input = false; // Run algorithms over an image.
+const bool image_input = true; // Run algorithms over an image.
 
-const string image_name = "Woman"; // Woman, Bird, Dog.
+const string image_name = "Pottery"; // Woman, Bird_1, Bird_2, Plane, Pottery.
 
 const bool BSD = false; // Run algorithms over the BSD database.
 
@@ -81,9 +82,9 @@ const bool alphaReeb_on_image = true; // Run alpha-Reeb algorithm on images.
 
 const bool hopes_on_image = true; // Run HoPeS algorithm on images.
 
-const int hopes_simp_type_2 = 7; // Type of simplification of the HoPeS output for images: 0: No simplification; 1: RD1V; 2: RD1V SH MD; 3: RD1V SH 2MD; 4: aR RD1V; 5: RD1V aR RD1V; 6: SH2; 7: SH MD.
+const int hopes_simp_type_2 = 0; // Type of simplification of the HoPeS output for images: 0: No simplification; 1: RD1V; 2: RD1V SH MD; 3: RD1V SH 2MD; 4: aR RD1V; 5: RD1V aR RD1V; 6: SH2; 7: SH MD.
 
-Run_Input run_input( wheel_range, grid_cols_range, grid_rows_range, regular, squares_range, graph_dependent_cloud_size, cloud_size_parameter, noise_type, noise_parameter_range, mapper, mapper_simp_type, alphaReeb, alphaReeb_simp_type, hopes, hopes_simp_type, repetitions );
+Run_Input run_input( wheel_range, grid_cols_range, grid_rows_range, regular, triangles_range, squares_range, graph_dependent_cloud_size, cloud_size_parameter, noise_type, noise_parameter_range, mapper, mapper_simp_type, alphaReeb, alphaReeb_simp_type, hopes, hopes_simp_type, repetitions );
 
 // Global constants.
 
@@ -196,9 +197,9 @@ int main ( int, char*[] )
                                 Draw_Graph( mapper_graph, 5, -1, 2, black, image ); // Drawing the output graph.
                                 
                                 Write_Image( image_directory, input, "Mapper", iteration, image ); // Writing the image to a png file.
+                                
+                                Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "Mapper", iteration, mapper_graph ); // Writing the graph to a txt file.
                             }
-                            
-                            Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "Mapper", iteration, mapper_graph ); // Writing the graph to a txt file.
                         }
                     }
                 }
@@ -243,9 +244,9 @@ int main ( int, char*[] )
                             Draw_Graph( alphaReeb_graph, 5, -1, 2, black, image ); // Drawing the output graph.
                             
                             Write_Image( image_directory, input, "AlphaReeb", iteration, image ); // Writing the image to a png file.
+                            
+                            Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "AlphaReeb", iteration, alphaReeb_graph ); // Writing the graph to a txt file.
                         }
-                        
-                        Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "AlphaReeb", iteration, alphaReeb_graph ); // Writing the graph to a txt file.
                     }
                 }
                 
@@ -281,9 +282,9 @@ int main ( int, char*[] )
                         else Draw_Graph( hopes, 5, -1, 2, black, image );
                                                     
                         Write_Image( image_directory, input, "HoPeS1", iteration, image ); // Writing the image to a png file.
+                        
+                        Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "HoPeS1", iteration, hopes ); // Writing the graph to a txt file.
                     }
-                    
-                    Write_Graph( graph_directory, input, expected_Betti_num, graph_length, "HoPeS1", iteration, hopes ); // Writing the graph to a txt file.
                 }
                 
                 cout << "Experiment " << experiment_iter << ": Iteration " << iteration << "." << endl;
@@ -378,7 +379,8 @@ int main ( int, char*[] )
         {
             Mat hopes_image( image_sizes, CV_8UC3, white );
             vector<Graph> hopes_graph( clouds_p.size() );
-            
+            double scale = 2;
+            Point2d shift = Point2d( 0, 0 );
             for (int counter = 0; counter < clouds_p.size(); ++counter) // Looping over clouds.
             {
                 double max_birth = 0, min_death = 1e10;
@@ -387,15 +389,14 @@ int main ( int, char*[] )
                 Hopes( clouds_p[counter], g, max_birth, min_death ); // Generating the Hopes graph.
                 
                 Simplify_Graph( g, hopes_simp_type_2, min_death, mcsf, hopes_graph[counter] ); // Simplifying the output.
+                
+                g.Draw( scale, shift, CV_RGB( 0, 0, 0 ), CV_RGB( 255, 0, 0 ), 1, hopes_image );
             }
             
-            double scale = 2;
-            Point2d shift = Point2d( 0, 0 );
-            
-            for (int counter = 0; counter < hopes_graph.size(); ++counter)
+            /*for (int counter = 0; counter < hopes_graph.size(); ++counter)
             {
                 Draw_Graph( hopes_graph[counter], scale, shift, 2, -1, 2, black, hopes_image ); // Drawing the output graph.
-            }
+            }*/
             
             imwrite( BSD_directory + image_name + "/" + image_name + "_Hopes.png", hopes_image ); // Writing the image to a png file.
             

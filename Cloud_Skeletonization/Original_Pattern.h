@@ -57,6 +57,73 @@ void Original_Pattern ( string const& pattern_type, int pattern_size_1, int patt
         }
     }
     
+    else if (pattern_type == "triangles")
+    {
+        if (pattern_size_1 >= 1)
+        {
+            boost::add_vertex( g );
+            boost::add_vertex( g );
+            boost::add_vertex( g );
+            
+            boost::add_edge( 0, 1, g );
+            boost::add_edge( 0, 2, g );
+            boost::add_edge( 1, 2, g );
+        }
+        
+        if (pattern_size_1 >= 2)
+        {
+            boost::add_vertex( g );
+            
+            boost::add_edge( 1, 3, g );
+            boost::add_edge( 2, 3, g );
+        }
+        
+        if (pattern_size_1 >= 3)
+        {
+            boost::add_vertex( g );
+            
+            boost::add_edge( 2, 4, g );
+            boost::add_edge( 3, 4, g );
+        }
+        
+        if (pattern_size_1 >= 4)
+        {
+            boost::add_vertex( g );
+            
+            boost::add_edge( 3, 5, g );
+            boost::add_edge( 4, 5, g );
+        }
+        
+        if (pattern_size_1 >= 5)
+        {
+            boost::add_vertex( g );
+            
+            boost::add_edge( 1, 6, g );
+            boost::add_edge( 3, 6, g );
+        }
+        
+        if (pattern_size_1 >= 6)
+        {
+            boost::add_vertex( g );
+            
+            boost::add_edge( 3, 7, g );
+            boost::add_edge( 6, 7, g );
+        }
+        
+        if (pattern_size_1 >= 7)
+        {
+            boost::add_edge( 5, 7, g );
+        }
+        
+        if (pattern_size_1 == 8)
+        {
+            boost::add_vertex( g );
+            
+            boost::add_edge( 5, 8, g );
+            boost::add_edge( 7, 8, g );
+        }
+    }
+    
     else if (pattern_type == "squares")
     {
         int num_squares;

@@ -68,7 +68,7 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
         
         ofstream ofs( result_file, ios::app );
         
-        ofs << left << setw( 9 ) << input.pattern_type;
+        ofs << left << setw( 11 ) << input.pattern_type;
         ofs << left << setw( 7 ) << input.pattern_size_1;
         ofs << left << setw( 7 ) << input.pattern_size_2;
         ofs << left << setw( 5 ) << input.regular;
@@ -155,7 +155,7 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
         
         ofstream ofs( result_file, ios::app );
         
-        ofs << left << setw( 9 ) << input.pattern_type;
+        ofs << left << setw( 11 ) << input.pattern_type;
         ofs << left << setw( 7 ) << input.pattern_size_1;
         ofs << left << setw( 7 ) << input.pattern_size_2;
         ofs << left << setw( 5 ) << input.regular;
@@ -212,7 +212,7 @@ void Analysis ( string const& result_directory, Input const& input, size_t mean_
 
         ofstream ofs( result_file, ios::app );
         
-        ofs << left << setw( 9 ) << input.pattern_type;
+        ofs << left << setw( 11 ) << input.pattern_type;
         ofs << left << setw( 7 ) << input.pattern_size_1;
         ofs << left << setw( 7 ) << input.pattern_size_2;
         ofs << left << setw( 5 ) << input.regular;

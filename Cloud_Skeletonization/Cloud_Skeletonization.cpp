@@ -62,7 +62,7 @@ const double mcsf = 0.05; // A component must represent a fraction of points gre
 const bool hopes = true; // Run the cloud through the HoPeS algorithm.
 const int hopes_simp_type = 2; // Type of simplification of the HoPeS output: 0: No simplification; 1: RD1V; 2: RD1V SH MD; 3: RD1V SH 2MD; 4: aR RD1V; 5: RD1V aR RD1V; 6: SH2; 7: SH MD.
 
-const int repetitions = 1; // Number of repetitions of the same type of cloud.
+const int repetitions = 200; // Number of repetitions of the same type of cloud.
 
 const bool validation = true; // Record the results.
 

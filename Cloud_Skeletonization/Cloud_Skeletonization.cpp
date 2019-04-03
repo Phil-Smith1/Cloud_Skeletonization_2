@@ -70,7 +70,7 @@ const bool test = false; // To do a test run.
 
 // If test: wr 3; gdcp true; csp 100; nt uniform; npr 0.05; av 0.3; e 0.1; gdni true; nip 1.4; mcsf 0.01; r 5; v false.
 
-const bool image_input = true; // Run algorithms over an image.
+const bool image_input = false; // Run algorithms over an image.
 
 const string image_name = "Pottery"; // Woman, Bird_1, Bird_2, Plane, Pottery.
 
